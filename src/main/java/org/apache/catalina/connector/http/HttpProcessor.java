@@ -10,10 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.TreeMap;
+import java.util.*;
 
 
 /**
@@ -81,13 +78,13 @@ final class HttpProcessor
     /**
      * The HttpConnector with which this processor is associated.
      */
-    private HttpConnector connector = null;
+    private final HttpConnector connector;
 
 
     /**
      * The debugging detail level for this component.
      */
-    private int debug = 0;
+    private final int debug;
 
 
     /**
@@ -124,31 +121,31 @@ final class HttpProcessor
     /**
      * The proxy server name for our Connector.
      */
-    private String proxyName = null;
+    private final String proxyName;
 
 
     /**
      * The proxy server port for our Connector.
      */
-    private int proxyPort = 0;
+    private final int proxyPort;
 
 
     /**
      * The HTTP request object we will pass to our associated container.
      */
-    private HttpRequestImpl request = null;
+    private final HttpRequestImpl request;
 
 
     /**
      * The HTTP response object we will pass to our associated container.
      */
-    private HttpResponseImpl response = null;
+    private final HttpResponseImpl response;
 
 
     /**
      * The actual server port for our Connector.
      */
-    private int serverPort = 0;
+    private final int serverPort;
 
 
     /**
@@ -186,7 +183,7 @@ final class HttpProcessor
     /**
      * The name to register for the background thread.
      */
-    private String threadName = null;
+    private final String threadName;
 
 
     /**
@@ -277,14 +274,16 @@ final class HttpProcessor
         // Wait for the Processor to get the previous Socket
         while (available) {
             try {
+                System.out.println(threadName + " is waiting is method assign()...");
                 wait();
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignored) {
             }
         }
 
         // Store the newly available Socket and notify our thread
         this.socket = socket;
         available = true;
+        System.out.println(threadName + " got the socket and notifyAll in method assign().");
         notifyAll();
 
         if ((debug >= 1) && (socket != null))
@@ -305,14 +304,16 @@ final class HttpProcessor
         // Wait for the Connector to provide a new Socket
         while (!available) {
             try {
+                System.out.println(threadName + " is waiting in method await()...");
                 wait();
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignored) {
             }
         }
 
         // Notify the Connector that we have received this Socket
         Socket socket = this.socket;
         available = false;
+        System.out.println(threadName + " got the socket and notifyAll in method await().");
         notifyAll();
 
         if ((debug >= 1) && (socket != null))
@@ -364,14 +365,14 @@ final class HttpProcessor
         // a local collection, sorted by the quality value (so we can
         // add Locales in descending order).  The values will be ArrayLists
         // containing the corresponding Locales to be added
-        TreeMap locales = new TreeMap();
+        Map<Double, List<Locale>> locales = new TreeMap<>();
 
         // Preprocess the value to remove all whitespace
         int white = value.indexOf(' ');
         if (white < 0)
             white = value.indexOf('\t');
         if (white >= 0) {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             int len = value.length();
             for (int i = 0; i < len; i++) {
                 char ch = value.charAt(i);
@@ -413,9 +414,9 @@ final class HttpProcessor
                 continue;       // FIXME - "*" entries are not handled
 
             // Extract the language and country for this entry
-            String language = null;
-            String country = null;
-            String variant = null;
+            String language;
+            String country;
+            String variant;
             int dash = entry.indexOf('-');
             if (dash < 0) {
                 language = entry;
@@ -436,25 +437,17 @@ final class HttpProcessor
 
             // Add a new Locale to the list of Locales for this quality level
             Locale locale = new Locale(language, country, variant);
-            Double key = new Double(-quality);  // Reverse the order
-            ArrayList values = (ArrayList) locales.get(key);
-            if (values == null) {
-                values = new ArrayList();
-                locales.put(key, values);
-            }
+            Double key = -quality;  // Reverse the order
+            List<Locale> values = locales.computeIfAbsent(key, k -> new ArrayList<>());
             values.add(locale);
 
         }
 
         // Process the quality values in highest->lowest order (due to
         // negating the Double value when creating the key)
-        Iterator keys = locales.keySet().iterator();
-        while (keys.hasNext()) {
-            Double key = (Double) keys.next();
-            ArrayList list = (ArrayList) locales.get(key);
-            Iterator values = list.iterator();
-            while (values.hasNext()) {
-                Locale locale = (Locale) values.next();
+        for (Double key : locales.keySet()) {
+            List<Locale> list = locales.get(key);
+            for (Locale locale : list) {
                 if (debug >= 1)
                     log(" Adding locale '" + locale + "'");
                 request.addLocale(locale);
@@ -525,14 +518,14 @@ final class HttpProcessor
                 parseAcceptLanguage(value);
             } else if (header.equals(DefaultHeaders.COOKIE_NAME)) {
                 Cookie[] cookies = RequestUtil.parseCookieHeader(value);
-                for (int i = 0; i < cookies.length; i++) {
-                    if (cookies[i].getName().equals
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals
                             (Globals.SESSION_COOKIE_NAME)) {
                         // Override anything requested in the URL
                         if (!request.isRequestedSessionIdFromCookie()) {
                             // Accept only the first session id cookie
                             request.setRequestedSessionId
-                                    (cookies[i].getValue());
+                                    (cookie.getValue());
                             request.setRequestedSessionCookie(true);
                             request.setRequestedSessionURL(false);
                             if (debug >= 1)
@@ -542,12 +535,12 @@ final class HttpProcessor
                         }
                     }
                     if (debug >= 1)
-                        log(" Adding cookie " + cookies[i].getName() + "=" +
-                                cookies[i].getValue());
-                    request.addCookie(cookies[i]);
+                        log(" Adding cookie " + cookie.getName() + "=" +
+                                cookie.getValue());
+                    request.addCookie(cookie);
                 }
             } else if (header.equals(DefaultHeaders.CONTENT_LENGTH_NAME)) {
-                int n = -1;
+                int n;
                 try {
                     n = Integer.parseInt(value);
                 } catch (Exception e) {
@@ -578,10 +571,9 @@ final class HttpProcessor
                     if (proxyPort != 0)
                         request.setServerPort(proxyPort);
                     else {
-                        int port = 80;
+                        int port;
                         try {
-                            port =
-                                    Integer.parseInt(value.substring(n + 1).trim());
+                            port = Integer.parseInt(value.substring(n + 1).trim());
                         } catch (Exception e) {
                             throw new ServletException
                                     (sm.getString
@@ -641,7 +633,7 @@ final class HttpProcessor
 
         String method =
                 new String(requestLine.method, 0, requestLine.methodEnd);
-        String uri = null;
+        String uri;
         String protocol = new String(requestLine.protocol, 0,
                 requestLine.protocolEnd);
 
@@ -778,13 +770,13 @@ final class HttpProcessor
 
         // Prevent encoding '%', '/', '.' and '\', which are special reserved
         // characters
-        if ((normalized.indexOf("%25") >= 0)
-                || (normalized.indexOf("%2F") >= 0)
-                || (normalized.indexOf("%2E") >= 0)
-                || (normalized.indexOf("%5C") >= 0)
-                || (normalized.indexOf("%2f") >= 0)
-                || (normalized.indexOf("%2e") >= 0)
-                || (normalized.indexOf("%5c") >= 0)) {
+        if ((normalized.contains("%25"))
+                || (normalized.contains("%2F"))
+                || (normalized.contains("%2E"))
+                || (normalized.contains("%5C"))
+                || (normalized.contains("%2f"))
+                || (normalized.contains("%2e"))
+                || (normalized.contains("%5c"))) {
             return null;
         }
 
@@ -829,7 +821,7 @@ final class HttpProcessor
 
         // Declare occurrences of "/..." (three or more dots) to be invalid
         // (on some Windows platforms this walks the directory tree!!!)
-        if (normalized.indexOf("/...") >= 0)
+        if (normalized.contains("/..."))
             return (null);
 
         // Return the normalized path that we have completed
@@ -860,7 +852,7 @@ final class HttpProcessor
      */
     private void process(Socket socket) {
         boolean ok = true;
-        boolean finishResponse = true;
+        boolean finishResponse;
         SocketInputStream input = null;
         OutputStream output = null;
 
@@ -922,7 +914,7 @@ final class HttpProcessor
                 try {
                     ((HttpServletResponse) response.getResponse())
                             .sendError(HttpServletResponse.SC_BAD_REQUEST);
-                } catch (Exception f) {
+                } catch (Exception ignored) {
                 }
             } catch (InterruptedIOException e) {
                 if (debug > 1) {
@@ -930,7 +922,7 @@ final class HttpProcessor
                         log("process.parse", e);
                         ((HttpServletResponse) response.getResponse())
                                 .sendError(HttpServletResponse.SC_BAD_REQUEST);
-                    } catch (Exception f) {
+                    } catch (Exception ignored) {
                     }
                 }
                 ok = false;
@@ -939,7 +931,7 @@ final class HttpProcessor
                     log("process.parse", e);
                     ((HttpServletResponse) response.getResponse()).sendError
                             (HttpServletResponse.SC_BAD_REQUEST);
-                } catch (Exception f) {
+                } catch (Exception ignored) {
                 }
                 ok = false;
             }
@@ -951,14 +943,6 @@ final class HttpProcessor
                 if (ok) {
                     connector.getContainer().invoke(request, response);
                 }
-            } catch (ServletException e) {
-                log("process.invoke", e);
-                try {
-                    ((HttpServletResponse) response.getResponse()).sendError
-                            (HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                } catch (Exception f) {
-                }
-                ok = false;
             } catch (InterruptedIOException e) {
                 ok = false;
             } catch (Throwable e) {
@@ -966,7 +950,8 @@ final class HttpProcessor
                 try {
                     ((HttpServletResponse) response.getResponse()).sendError
                             (HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                } catch (Exception f) {
+                } catch (Exception invokeException) {
+                    invokeException.printStackTrace();
                 }
                 ok = false;
             }
@@ -1016,7 +1001,7 @@ final class HttpProcessor
         try {
             shutdownInput(input);
             socket.close();
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         } catch (Throwable e) {
             log("process.invoke", e);
         }
@@ -1033,7 +1018,7 @@ final class HttpProcessor
             if (available > 0) {
                 input.skip(available);
             }
-        } catch (Throwable e) {
+        } catch (Throwable ignored) {
         }
     }
 
@@ -1046,6 +1031,7 @@ final class HttpProcessor
      * hands them off to an appropriate processor.
      */
     public void run() {
+        System.out.println(threadName + " is running.");
 
         // Process requests until we receive a shutdown signal
         while (!stopped) {
@@ -1107,7 +1093,7 @@ final class HttpProcessor
             synchronized (threadSync) {
                 try {
                     threadSync.wait(5000);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                 }
             }
         }

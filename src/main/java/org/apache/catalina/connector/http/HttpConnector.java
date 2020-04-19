@@ -36,111 +36,86 @@ public final class HttpConnector
 
 
     /**
+     * Descriptive information about this Connector implementation.
+     */
+    private static final String info =
+            "org.apache.catalina.connector.http.HttpConnector/1.0";
+    /**
+     * The set of processors that have ever been created.
+     */
+    private final Vector<HttpProcessor> created = new Vector<>();
+    /**
+     * The set of processors that have been created but are not currently
+     * being used to process a request.
+     */
+    private final Stack<HttpProcessor> processors = new Stack<>();
+    /**
+     * The string manager for this package.
+     */
+    private final StringManager sm =
+            StringManager.getManager(Constants.Package);
+    /**
+     * The thread synchronization object.
+     */
+    private final Object threadSync = new Object();
+    /**
+     * The Container used for processing requests received by this Connector.
+     */
+    protected Container container = null;
+    /**
+     * The lifecycle event support for this component.
+     */
+    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
+    /**
+     * The minimum number of processors to start at initialization time.
+     */
+    protected int minProcessors = 5;
+    /**
      * The <code>Service</code> we are associated with (if any).
      */
     private Service service = null;
-
-
     /**
      * The accept count for this Connector.
      */
     private int acceptCount = 10;
-
-
     /**
      * The IP address on which to bind, if any.  If <code>null</code>, all
      * addresses on the server will be bound.
      */
     private String address = null;
-
-
     /**
      * The input buffer size we should create on input streams.
      */
     private int bufferSize = 2048;
-
-
-    /**
-     * The Container used for processing requests received by this Connector.
-     */
-    protected Container container = null;
-
-
-    /**
-     * The set of processors that have ever been created.
-     */
-    private final Vector created = new Vector();
-
-
     /**
      * The current number of processors that have been created.
      */
     private int curProcessors = 0;
-
-
     /**
      * The debugging detail level for this component.
      */
     private int debug = 0;
-
-
     /**
      * The "enable DNS lookups" flag for this Connector.
      */
     private boolean enableLookups = false;
-
-
     /**
      * The server socket factory for this component.
      */
     private ServerSocketFactory factory = null;
-
-
-    /**
-     * Descriptive information about this Connector implementation.
-     */
-    private static final String info =
-            "org.apache.catalina.connector.http.HttpConnector/1.0";
-
-
-    /**
-     * The lifecycle event support for this component.
-     */
-    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
-
-
-    /**
-     * The minimum number of processors to start at initialization time.
-     */
-    protected int minProcessors = 5;
-
-
     /**
      * The maximum number of processors allowed, or <0 for unlimited.
      */
     private int maxProcessors = 20;
-
-
     /**
      * Timeout value on the incoming connection.
      * Note : a value of 0 means no timeout.
      */
     private int connectionTimeout = Constants.DEFAULT_CONNECTION_TIMEOUT;
-
-
     /**
      * The port number on which we listen for HTTP requests.
      */
     private int port = 8080;
-
-
-    /**
-     * The set of processors that have been created but are not currently
-     * being used to process a request.
-     */
-    private final Stack processors = new Stack();
-
-
     /**
      * The server name to which we should pretend requests to this Connector
      * were directed.  This is useful when operating Tomcat behind a proxy
@@ -148,8 +123,6 @@ public final class HttpConnector
      * the server name included in the <code>Host</code> header is used.
      */
     private String proxyName = null;
-
-
     /**
      * The server port to which we should pretent requests to this Connector
      * were directed.  This is useful when operating Tomcat behind a proxy
@@ -157,77 +130,44 @@ public final class HttpConnector
      * the port number specified by the <code>port</code> property is used.
      */
     private int proxyPort = 0;
-
-
     /**
      * The redirect port for non-SSL to SSL redirects.
      */
     private int redirectPort = 443;
-
-
     /**
      * The request scheme that will be set on all requests received
      * through this connector.
      */
     private String scheme = "http";
-
-
     /**
      * The secure connection flag that will be set on all requests received
      * through this connector.
      */
     private boolean secure = false;
-
-
     /**
      * The server socket through which we listen for incoming TCP connections.
      */
     private ServerSocket serverSocket = null;
-
-
-    /**
-     * The string manager for this package.
-     */
-    private final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
     /**
      * Has this component been initialized yet?
      */
     private boolean initialized = false;
-
-
     /**
      * Has this component been started yet?
      */
     private boolean started = false;
-
-
     /**
      * The shutdown signal to our background thread
      */
     private boolean stopped = false;
-
-
     /**
      * The background thread.
      */
     private Thread thread = null;
-
-
     /**
      * The name to register for the background thread.
      */
     private String threadName = null;
-
-
-    /**
-     * The thread synchronization object.
-     */
-    private final Object threadSync = new Object();
-
-
     /**
      * Is chunking allowed ?
      */
@@ -278,7 +218,7 @@ public final class HttpConnector
     /**
      * Set the connection timeout for this Connector.
      *
-     * @param count The new connection timeout
+     * @param connectionTimeout The new connection timeout
      */
     public void setConnectionTimeout(int connectionTimeout) {
 
@@ -780,7 +720,7 @@ public final class HttpConnector
             if (processors.size() > 0) {
                 // if (debug >= 2)
                 // log("createProcessor: Reusing existing processor");
-                return ((HttpProcessor) processors.pop());
+                return processors.pop();
             }
             if ((maxProcessors > 0) && (curProcessors < maxProcessors)) {
                 // if (debug >= 2)
@@ -851,13 +791,12 @@ public final class HttpConnector
         //        if (debug >= 2)
         //            log("newProcessor: Creating new processor");
         HttpProcessor processor = new HttpProcessor(this, curProcessors++);
-        if (processor instanceof Lifecycle) {
-            try {
-                ((Lifecycle) processor).start();
-            } catch (LifecycleException e) {
-                log("newProcessor", e);
-                return (null);
-            }
+        // processor instanceof Lifecycle is always true
+        try {
+            ((Lifecycle) processor).start();
+        } catch (LifecycleException e) {
+            log("newProcessor", e);
+            return (null);
         }
         created.addElement(processor);
         return (processor);
@@ -932,7 +871,7 @@ public final class HttpConnector
         // Loop until we receive a shutdown command
         while (!stopped) {
             // Accept the next incoming connection from the server socket
-            Socket socket = null;
+            Socket socket;
             try {
                 //                if (debug >= 3)
                 //                    log("run: Waiting on serverSocket.accept()");
@@ -993,7 +932,7 @@ public final class HttpConnector
                 try {
                     log(sm.getString("httpConnector.noProcessor"));
                     socket.close();
-                } catch (IOException e) {
+                } catch (IOException ignored) {
                 }
                 continue;
             }
@@ -1039,7 +978,7 @@ public final class HttpConnector
         stopped = true;
         try {
             threadSync.wait(5000);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         }
         thread = null;
 
@@ -1170,8 +1109,10 @@ public final class HttpConnector
 
         // Gracefully shut down all processors we have created
         for (int i = created.size() - 1; i >= 0; i--) {
-            HttpProcessor processor = (HttpProcessor) created.elementAt(i);
-            if (processor instanceof Lifecycle) {
+            HttpProcessor processor = created.elementAt(i);
+            // processor instanceof Lifecycle is always true
+            // and it can be replaced with null check
+            if (processor != null) {
                 try {
                     ((Lifecycle) processor).stop();
                 } catch (LifecycleException e) {
@@ -1185,7 +1126,7 @@ public final class HttpConnector
             if (serverSocket != null) {
                 try {
                     serverSocket.close();
-                } catch (IOException e) {
+                } catch (IOException ignored) {
                 }
             }
             // Stop our background thread

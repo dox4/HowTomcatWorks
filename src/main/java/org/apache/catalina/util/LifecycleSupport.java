@@ -105,7 +105,7 @@ public final class LifecycleSupport {
     /**
      * The source component for lifecycle events that we will fire.
      */
-    private Lifecycle lifecycle = null;
+    private Lifecycle lifecycle;
 
 
     /**
@@ -127,8 +127,7 @@ public final class LifecycleSupport {
         synchronized (listeners) {
             LifecycleListener[] results =
                     new LifecycleListener[listeners.length + 1];
-            for (int i = 0; i < listeners.length; i++)
-                results[i] = listeners[i];
+            System.arraycopy(listeners, 0, results, 0, listeners.length);
             results[listeners.length] = listener;
             listeners = results;
         }
@@ -158,12 +157,13 @@ public final class LifecycleSupport {
     public void fireLifecycleEvent(String type, Object data) {
 
         LifecycleEvent event = new LifecycleEvent(lifecycle, type, data);
-        LifecycleListener[] interested = null;
+        LifecycleListener[] interested;
         synchronized (listeners) {
             interested = listeners.clone();
         }
-        for (int i = 0; i < interested.length; i++)
-            interested[i].lifecycleEvent(event);
+        for (LifecycleListener lifecycleListener : interested) {
+            lifecycleListener.lifecycleEvent(event);
+        }
 
     }
 
