@@ -75,6 +75,9 @@ import org.apache.catalina.util.LifecycleSupport;
 import org.apache.catalina.util.StringManager;
 import org.apache.commons.beanutils.PropertyUtils;
 
+import javax.management.InstanceNotFoundException;
+import javax.management.MBeanException;
+import javax.management.RuntimeOperationsException;
 import javax.naming.directory.DirContext;
 import java.beans.IndexedPropertyDescriptor;
 import java.beans.PropertyChangeListener;
@@ -129,7 +132,7 @@ public final class StandardServer
     /**
      * The set of classes that represent persistable properties.
      */
-    private static final Class[] persistables = {
+    private static final Class<?>[] persistables = {
             String.class,
             Integer.class, Integer.TYPE,
             Boolean.class, Boolean.TYPE,
@@ -216,7 +219,7 @@ public final class StandardServer
     /**
      * Global naming resources.
      */
-    private NamingResources globalNamingResources = null;
+    private NamingResources globalNamingResources;
 
 
     /**
@@ -349,7 +352,7 @@ public final class StandardServer
     /**
      * Set the global naming resources.
      *
-     * @param namingResources The new global naming resources
+     * @param globalNamingResources The new global naming resources
      */
     public void setGlobalNamingResources
     (NamingResources globalNamingResources) {
@@ -861,10 +864,10 @@ public final class StandardServer
      *
      * @param clazz Java class to be tested
      */
-    private boolean isPersistable(Class clazz) {
+    private boolean isPersistable(Class<?> clazz) {
 
-        for (int i = 0; i < persistables.length; i++) {
-            if (persistables[i] == clazz) {
+        for (Class<?> persistable : persistables) {
+            if (persistable == clazz) {
                 return (true);
             }
         }
@@ -1905,7 +1908,7 @@ public final class StandardServer
      *
      * @param writer PrintWriter to which we are storing
      * @param indent Number of spaces to indent this element
-     * @param server Object to be stored
+     * @param service Object to be stored
      * @throws Exception if an exception occurs while storing
      */
     private void storeService(PrintWriter writer, int indent,

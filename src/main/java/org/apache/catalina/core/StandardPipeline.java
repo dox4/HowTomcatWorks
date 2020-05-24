@@ -360,7 +360,7 @@ public class StandardPipeline
             if (oldBasic instanceof Contained) {
                 try {
                     ((Contained) oldBasic).setContainer(null);
-                } catch (Throwable t) {
+                } catch (Throwable ignored) {
                 }
             }
         }

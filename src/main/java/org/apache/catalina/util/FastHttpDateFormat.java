@@ -60,10 +60,7 @@
 package org.apache.catalina.util;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * Utility class to generate HTTP dates.
@@ -79,7 +76,7 @@ public final class FastHttpDateFormat {
     /**
      * HTTP date format.
      */
-    protected static SimpleDateFormat format =
+    protected final static SimpleDateFormat format =
             new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
 
 
@@ -109,7 +106,7 @@ public final class FastHttpDateFormat {
     /**
      * Date cache.
      */
-    protected static HashMap dateCache = new HashMap();
+    protected static Map<Date, String> dateCache = new HashMap<>();
 
 
     // --------------------------------------------------------- Public Methods
@@ -139,11 +136,11 @@ public final class FastHttpDateFormat {
      */
     public static String getDate(Date date) {
 
-        String cachedDate = (String) dateCache.get(date);
+        String cachedDate = dateCache.get(date);
         if (cachedDate != null)
             return cachedDate;
 
-        String newDate = null;
+        String newDate;
         synchronized (format) {
             newDate = format.format(date);
             dateCache.put(date, newDate);
