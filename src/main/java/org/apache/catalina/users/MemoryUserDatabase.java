@@ -77,6 +77,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 
 /**
@@ -125,7 +126,7 @@ public class MemoryUserDatabase implements UserDatabase {
      * The set of {@link Group}s defined in this database, keyed by
      * group name.
      */
-    protected HashMap groups = new HashMap();
+    protected Map<String, Group> groups = new HashMap<>();
 
 
     /**
@@ -159,7 +160,7 @@ public class MemoryUserDatabase implements UserDatabase {
      * The set of {@link Role}s defined in this database, keyed by
      * role name.
      */
-    protected HashMap roles = new HashMap();
+    protected Map<String, Role> roles = new HashMap<>();
 
 
     /**
@@ -173,7 +174,7 @@ public class MemoryUserDatabase implements UserDatabase {
      * The set of {@link User}s defined in this database, keyed by
      * user name.
      */
-    protected HashMap users = new HashMap();
+    protected Map<String, User> users = new HashMap<>();
 
 
     // ------------------------------------------------------------- Properties
@@ -182,7 +183,8 @@ public class MemoryUserDatabase implements UserDatabase {
     /**
      * Return the set of {@link Group}s defined in this user database.
      */
-    public Iterator getGroups() {
+    @Override
+    public Iterator<Group> getGroups() {
 
         synchronized (groups) {
             return (groups.values().iterator());
@@ -194,6 +196,7 @@ public class MemoryUserDatabase implements UserDatabase {
     /**
      * Return the unique global identifier of this user database.
      */
+    @Override
     public String getId() {
 
         return (this.id);
@@ -228,7 +231,8 @@ public class MemoryUserDatabase implements UserDatabase {
     /**
      * Return the set of {@link Role}s defined in this user database.
      */
-    public Iterator getRoles() {
+    @Override
+    public Iterator<Role> getRoles() {
 
         synchronized (roles) {
             return (roles.values().iterator());
@@ -240,7 +244,8 @@ public class MemoryUserDatabase implements UserDatabase {
     /**
      * Return the set of {@link User}s defined in this user database.
      */
-    public Iterator getUsers() {
+    @Override
+    public Iterator<User> getUsers() {
 
         synchronized (users) {
             return (users.values().iterator());
@@ -257,6 +262,7 @@ public class MemoryUserDatabase implements UserDatabase {
      *
      * @throws Exception if any exception is thrown during closing
      */
+    @Override
     public void close() throws Exception {
 
         save();
@@ -277,6 +283,7 @@ public class MemoryUserDatabase implements UserDatabase {
      * @param groupname   The group name of the new group (must be unique)
      * @param description The description of this group
      */
+    @Override
     public Group createGroup(String groupname, String description) {
 
         MemoryGroup group = new MemoryGroup(this, groupname, description);
@@ -294,6 +301,7 @@ public class MemoryUserDatabase implements UserDatabase {
      * @param rolename    The role name of the new group (must be unique)
      * @param description The description of this group
      */
+    @Override
     public Role createRole(String rolename, String description) {
 
         MemoryRole role = new MemoryRole(this, rolename, description);
@@ -312,6 +320,7 @@ public class MemoryUserDatabase implements UserDatabase {
      * @param password The logon password of the new user
      * @param fullName The full name of the new user
      */
+    @Override
     public User createUser(String username, String password,
                            String fullName) {
 
@@ -330,6 +339,7 @@ public class MemoryUserDatabase implements UserDatabase {
      *
      * @param groupname Name of the group to return
      */
+    @Override
     public Group findGroup(String groupname) {
 
         synchronized (groups) {
@@ -345,6 +355,7 @@ public class MemoryUserDatabase implements UserDatabase {
      *
      * @param rolename Name of the role to return
      */
+    @Override
     public Role findRole(String rolename) {
 
         synchronized (roles) {
@@ -360,6 +371,7 @@ public class MemoryUserDatabase implements UserDatabase {
      *
      * @param username Name of the user to return
      */
+    @Override
     public User findUser(String username) {
 
         synchronized (users) {
@@ -374,6 +386,7 @@ public class MemoryUserDatabase implements UserDatabase {
      *
      * @throws Exception if any exception is thrown during opening
      */
+    @Override
     public void open() throws Exception {
 
         synchronized (groups) {
@@ -430,6 +443,7 @@ public class MemoryUserDatabase implements UserDatabase {
      *
      * @param group The group to be removed
      */
+    @Override
     public void removeGroup(Group group) {
 
         synchronized (groups) {
@@ -449,6 +463,7 @@ public class MemoryUserDatabase implements UserDatabase {
      *
      * @param role The role to be removed
      */
+    @Override
     public void removeRole(Role role) {
 
         synchronized (roles) {
@@ -473,6 +488,7 @@ public class MemoryUserDatabase implements UserDatabase {
      *
      * @param user The user to be removed
      */
+    @Override
     public void removeUser(User user) {
 
         synchronized (users) {
@@ -488,6 +504,7 @@ public class MemoryUserDatabase implements UserDatabase {
      *
      * @throws Exception if any exception is thrown during saving
      */
+    @Override
     public void save() throws Exception {
 
         // Write out contents to a temporary file

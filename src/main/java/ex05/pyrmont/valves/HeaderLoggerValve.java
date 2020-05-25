@@ -13,6 +13,7 @@ public class HeaderLoggerValve implements Valve, Contained {
 
     protected Container container;
 
+    @Override
     public void invoke(Request request, Response response, ValveContext valveContext)
             throws IOException, ServletException {
 
@@ -30,20 +31,24 @@ public class HeaderLoggerValve implements Valve, Contained {
                 System.out.println(headerName + ":" + headerValue);
             }
 
-        } else
+        } else {
             System.out.println("Not an HTTP Request");
+        }
 
         System.out.println("------------------------------------");
     }
 
+    @Override
     public String getInfo() {
         return null;
     }
 
+    @Override
     public Container getContainer() {
         return container;
     }
 
+    @Override
     public void setContainer(Container container) {
         this.container = container;
     }

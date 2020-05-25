@@ -239,6 +239,7 @@ public final class StandardWrapper
      * the servlet is currently available.  A value equal to Long.MAX_VALUE
      * is considered to mean that unavailability is permanent.
      */
+    @Override
     public long getAvailable() {
 
         return (this.available);
@@ -253,6 +254,7 @@ public final class StandardWrapper
      *
      * @param available The new available date/time
      */
+    @Override
     public void setAvailable(long available) {
 
         long oldAvailable = this.available;
@@ -328,6 +330,7 @@ public final class StandardWrapper
     /**
      * Return the context-relative URI of the JSP file for this servlet.
      */
+    @Override
     public String getJspFile() {
 
         return (this.jspFile);
@@ -340,6 +343,7 @@ public final class StandardWrapper
      *
      * @param jspFile JSP file URI
      */
+    @Override
     public void setJspFile(String jspFile) {
 
         //        if ((jspFile != null) && !jspFile.startsWith("/"))
@@ -357,6 +361,7 @@ public final class StandardWrapper
      * Return the load-on-startup order value (negative value means
      * load on first call).
      */
+    @Override
     public int getLoadOnStartup() {
 
         return (this.loadOnStartup);
@@ -370,6 +375,7 @@ public final class StandardWrapper
      *
      * @param value New load-on-startup value
      */
+    @Override
     public void setLoadOnStartup(int value) {
 
         int oldLoadOnStartup = this.loadOnStartup;
@@ -415,7 +421,7 @@ public final class StandardWrapper
      * Set the maximum number of instances that will be allocated when a single
      * thread model servlet is used.
      *
-     * @param maxInstnces New value of maxInstances
+     * @param maxInstances New value of maxInstances
      */
     public void setMaxInstances(int maxInstances) {
 
@@ -432,6 +438,7 @@ public final class StandardWrapper
      *
      * @param container Proposed parent Container
      */
+    @Override
     public void setParent(Container container) {
 
         if ((container != null) &&
@@ -446,6 +453,7 @@ public final class StandardWrapper
     /**
      * Return the run-as identity for this servlet.
      */
+    @Override
     public String getRunAs() {
 
         return (this.runAs);
@@ -456,8 +464,9 @@ public final class StandardWrapper
     /**
      * Set the run-as identity for this servlet.
      *
-     * @param value New run-as identity value
+     * @param runAs New run-as identity value
      */
+    @Override
     public void setRunAs(String runAs) {
 
         String oldRunAs = this.runAs;
@@ -470,6 +479,7 @@ public final class StandardWrapper
     /**
      * Return the fully qualified servlet class name for this servlet.
      */
+    @Override
     public String getServletClass() {
 
         return (this.servletClass);
@@ -482,6 +492,7 @@ public final class StandardWrapper
      *
      * @param servletClass Servlet class name
      */
+    @Override
     public void setServletClass(String servletClass) {
 
         String oldServletClass = this.servletClass;
@@ -525,6 +536,7 @@ public final class StandardWrapper
     /**
      * Is this servlet currently unavailable?
      */
+    @Override
     public boolean isUnavailable() {
 
         if (available == 0L)
@@ -547,6 +559,7 @@ public final class StandardWrapper
      *
      * @param child Child container to be added
      */
+    @Override
     public void addChild(Container child) {
 
         throw new IllegalStateException
@@ -561,6 +574,7 @@ public final class StandardWrapper
      * @param name  Name of this initialization parameter to add
      * @param value Value of this initialization parameter to add
      */
+    @Override
     public void addInitParameter(String name, String value) {
 
         synchronized (parameters) {
@@ -576,6 +590,7 @@ public final class StandardWrapper
      *
      * @param listener The new listener
      */
+    @Override
     public void addInstanceListener(InstanceListener listener) {
 
         instanceSupport.addInstanceListener(listener);
@@ -590,6 +605,7 @@ public final class StandardWrapper
      * @param name Role name used within this servlet
      * @param link Role name used within the web application
      */
+    @Override
     public void addSecurityReference(String name, String link) {
 
         synchronized (references) {
@@ -613,6 +629,7 @@ public final class StandardWrapper
      *                          an exception
      * @throws ServletException if a loading error occurs
      */
+    @Override
     public Servlet allocate() throws ServletException {
 
         if (debug >= 1)
@@ -690,6 +707,7 @@ public final class StandardWrapper
      * @param servlet The servlet to be returned
      * @throws ServletException if a deallocation error occurs
      */
+    @Override
     public void deallocate(Servlet servlet) throws ServletException {
 
         // If not SingleThreadModel, no action is required
@@ -714,6 +732,7 @@ public final class StandardWrapper
      *
      * @param name Name of the requested initialization parameter
      */
+    @Override
     public String findInitParameter(String name) {
 
         synchronized (parameters) {
@@ -727,6 +746,7 @@ public final class StandardWrapper
      * Return the names of all defined initialization parameters for this
      * servlet.
      */
+    @Override
     public String[] findInitParameters() {
 
         synchronized (parameters) {
@@ -743,6 +763,7 @@ public final class StandardWrapper
      *
      * @param name Security role reference used within this servlet
      */
+    @Override
     public String findSecurityReference(String name) {
 
         synchronized (references) {
@@ -756,6 +777,7 @@ public final class StandardWrapper
      * Return the set of security role reference names associated with
      * this servlet, if any; otherwise return a zero-length array.
      */
+    @Override
     public String[] findSecurityReferences() {
 
         synchronized (references) {
@@ -783,6 +805,7 @@ public final class StandardWrapper
      *                          an exception
      * @throws ServletException if some other loading problem occurs
      */
+    @Override
     public synchronized void load() throws ServletException {
         instance = loadServlet();
     }
@@ -958,6 +981,7 @@ public final class StandardWrapper
      *
      * @param name Name of the initialization parameter to remove
      */
+    @Override
     public void removeInitParameter(String name) {
 
         synchronized (parameters) {
@@ -973,6 +997,7 @@ public final class StandardWrapper
      *
      * @param listener The listener to remove
      */
+    @Override
     public void removeInstanceListener(InstanceListener listener) {
 
         instanceSupport.removeInstanceListener(listener);
@@ -985,6 +1010,7 @@ public final class StandardWrapper
      *
      * @param name Security role used within this servlet to be removed
      */
+    @Override
     public void removeSecurityReference(String name) {
 
         synchronized (references) {
@@ -1020,6 +1046,7 @@ public final class StandardWrapper
      * @param unavailable The exception that occurred, or <code>null</code>
      *                    to mark this servlet as permanently unavailable
      */
+    @Override
     public void unavailable(UnavailableException unavailable) {
         log(sm.getString("standardWrapper.unavailable", getName()));
         if (unavailable == null)
@@ -1047,6 +1074,7 @@ public final class StandardWrapper
      * @throws ServletException if an exception is thrown by the
      *                          destroy() method
      */
+    @Override
     public synchronized void unload() throws ServletException {
 
         // Nothing to do if we have never loaded the instance
@@ -1221,7 +1249,7 @@ public final class StandardWrapper
      * container provided servlet class that should be loaded by the
      * server class loader.
      *
-     * @param name Name of the class to be checked
+     * @param classname Name of the class to be checked
      */
     private boolean isContainerProvidedServlet(String classname) {
 

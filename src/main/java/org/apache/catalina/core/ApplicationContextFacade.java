@@ -122,8 +122,9 @@ public final class ApplicationContextFacade
     public ServletContext getContext(String uripath) {
         ServletContext theContext = context.getContext(uripath);
         if ((theContext != null) &&
-                (theContext instanceof ApplicationContext))
+                (theContext instanceof ApplicationContext)) {
             theContext = ((ApplicationContext) theContext).getFacade();
+        }
         return (theContext);
     }
 

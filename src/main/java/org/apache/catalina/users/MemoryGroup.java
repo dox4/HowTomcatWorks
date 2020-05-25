@@ -64,11 +64,14 @@
 package org.apache.catalina.users;
 
 
+import org.apache.catalina.Group;
 import org.apache.catalina.Role;
+import org.apache.catalina.User;
 import org.apache.catalina.UserDatabase;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -125,8 +128,10 @@ public class MemoryGroup extends AbstractGroup {
 
     /**
      * Return the set of {@link Role}s assigned specifically to this group.
+     * @return
      */
-    public Iterator getRoles() {
+    @Override
+    public Iterator<Role> getRoles() {
 
         synchronized (roles) {
             return (roles.iterator());
@@ -148,10 +153,11 @@ public class MemoryGroup extends AbstractGroup {
     /**
      * Return the set of {@link User}s that are members of this group.
      */
-    public Iterator getUsers() {
+    @Override
+    public Iterator<User> getUsers() {
 
-        ArrayList results = new ArrayList();
-        Iterator users = database.getUsers();
+        List<User> results = new ArrayList<>();
+        Iterator<User> users = database.getUsers();
         while (users.hasNext()) {
             MemoryUser user = (MemoryUser) users.next();
             if (user.isInGroup(this)) {
@@ -171,6 +177,7 @@ public class MemoryGroup extends AbstractGroup {
      *
      * @param role The new role
      */
+    @Override
     public void addRole(Role role) {
 
         synchronized (roles) {
@@ -187,6 +194,7 @@ public class MemoryGroup extends AbstractGroup {
      *
      * @param role The role to check
      */
+    @Override
     public boolean isInRole(Role role) {
 
         synchronized (roles) {
@@ -201,6 +209,7 @@ public class MemoryGroup extends AbstractGroup {
      *
      * @param role The old role
      */
+    @Override
     public void removeRole(Role role) {
 
         synchronized (roles) {
@@ -213,6 +222,7 @@ public class MemoryGroup extends AbstractGroup {
     /**
      * Remove all {@link Role}s from those assigned to this group.
      */
+    @Override
     public void removeRoles() {
 
         synchronized (roles) {

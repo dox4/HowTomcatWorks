@@ -24,10 +24,12 @@ public class SimpleWrapper implements Wrapper, Pipeline {
         pipeline.setBasic(new SimpleWrapperValve());
     }
 
+    @Override
     public synchronized void addValve(Valve valve) {
         pipeline.addValve(valve);
     }
 
+    @Override
     public Servlet allocate() throws ServletException {
         // Load and initialize our instance if necessary
         if (instance == null) {
@@ -43,14 +45,16 @@ public class SimpleWrapper implements Wrapper, Pipeline {
     }
 
     private Servlet loadServlet() throws ServletException {
-        if (instance != null)
+        if (instance != null) {
             return instance;
+        }
 
-        Servlet servlet = null;
+        Servlet servlet;
         String actualClass = servletClass;
         if (actualClass == null) {
             throw new ServletException("servlet class has not been specified");
         }
+        actualClass = "webroot." + actualClass;
 
         Loader loader = getLoader();
         // Acquire an instance of the class loader to be used
@@ -85,10 +89,12 @@ public class SimpleWrapper implements Wrapper, Pipeline {
         return servlet;
     }
 
+    @Override
     public String getInfo() {
         return null;
     }
 
+    @Override
     public Loader getLoader() {
         if (loader != null)
             return (loader);
@@ -97,221 +103,280 @@ public class SimpleWrapper implements Wrapper, Pipeline {
         return (null);
     }
 
+    @Override
     public void setLoader(Loader loader) {
         this.loader = loader;
     }
 
+    @Override
     public Logger getLogger() {
         return null;
     }
 
+    @Override
     public void setLogger(Logger logger) {
     }
 
+    @Override
     public Manager getManager() {
         return null;
     }
 
+    @Override
     public void setManager(Manager manager) {
     }
 
+    @Override
     public Cluster getCluster() {
         return null;
     }
 
+    @Override
     public void setCluster(Cluster cluster) {
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public Container getParent() {
         return parent;
     }
 
+    @Override
     public void setParent(Container container) {
         parent = container;
     }
 
+    @Override
     public ClassLoader getParentClassLoader() {
         return null;
     }
 
+    @Override
     public void setParentClassLoader(ClassLoader parent) {
     }
 
+    @Override
     public Realm getRealm() {
         return null;
     }
 
+    @Override
     public void setRealm(Realm realm) {
     }
 
+    @Override
     public DirContext getResources() {
         return null;
     }
 
+    @Override
     public void setResources(DirContext resources) {
     }
 
+    @Override
     public long getAvailable() {
         return 0;
     }
 
+    @Override
     public void setAvailable(long available) {
     }
 
+    @Override
     public String getJspFile() {
         return null;
     }
 
+    @Override
     public void setJspFile(String jspFile) {
     }
 
+    @Override
     public int getLoadOnStartup() {
         return 0;
     }
 
+    @Override
     public void setLoadOnStartup(int value) {
     }
 
+    @Override
     public String getRunAs() {
         return null;
     }
 
+    @Override
     public void setRunAs(String runAs) {
     }
 
+    @Override
     public String getServletClass() {
         return null;
     }
 
+    @Override
     public void setServletClass(String servletClass) {
         this.servletClass = servletClass;
     }
 
+    @Override
     public void addChild(Container child) {
     }
 
+    @Override
     public void addContainerListener(ContainerListener listener) {
     }
 
+    @Override
     public void addMapper(Mapper mapper) {
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
     }
 
+    @Override
     public Container findChild(String name) {
         return null;
     }
 
+    @Override
     public Container[] findChildren() {
         return null;
     }
 
+    @Override
     public ContainerListener[] findContainerListeners() {
         return null;
     }
 
+    @Override
     public void addInitParameter(String name, String value) {
     }
 
+    @Override
     public void addInstanceListener(InstanceListener listener) {
     }
 
+    @Override
     public void addSecurityReference(String name, String link) {
     }
 
+    @Override
     public void deallocate(Servlet servlet) throws ServletException {
     }
 
+    @Override
     public String findInitParameter(String name) {
         return null;
     }
 
+    @Override
     public String[] findInitParameters() {
         return null;
     }
 
+    @Override
     public String findSecurityReference(String name) {
         return null;
     }
 
+    @Override
     public String[] findSecurityReferences() {
         return null;
     }
 
+    @Override
     public Mapper findMapper(String protocol) {
         return null;
     }
 
+    @Override
     public Mapper[] findMappers() {
         return null;
     }
 
+    @Override
     public void invoke(Request request, Response response)
             throws IOException, ServletException {
         pipeline.invoke(request, response);
     }
 
+    @Override
     public boolean isUnavailable() {
         return false;
     }
 
+    @Override
     public void load() throws ServletException {
         instance = loadServlet();
     }
 
+    @Override
     public Container map(Request request, boolean update) {
         return null;
     }
 
+    @Override
     public void removeChild(Container child) {
     }
 
+    @Override
     public void removeContainerListener(ContainerListener listener) {
     }
 
+    @Override
     public void removeMapper(Mapper mapper) {
     }
 
+    @Override
     public void removeInitParameter(String name) {
     }
 
+    @Override
     public void removeInstanceListener(InstanceListener listener) {
     }
 
     public void removePropertyChangeListener(PropertyChangeListener listener) {
     }
 
+    @Override
     public void removeSecurityReference(String name) {
     }
 
+    @Override
     public void unavailable(UnavailableException unavailable) {
     }
 
+    @Override
     public void unload() throws ServletException {
     }
 
     // method implementations of Pipeline
+    @Override
     public Valve getBasic() {
         return pipeline.getBasic();
     }
 
+    @Override
     public void setBasic(Valve valve) {
         pipeline.setBasic(valve);
     }
 
+    @Override
     public Valve[] getValves() {
         return pipeline.getValves();
     }
 
+    @Override
     public void removeValve(Valve valve) {
         pipeline.removeValve(valve);
     }

@@ -66,6 +66,7 @@ package org.apache.catalina.users;
 
 import org.apache.catalina.Group;
 import org.apache.catalina.Role;
+import org.apache.catalina.User;
 import org.apache.catalina.UserDatabase;
 
 import java.util.ArrayList;
@@ -135,6 +136,7 @@ public class MemoryUser extends AbstractUser {
     /**
      * Return the set of {@link Group}s to which this user belongs.
      */
+    @Override
     public Iterator getGroups() {
 
         synchronized (groups) {
@@ -146,8 +148,10 @@ public class MemoryUser extends AbstractUser {
 
     /**
      * Return the set of {@link Role}s assigned specifically to this user.
+     * @return
      */
-    public Iterator getRoles() {
+    @Override
+    public Iterator<Role> getRoles() {
 
         synchronized (roles) {
             return (roles.iterator());
@@ -174,6 +178,7 @@ public class MemoryUser extends AbstractUser {
      *
      * @param group The new group
      */
+    @Override
     public void addGroup(Group group) {
 
         synchronized (groups) {
@@ -190,6 +195,7 @@ public class MemoryUser extends AbstractUser {
      *
      * @param role The new role
      */
+    @Override
     public void addRole(Role role) {
 
         synchronized (roles) {
@@ -248,6 +254,7 @@ public class MemoryUser extends AbstractUser {
     /**
      * Remove all {@link Group}s from those this user belongs to.
      */
+    @Override
     public void removeGroups() {
 
         synchronized (groups) {
@@ -262,6 +269,7 @@ public class MemoryUser extends AbstractUser {
      *
      * @param role The old role
      */
+    @Override
     public void removeRole(Role role) {
 
         synchronized (roles) {
@@ -274,6 +282,7 @@ public class MemoryUser extends AbstractUser {
     /**
      * Remove all {@link Role}s from those assigned to this user.
      */
+    @Override
     public void removeRoles() {
 
         synchronized (roles) {

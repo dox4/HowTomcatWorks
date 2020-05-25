@@ -87,7 +87,7 @@ public interface UserDatabase {
     /**
      * Return the set of {@link Group}s defined in this user database.
      */
-    Iterator getGroups();
+    Iterator<Group> getGroups();
 
 
     /**
@@ -99,13 +99,13 @@ public interface UserDatabase {
     /**
      * Return the set of {@link Role}s defined in this user database.
      */
-    Iterator getRoles();
+    Iterator<Role> getRoles();
 
 
     /**
      * Return the set of {@link User}s defined in this user database.
      */
-    Iterator getUsers();
+    Iterator<User> getUsers();
 
 
     // --------------------------------------------------------- Public Methods
@@ -145,6 +145,7 @@ public interface UserDatabase {
      * @param fullName The full name of the new user
      */
     User createUser(String username, String password,
+
                     String fullName);
 
 

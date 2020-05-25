@@ -336,6 +336,7 @@ public abstract class ContainerBase
      * no associated Loader, return the Loader associated with our parent
      * Container (if any); otherwise, return <code>null</code>.
      */
+    @Override
     public Loader getLoader() {
 
         if (loader != null)
@@ -352,6 +353,7 @@ public abstract class ContainerBase
      *
      * @param loader The newly associated loader
      */
+    @Override
     public synchronized void setLoader(Loader loader) {
 
         // Change components if necessary
@@ -393,6 +395,7 @@ public abstract class ContainerBase
      * no associated Logger, return the Logger associated with our parent
      * Container (if any); otherwise return <code>null</code>.
      */
+    @Override
     public Logger getLogger() {
 
         if (logger != null)
@@ -409,6 +412,7 @@ public abstract class ContainerBase
      *
      * @param logger The newly associated Logger
      */
+    @Override
     public synchronized void setLogger(Logger logger) {
 
         // Change components if necessary
@@ -450,6 +454,7 @@ public abstract class ContainerBase
      * no associated Manager, return the Manager associated with our parent
      * Container (if any); otherwise return <code>null</code>.
      */
+    @Override
     public Manager getManager() {
 
         if (manager != null)
@@ -466,6 +471,7 @@ public abstract class ContainerBase
      *
      * @param manager The newly associated Manager
      */
+    @Override
     public synchronized void setManager(Manager manager) {
 
         // Change components if necessary
@@ -506,6 +512,7 @@ public abstract class ContainerBase
      * no associated Cluster, return the Cluster associated with our parent
      * Container (if any); otherwise return <code>null</code>.
      */
+    @Override
     public Cluster getCluster() {
         if (cluster != null)
             return (cluster);
@@ -520,8 +527,9 @@ public abstract class ContainerBase
     /**
      * Set the Cluster with which this Container is associated.
      *
-     * @param manager The newly associated Cluster
+     * @param cluster The newly associated Cluster
      */
+    @Override
     public synchronized void setCluster(Cluster cluster) {
         // Change components if necessary
         Cluster oldCluster = this.cluster;
@@ -579,6 +587,7 @@ public abstract class ContainerBase
      *                               added to the children of a parent Container (after which the name
      *                               may not be changed)
      */
+    @Override
     public void setName(String name) {
 
         String oldName = this.name;
@@ -592,6 +601,7 @@ public abstract class ContainerBase
      * Return the Container for which this Container is a child, if there is
      * one.  If there is no defined parent, return <code>null</code>.
      */
+    @Override
     public Container getParent() {
 
         return (parent);
@@ -609,6 +619,7 @@ public abstract class ContainerBase
      * @throws IllegalArgumentException if this Container refuses to become
      *                                  attached to the specified Container
      */
+    @Override
     public void setParent(Container container) {
 
         Container oldParent = this.parent;
@@ -623,6 +634,7 @@ public abstract class ContainerBase
      * This call is meaningful only <strong>after</strong> a Loader has
      * been configured.
      */
+    @Override
     public ClassLoader getParentClassLoader() {
 
         if (parentClassLoader != null)
@@ -642,6 +654,7 @@ public abstract class ContainerBase
      *
      * @param parent The new parent class loader
      */
+    @Override
     public void setParentClassLoader(ClassLoader parent) {
 
         ClassLoader oldParentClassLoader = this.parentClassLoader;
@@ -668,6 +681,7 @@ public abstract class ContainerBase
      * no associated Realm, return the Realm associated with our parent
      * Container (if any); otherwise return <code>null</code>.
      */
+    @Override
     public Realm getRealm() {
 
         if (realm != null)
@@ -684,6 +698,7 @@ public abstract class ContainerBase
      *
      * @param realm The newly associated Realm
      */
+    @Override
     public synchronized void setRealm(Realm realm) {
 
         // Change components if necessary
@@ -726,6 +741,7 @@ public abstract class ContainerBase
      * resources associated with our parent Container (if any); otherwise
      * return <code>null</code>.
      */
+    @Override
     public DirContext getResources() {
 
         if (resources != null)
@@ -743,6 +759,7 @@ public abstract class ContainerBase
      *
      * @param resources The newly associated DirContext
      */
+    @Override
     public synchronized void setResources(DirContext resources) {
 
         // Change components if necessary
@@ -779,6 +796,7 @@ public abstract class ContainerBase
      * @throws IllegalStateException    if this Container does not support
      *                                  child Containers
      */
+    @Override
     public void addChild(Container child) {
         if (System.getSecurityManager() != null) {
             PrivilegedAction dp =
@@ -818,6 +836,7 @@ public abstract class ContainerBase
      *
      * @param listener The listener to add
      */
+    @Override
     public void addContainerListener(ContainerListener listener) {
 
         synchronized (listeners) {
@@ -834,6 +853,7 @@ public abstract class ContainerBase
      * @throws IllegalArgumentException if this exception is thrown by
      *                                  the <code>setContainer()</code> method of the Mapper
      */
+    @Override
     public void addMapper(Mapper mapper) {
 
         synchronized (mappers) {
@@ -880,6 +900,7 @@ public abstract class ContainerBase
      *
      * @param name Name of the child Container to be retrieved
      */
+    @Override
     public Container findChild(String name) {
 
         if (name == null)
@@ -895,6 +916,7 @@ public abstract class ContainerBase
      * Return the set of children Containers associated with this Container.
      * If this Container has no children, a zero-length array is returned.
      */
+    @Override
     public Container[] findChildren() {
 
         synchronized (children) {
@@ -910,6 +932,7 @@ public abstract class ContainerBase
      * If this Container has no registered container listeners, a zero-length
      * array is returned.
      */
+    @Override
     public ContainerListener[] findContainerListeners() {
 
         synchronized (listeners) {
@@ -928,6 +951,7 @@ public abstract class ContainerBase
      *
      * @param protocol Protocol for which to find a Mapper
      */
+    @Override
     public Mapper findMapper(String protocol) {
 
         if (mapper != null)
@@ -944,6 +968,7 @@ public abstract class ContainerBase
      * Return the set of Mappers associated with this Container.  If this
      * Container has no Mappers, a zero-length array is returned.
      */
+    @Override
     public Mapper[] findMappers() {
 
         synchronized (mappers) {
@@ -968,6 +993,7 @@ public abstract class ContainerBase
      * @throws ServletException      if a ServletException was thrown
      *                               while processing this request
      */
+    @Override
     public void invoke(Request request, Response response)
             throws IOException, ServletException {
         pipeline.invoke(request, response);
@@ -982,6 +1008,7 @@ public abstract class ContainerBase
      * @param request Request being processed
      * @param update  Update the Request to reflect the mapping selection?
      */
+    @Override
     public Container map(Request request, boolean update) {
 
         // Select the Mapper we will use
@@ -1001,6 +1028,7 @@ public abstract class ContainerBase
      *
      * @param child Existing child Container to be removed
      */
+    @Override
     public void removeChild(Container child) {
 
         synchronized (children) {
@@ -1026,6 +1054,7 @@ public abstract class ContainerBase
      *
      * @param listener The listener to remove
      */
+    @Override
     public void removeContainerListener(ContainerListener listener) {
 
         synchronized (listeners) {
@@ -1040,6 +1069,7 @@ public abstract class ContainerBase
      *
      * @param mapper The Mapper to be removed
      */
+    @Override
     public void removeMapper(Mapper mapper) {
 
         synchronized (mappers) {
@@ -1263,6 +1293,7 @@ public abstract class ContainerBase
      * @throws IllegalStateException    if the specified Valve is already
      *                                  associated with a different Container
      */
+    @Override
     public synchronized void addValve(Valve valve) {
 
         pipeline.addValve(valve);
@@ -1275,6 +1306,7 @@ public abstract class ContainerBase
      * <p>Return the Valve instance that has been distinguished as the basic
      * Valve for this Pipeline (if any).
      */
+    @Override
     public Valve getBasic() {
 
         return (pipeline.getBasic());
@@ -1287,6 +1319,7 @@ public abstract class ContainerBase
      * Container, including the basic Valve (if any).  If there are no
      * such Valves, a zero-length array is returned.
      */
+    @Override
     public Valve[] getValves() {
 
         return (pipeline.getValves());
@@ -1300,6 +1333,7 @@ public abstract class ContainerBase
      *
      * @param valve Valve to be removed
      */
+    @Override
     public synchronized void removeValve(Valve valve) {
 
         pipeline.removeValve(valve);
@@ -1320,6 +1354,7 @@ public abstract class ContainerBase
      *
      * @param valve Valve to be distinguished as the basic Valve
      */
+    @Override
     public void setBasic(Valve valve) {
 
         pipeline.setBasic(valve);

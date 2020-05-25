@@ -67,6 +67,7 @@ package org.apache.catalina.users;
 import org.apache.catalina.Group;
 import org.apache.catalina.Role;
 import org.apache.catalina.User;
+import org.apache.catalina.UserDatabase;
 
 import java.util.Iterator;
 
@@ -109,6 +110,7 @@ public abstract class AbstractUser implements User {
     /**
      * Return the full name of this user.
      */
+    @Override
     public String getFullName() {
 
         return (this.fullName);
@@ -131,6 +133,7 @@ public abstract class AbstractUser implements User {
     /**
      * Return the set of {@link Group}s to which this user belongs.
      */
+    @Override
     public abstract Iterator getGroups();
 
 
@@ -139,6 +142,7 @@ public abstract class AbstractUser implements User {
      * identifier of an encoding scheme surrounded by curly braces, such as
      * <code>{md5}xxxxx</code>.
      */
+    @Override
     public String getPassword() {
 
         return (this.password);
@@ -153,6 +157,7 @@ public abstract class AbstractUser implements User {
      *
      * @param password The new logon password
      */
+    @Override
     public void setPassword(String password) {
 
         this.password = password;
@@ -162,14 +167,17 @@ public abstract class AbstractUser implements User {
 
     /**
      * Return the set of {@link Role}s assigned specifically to this user.
+     * @return
      */
-    public abstract Iterator getRoles();
+    @Override
+    public abstract Iterator<Role> getRoles();
 
 
     /**
      * Return the logon username of this user, which must be unique
      * within the scope of a {@link UserDatabase}.
      */
+    @Override
     public String getUsername() {
 
         return (this.username);
@@ -183,6 +191,7 @@ public abstract class AbstractUser implements User {
      *
      * @param username The new logon username
      */
+    @Override
     public void setUsername(String username) {
 
         this.username = username;
@@ -198,6 +207,7 @@ public abstract class AbstractUser implements User {
      *
      * @param group The new group
      */
+    @Override
     public abstract void addGroup(Group group);
 
 
@@ -206,6 +216,7 @@ public abstract class AbstractUser implements User {
      *
      * @param role The new role
      */
+    @Override
     public abstract void addRole(Role role);
 
 
@@ -238,6 +249,7 @@ public abstract class AbstractUser implements User {
     /**
      * Remove all {@link Group}s from those this user belongs to.
      */
+    @Override
     public abstract void removeGroups();
 
 
@@ -246,12 +258,14 @@ public abstract class AbstractUser implements User {
      *
      * @param role The old role
      */
+    @Override
     public abstract void removeRole(Role role);
 
 
     /**
      * Remove all {@link Role}s from those assigned to this user.
      */
+    @Override
     public abstract void removeRoles();
 
 

@@ -173,6 +173,7 @@ public interface Host extends Container {
      * @param name Virtual host name
      * @throws IllegalArgumentException if name is null
      */
+    @Override
     void setName(String name);
 
 

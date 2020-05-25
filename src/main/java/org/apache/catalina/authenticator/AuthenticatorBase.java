@@ -386,6 +386,7 @@ public abstract class AuthenticatorBase
      * @throws IOException      if an input/output error occurs
      * @throws ServletException if thrown by a processing element
      */
+    @Override
     public void invoke(Request request, Response response,
                        ValveContext context)
             throws IOException, ServletException {
@@ -621,7 +622,7 @@ public abstract class AuthenticatorBase
      *
      * @param request  Request we are processing
      * @param response Response we are creating
-     * @param login    Login configuration describing how authentication
+     * @param config    Login configuration describing how authentication
      *                 should be performed
      * @throws IOException if an input/output error occurs
      */

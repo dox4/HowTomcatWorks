@@ -451,6 +451,7 @@ public class StandardHost
      * @param name Virtual host name
      * @throws IllegalArgumentException if name is null
      */
+    @Override
     public void setName(String name) {
 
         if (name == null)
@@ -554,6 +555,7 @@ public class StandardHost
      *
      * @param child Child container to be added
      */
+    @Override
     public void addChild(Container child) {
 
         if (!(child instanceof Context)) {

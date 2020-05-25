@@ -291,6 +291,7 @@ public class WebappLoader
     /**
      * Return the Java class loader to be used by this Container.
      */
+    @Override
     public ClassLoader getClassLoader() {
 
         return classLoader;
@@ -336,6 +337,7 @@ public class WebappLoader
     /**
      * Return the DefaultContext with which this Loader is associated.
      */
+    @Override
     public DefaultContext getDefaultContext() {
 
         return (this.defaultContext);
@@ -348,6 +350,7 @@ public class WebappLoader
      *
      * @param defaultContext The newly associated DefaultContext
      */
+    @Override
     public void setDefaultContext(DefaultContext defaultContext) {
 
         DefaultContext oldDefaultContext = this.defaultContext;
@@ -386,6 +389,7 @@ public class WebappLoader
      * Return the "follow standard delegation model" flag used to configure
      * our ClassLoader.
      */
+    @Override
     public boolean getDelegate() {
 
         return (this.delegate);
@@ -399,6 +403,7 @@ public class WebappLoader
      *
      * @param delegate The new flag
      */
+    @Override
     public void setDelegate(boolean delegate) {
 
         boolean oldDelegate = this.delegate;
@@ -446,6 +451,7 @@ public class WebappLoader
     /**
      * Return the reloadable flag for this Loader.
      */
+    @Override
     public boolean getReloadable() {
 
         return (this.reloadable);
@@ -458,6 +464,7 @@ public class WebappLoader
      *
      * @param reloadable The new reloadable flag
      */
+    @Override
     public void setReloadable(boolean reloadable) {
 
         // Process this property change
@@ -498,6 +505,7 @@ public class WebappLoader
      *
      * @param repository Repository to be added
      */
+    @Override
     public void addRepository(String repository) {
 
         if (debug >= 1)
@@ -525,6 +533,7 @@ public class WebappLoader
      * Return the set of repositories defined for this class loader.
      * If none are defined, a zero-length array is returned.
      */
+    @Override
     public String[] findRepositories() {
 
         return (repositories);
@@ -536,6 +545,7 @@ public class WebappLoader
      * Has the internal repository associated with this Loader been modified,
      * such that the loaded classes should be reloaded?
      */
+    @Override
     public boolean modified() {
 
         return (classLoader.modified());

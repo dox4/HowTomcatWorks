@@ -102,7 +102,7 @@ public interface User extends Principal {
     /**
      * Return the set of {@link Group}s to which this user belongs.
      */
-    Iterator getGroups();
+    Iterator<Group> getGroups();
 
 
     /**
@@ -125,8 +125,9 @@ public interface User extends Principal {
 
     /**
      * Return the set of {@link Role}s assigned specifically to this user.
+     * @return
      */
-    Iterator getRoles();
+    Iterator<Role> getRoles();
 
 
     /**

@@ -322,6 +322,7 @@ public class StandardPipeline
      * <p>Return the Valve instance that has been distinguished as the basic
      * Valve for this Pipeline (if any).
      */
+    @Override
     public Valve getBasic() {
 
         return (this.basic);
@@ -341,6 +342,7 @@ public class StandardPipeline
      *
      * @param valve Valve to be distinguished as the basic Valve
      */
+    @Override
     public void setBasic(Valve valve) {
 
         // Change components if necessary
@@ -402,6 +404,7 @@ public class StandardPipeline
      * @throws IllegalStateException    if the specified Valve is already
      *                                  associated with a different Container
      */
+    @Override
     public void addValve(Valve valve) {
 
         // Validate that we can add this Valve
@@ -433,6 +436,7 @@ public class StandardPipeline
      * Container, including the basic Valve (if any).  If there are no
      * such Valves, a zero-length array is returned.
      */
+    @Override
     public Valve[] getValves() {
 
         if (basic == null)
@@ -460,6 +464,7 @@ public class StandardPipeline
      * @throws IOException      if an input/output error occurs
      * @throws ServletException if a servlet exception is thrown
      */
+    @Override
     public void invoke(Request request, Response response)
             throws IOException, ServletException {
 
@@ -477,6 +482,7 @@ public class StandardPipeline
      *
      * @param valve Valve to be removed
      */
+    @Override
     public void removeValve(Valve valve) {
 
         synchronized (valves) {
@@ -615,6 +621,7 @@ public class StandardPipeline
          * @throws ServletException if there are no further Valves
          *                          configured in the Pipeline currently being processed
          */
+        @Override
         public void invokeNext(Request request, Response response)
                 throws IOException, ServletException {
 

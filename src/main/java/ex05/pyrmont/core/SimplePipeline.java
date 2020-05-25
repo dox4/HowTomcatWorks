@@ -22,15 +22,18 @@ public class SimplePipeline implements Pipeline {
         this.container = container;
     }
 
+    @Override
     public Valve getBasic() {
         return basic;
     }
 
+    @Override
     public void setBasic(Valve valve) {
         this.basic = valve;
         ((Contained) valve).setContainer(container);
     }
 
+    @Override
     public void addValve(Valve valve) {
         if (valve instanceof Contained)
             ((Contained) valve).setContainer(this.container);
@@ -43,16 +46,19 @@ public class SimplePipeline implements Pipeline {
         }
     }
 
+    @Override
     public Valve[] getValves() {
         return valves;
     }
 
+    @Override
     public void invoke(Request request, Response response)
             throws IOException, ServletException {
         // Invoke the first Valve in this pipeline for this request
         (new SimplePipelineValveContext()).invokeNext(request, response);
     }
 
+    @Override
     public void removeValve(Valve valve) {
     }
 
@@ -62,10 +68,12 @@ public class SimplePipeline implements Pipeline {
 
         protected int stage = 0;
 
+        @Override
         public String getInfo() {
             return null;
         }
 
+        @Override
         public void invokeNext(Request request, Response response)
                 throws IOException, ServletException {
             int subscript = stage;

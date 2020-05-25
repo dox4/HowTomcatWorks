@@ -256,13 +256,15 @@ public class SSLServerSocketFactory
      * @throws KeyManagementException    problem in the key management
      *                                   layer
      */
+    @Override
     public ServerSocket createSocket(int port)
             throws IOException, KeyStoreException, NoSuchAlgorithmException,
             CertificateException, UnrecoverableKeyException,
             KeyManagementException {
 
-        if (sslProxy == null)
+        if (sslProxy == null) {
             initialize();
+        }
         ServerSocket socket =
                 sslProxy.createServerSocket(port);
         initServerSocket(socket);
@@ -290,6 +292,7 @@ public class SSLServerSocketFactory
      * @throws KeyManagementException    problem in the key management
      *                                   layer
      */
+    @Override
     public ServerSocket createSocket(int port, int backlog)
             throws IOException, KeyStoreException, NoSuchAlgorithmException,
             CertificateException, UnrecoverableKeyException,
@@ -405,17 +408,12 @@ public class SSLServerSocketFactory
             keyStore = KeyStore.getInstance(keystoreType);
             istream = new FileInputStream(keystoreFile);
             keyStore.load(istream, keystorePass.toCharArray());
-        } catch (IOException ioe) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException ioe) {
             throw ioe;
-        } catch (KeyStoreException kse) {
-            throw kse;
-        } catch (NoSuchAlgorithmException nsae) {
-            throw nsae;
-        } catch (CertificateException ce) {
-            throw ce;
         } finally {
-            if (istream != null)
+            if (istream != null) {
                 istream.close();
+            }
         }
 
     }
@@ -441,7 +439,7 @@ public class SSLServerSocketFactory
         try {
             Security.addProvider((java.security.Provider)
                     Class.forName("com.sun.net.ssl.internal.ssl.Provider").newInstance());
-        } catch (Throwable t) {
+        } catch (Throwable ignored) {
         }
 
         // Create an SSL context used to create an SSL socket factory

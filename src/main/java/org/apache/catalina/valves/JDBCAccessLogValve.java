@@ -421,6 +421,7 @@ public final class JDBCAccessLogValve
      * @throws ServletException Database SQLException is wrapped
      *                          in a ServletException.
      */
+    @Override
     public void invoke(Request request, Response response,
                        ValveContext context)
             throws IOException, ServletException {

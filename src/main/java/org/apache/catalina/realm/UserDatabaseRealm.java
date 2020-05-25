@@ -220,7 +220,7 @@ public class UserDatabaseRealm
                 combined.add(rolename);
             }
         }
-        Iterator groups = user.getGroups();
+        Iterator<Group> groups = user.getGroups();
         while (groups.hasNext()) {
             Group group = (Group) groups.next();
             roles = group.getRoles();
