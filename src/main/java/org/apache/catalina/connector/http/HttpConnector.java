@@ -186,6 +186,7 @@ public final class HttpConnector
     /**
      * Return the <code>Service</code> with which we are associated (if any).
      */
+    @Override
     public Service getService() {
 
         return (this.service);
@@ -198,6 +199,7 @@ public final class HttpConnector
      *
      * @param service The service that owns this Engine
      */
+    @Override
     public void setService(Service service) {
 
         this.service = service;
@@ -339,6 +341,7 @@ public final class HttpConnector
      * Return the Container used for processing requests received by this
      * Connector.
      */
+    @Override
     public Container getContainer() {
 
         return (container);
@@ -352,6 +355,7 @@ public final class HttpConnector
      *
      * @param container The new Container to use
      */
+    @Override
     public void setContainer(Container container) {
 
         this.container = container;
@@ -394,6 +398,7 @@ public final class HttpConnector
     /**
      * Return the "enable DNS lookups" flag.
      */
+    @Override
     public boolean getEnableLookups() {
 
         return (this.enableLookups);
@@ -406,6 +411,7 @@ public final class HttpConnector
      *
      * @param enableLookups The new "enable DNS lookups" flag value
      */
+    @Override
     public void setEnableLookups(boolean enableLookups) {
 
         this.enableLookups = enableLookups;
@@ -416,6 +422,7 @@ public final class HttpConnector
     /**
      * Return the server socket factory used by this Container.
      */
+    @Override
     public ServerSocketFactory getFactory() {
 
         if (this.factory == null) {
@@ -433,6 +440,7 @@ public final class HttpConnector
      *
      * @param factory The new server socket factory
      */
+    @Override
     public void setFactory(ServerSocketFactory factory) {
 
         this.factory = factory;
@@ -443,6 +451,7 @@ public final class HttpConnector
     /**
      * Return descriptive information about this Connector implementation.
      */
+    @Override
     public String getInfo() {
 
         return (info);
@@ -565,6 +574,7 @@ public final class HttpConnector
      * it comes in on a non-SSL port and is subject to a security constraint
      * with a transport guarantee that requires SSL.
      */
+    @Override
     public int getRedirectPort() {
 
         return (this.redirectPort);
@@ -577,6 +587,7 @@ public final class HttpConnector
      *
      * @param redirectPort The redirect port number (non-SSL to SSL)
      */
+    @Override
     public void setRedirectPort(int redirectPort) {
 
         this.redirectPort = redirectPort;
@@ -588,6 +599,7 @@ public final class HttpConnector
      * Return the scheme that will be assigned to requests received
      * through this connector.  Default value is "http".
      */
+    @Override
     public String getScheme() {
 
         return (this.scheme);
@@ -601,6 +613,7 @@ public final class HttpConnector
      *
      * @param scheme The new scheme
      */
+    @Override
     public void setScheme(String scheme) {
 
         this.scheme = scheme;
@@ -612,6 +625,7 @@ public final class HttpConnector
      * Return the secure connection flag that will be assigned to requests
      * received through this connector.  Default value is "false".
      */
+    @Override
     public boolean getSecure() {
 
         return (this.secure);
@@ -625,6 +639,7 @@ public final class HttpConnector
      *
      * @param secure The new secure connection flag
      */
+    @Override
     public void setSecure(boolean secure) {
 
         this.secure = secure;
@@ -662,6 +677,7 @@ public final class HttpConnector
      * Create (or allocate) and return a Request object suitable for
      * specifying the contents of a Request to the responsible Container.
      */
+    @Override
     public Request createRequest() {
 
         //        if (debug >= 2)
@@ -677,6 +693,7 @@ public final class HttpConnector
      * Create (or allocate) and return a Response object suitable for
      * receiving the contents of a Response from the responsible Container.
      */
+    @Override
     public Response createResponse() {
 
         //        if (debug >= 2)
@@ -750,12 +767,14 @@ public final class HttpConnector
     private void log(String message) {
         Logger logger = container.getLogger();
         String localName = threadName;
-        if (localName == null)
+        if (localName == null) {
             localName = "HttpConnector";
-        if (logger != null)
+        }
+        if (logger != null) {
             logger.log(localName + " " + message);
-        else
+        } else {
             System.out.println(localName + " " + message);
+        }
 
     }
 
@@ -770,11 +789,12 @@ public final class HttpConnector
 
         Logger logger = container.getLogger();
         String localName = threadName;
-        if (localName == null)
+        if (localName == null) {
             localName = "HttpConnector";
-        if (logger != null)
+        }
+        if (logger != null) {
             logger.log(localName + " " + message, throwable);
-        else {
+        } else {
             System.out.println(localName + " " + message);
             throwable.printStackTrace(System.out);
         }
@@ -867,6 +887,7 @@ public final class HttpConnector
      * The background thread that listens for incoming TCP/IP connections and
      * hands them off to an appropriate processor.
      */
+    @Override
     public void run() {
         // Loop until we receive a shutdown command
         while (!stopped) {
@@ -878,8 +899,9 @@ public final class HttpConnector
                 socket = serverSocket.accept();
                 //                if (debug >= 3)
                 //                    log("run: Returned from serverSocket.accept()");
-                if (connectionTimeout > 0)
+                if (connectionTimeout > 0) {
                     socket.setSoTimeout(connectionTimeout);
+                }
                 socket.setTcpNoDelay(tcpNoDelay);
             } catch (AccessControlException ace) {
                 log("socket accept security exception", ace);
@@ -890,8 +912,9 @@ public final class HttpConnector
                 try {
                     // If reopening fails, exit
                     synchronized (threadSync) {
-                        if (started && !stopped)
+                        if (started && !stopped) {
                             log("accept error: ", e);
+                        }
                         if (!stopped) {
                             //                    if (debug >= 3)
                             //                        log("run: Closing server socket");
@@ -993,6 +1016,7 @@ public final class HttpConnector
      *
      * @param listener The listener to add
      */
+    @Override
     public void addLifecycleListener(LifecycleListener listener) {
 
         lifecycle.addLifecycleListener(listener);
@@ -1004,6 +1028,7 @@ public final class HttpConnector
      * Get the lifecycle listeners associated with this lifecycle. If this
      * Lifecycle has no listeners registered, a zero-length array is returned.
      */
+    @Override
     public LifecycleListener[] findLifecycleListeners() {
 
         return lifecycle.findLifecycleListeners();
@@ -1016,6 +1041,7 @@ public final class HttpConnector
      *
      * @param listener The listener to add
      */
+    @Override
     public void removeLifecycleListener(LifecycleListener listener) {
 
         lifecycle.removeLifecycleListener(listener);
@@ -1026,11 +1052,13 @@ public final class HttpConnector
     /**
      * Initialize this connector (create ServerSocket here!)
      */
+    @Override
     public void initialize()
             throws LifecycleException {
-        if (initialized)
+        if (initialized) {
             throw new LifecycleException(
                     sm.getString("httpConnector.alreadyInitialized"));
+        }
 
         this.initialized = true;
         Exception eRethrow = null;
@@ -1058,8 +1086,9 @@ public final class HttpConnector
             eRethrow = kme;
         }
 
-        if (eRethrow != null)
+        if (eRethrow != null) {
             throw new LifecycleException(threadName + ".open", eRethrow);
+        }
 
     }
 
@@ -1069,12 +1098,14 @@ public final class HttpConnector
      *
      * @throws LifecycleException if a fatal startup error occurs
      */
+    @Override
     public void start() throws LifecycleException {
 
         // Validate and update our current state
-        if (started)
+        if (started) {
             throw new LifecycleException
                     (sm.getString("httpConnector.alreadyStarted"));
+        }
         threadName = "HttpConnector[" + port + "]";
         lifecycle.fireLifecycleEvent(START_EVENT, null);
         started = true;
@@ -1084,8 +1115,9 @@ public final class HttpConnector
 
         // Create the specified minimum number of processors
         while (curProcessors < minProcessors) {
-            if ((maxProcessors > 0) && (curProcessors >= maxProcessors))
+            if ((maxProcessors > 0) && (curProcessors >= maxProcessors)) {
                 break;
+            }
             HttpProcessor processor = newProcessor();
             recycle(processor);
         }
@@ -1098,12 +1130,14 @@ public final class HttpConnector
      *
      * @throws LifecycleException if a fatal shutdown error occurs
      */
+    @Override
     public void stop() throws LifecycleException {
 
         // Validate and update our current state
-        if (!started)
+        if (!started) {
             throw new LifecycleException
                     (sm.getString("httpConnector.notStarted"));
+        }
         lifecycle.fireLifecycleEvent(STOP_EVENT, null);
         started = false;
 
