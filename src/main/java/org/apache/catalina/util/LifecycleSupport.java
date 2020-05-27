@@ -183,14 +183,16 @@ public final class LifecycleSupport {
                     break;
                 }
             }
-            if (n < 0)
+            if (n < 0) {
                 return;
+            }
             LifecycleListener[] results =
                     new LifecycleListener[listeners.length - 1];
             int j = 0;
             for (int i = 0; i < listeners.length; i++) {
-                if (i != n)
+                if (i != n) {
                     results[j++] = listeners[i];
+                }
             }
             listeners = results;
         }
