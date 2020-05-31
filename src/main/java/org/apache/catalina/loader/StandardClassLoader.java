@@ -114,6 +114,73 @@ public class StandardClassLoader
 
 
     /**
+     * A list of read File and Jndi Permission's required if this loader
+     * is for a web application context.
+     */
+    private final ArrayList permissionList = new ArrayList();
+    /**
+     * The PermissionCollection for each CodeSource for a web
+     * application context.
+     */
+    private final HashMap loaderPC = new HashMap();
+    /**
+     * The set of optional packages (formerly standard extensions) that
+     * are available in the repositories associated with this class loader.
+     * Each object in this list is of type
+     * <code>org.apache.catalina.loader.Extension</code>.
+     */
+    protected ArrayList available = new ArrayList();
+    /**
+     * The debugging detail level of this component.
+     */
+    protected int debug = 0;
+    /**
+     * Should this class loader delegate to the parent class loader
+     * <strong>before</strong> searching its own repositories (i.e. the
+     * usual Java2 delegation model)?  If set to <code>false</code>,
+     * this class loader will search its own repositories first, and
+     * delegate to the parent only if the class or resource is not
+     * found locally.
+     */
+    protected boolean delegate = false;
+    /**
+     * The list of local repositories, in the order they should be searched
+     * for locally loaded classes or resources.
+     */
+    protected String[] repositories = new String[0];
+    /**
+     * The set of optional packages (formerly standard extensions) that
+     * are required in the repositories associated with this class loader.
+     * Each object in this list is of type
+     * <code>org.apache.catalina.loader.Extension</code>.
+     */
+    protected ArrayList required = new ArrayList();
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * URL stream handler for additional protocols.
+     */
+    protected URLStreamHandlerFactory factory = null;
+    /**
+     * Instance of the SecurityManager installed.
+     */
+    private SecurityManager securityManager = null;
+    /**
+     * Flag that the security policy has been refreshed from file.
+     */
+    private boolean policy_refresh = false;
+    /**
+     * The parent class loader.
+     */
+    private ClassLoader parent = null;
+    /**
+     * The system class loader.
+     */
+    private ClassLoader system = null;
+
+
+    /**
      * Construct a new ClassLoader with no defined repositories and no
      * parent ClassLoader.
      */
@@ -171,7 +238,6 @@ public class StandardClassLoader
         this.factory = factory;
 
     }
-
 
     /**
      * Construct a new ClassLoader with the specified repositories and
@@ -235,96 +301,58 @@ public class StandardClassLoader
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The set of optional packages (formerly standard extensions) that
-     * are available in the repositories associated with this class loader.
-     * Each object in this list is of type
-     * <code>org.apache.catalina.loader.Extension</code>.
-     */
-    protected ArrayList available = new ArrayList();
-
-
-    /**
-     * The debugging detail level of this component.
-     */
-    protected int debug = 0;
-
-
-    /**
-     * Should this class loader delegate to the parent class loader
-     * <strong>before</strong> searching its own repositories (i.e. the
-     * usual Java2 delegation model)?  If set to <code>false</code>,
-     * this class loader will search its own repositories first, and
-     * delegate to the parent only if the class or resource is not
-     * found locally.
-     */
-    protected boolean delegate = false;
-
-
-    /**
-     * The list of local repositories, in the order they should be searched
-     * for locally loaded classes or resources.
-     */
-    protected String[] repositories = new String[0];
-
-
-    /**
-     * The set of optional packages (formerly standard extensions) that
-     * are required in the repositories associated with this class loader.
-     * Each object in this list is of type
-     * <code>org.apache.catalina.loader.Extension</code>.
-     */
-    protected ArrayList required = new ArrayList();
-
-
-    /**
-     * A list of read File and Jndi Permission's required if this loader
-     * is for a web application context.
-     */
-    private final ArrayList permissionList = new ArrayList();
-
-
-    /**
-     * The PermissionCollection for each CodeSource for a web
-     * application context.
-     */
-    private final HashMap loaderPC = new HashMap();
-
-
-    /**
-     * Instance of the SecurityManager installed.
-     */
-    private SecurityManager securityManager = null;
-
-
-    /**
-     * Flag that the security policy has been refreshed from file.
-     */
-    private boolean policy_refresh = false;
-
-    /**
-     * The parent class loader.
-     */
-    private ClassLoader parent = null;
-
-
-    /**
-     * The system class loader.
-     */
-    private ClassLoader system = null;
-
-
-    /**
-     * URL stream handler for additional protocols.
-     */
-    protected URLStreamHandlerFactory factory = null;
-
-
     // ------------------------------------------------------------- Properties
 
+    /**
+     * Parse URL protocol.
+     *
+     * @return String protocol
+     */
+    protected static String parseProtocol(String spec) {
+        if (spec == null)
+            return "";
+        int pos = spec.indexOf(':');
+        if (pos <= 0)
+            return "";
+        return spec.substring(0, pos).trim();
+    }
+
+    /**
+     * Convert an array of String to an array of URL and return it.
+     *
+     * @param input The array of String to be converted
+     */
+    protected static URL[] convert(String[] input) {
+        return convert(input, null);
+    }
+
+    /**
+     * Convert an array of String to an array of URL and return it.
+     *
+     * @param input   The array of String to be converted
+     * @param factory Handler factory to use to generate the URLs
+     */
+    protected static URL[] convert(String[] input,
+                                   URLStreamHandlerFactory factory) {
+
+        URLStreamHandler streamHandler = null;
+
+        URL[] url = new URL[input.length];
+        for (int i = 0; i < url.length; i++) {
+            try {
+                String protocol = parseProtocol(input[i]);
+                if (factory != null)
+                    streamHandler = factory.createURLStreamHandler(protocol);
+                else
+                    streamHandler = null;
+                url[i] = new URL(null, input[i], streamHandler);
+            } catch (MalformedURLException e) {
+                url[i] = null;
+            }
+        }
+        return (url);
+
+    }
 
     /**
      * Return the debugging detail level for this component.
@@ -334,7 +362,6 @@ public class StandardClassLoader
         return (this.debug);
 
     }
-
 
     /**
      * Set the debugging detail level for this component.
@@ -347,7 +374,6 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * Return the "delegate first" flag for this class loader.
      */
@@ -357,6 +383,8 @@ public class StandardClassLoader
 
     }
 
+
+    // ------------------------------------------------------- Reloader Methods
 
     /**
      * Set the "delegate first" flag for this class loader.
@@ -368,7 +396,6 @@ public class StandardClassLoader
         this.delegate = delegate;
 
     }
-
 
     /**
      * If there is a Java SecurityManager create a read FilePermission
@@ -386,7 +413,6 @@ public class StandardClassLoader
         }
     }
 
-
     /**
      * If there is a Java SecurityManager add a read FilePermission
      * or JndiPermission for URL.
@@ -396,10 +422,6 @@ public class StandardClassLoader
     public void setPermissions(URL url) {
         setPermissions(url.toString());
     }
-
-
-    // ------------------------------------------------------- Reloader Methods
-
 
     /**
      * Add a new repository to the set of places this ClassLoader can look for
@@ -431,7 +453,6 @@ public class StandardClassLoader
         addRepositoryInternal(repository);
 
     }
-
 
     /**
      * Return a list of "optional packages" (formerly "standard extensions")
@@ -467,7 +488,6 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * Return a String array of the current repositories for this class
      * loader.  If there are no repositories, a zero-length array is
@@ -479,6 +499,8 @@ public class StandardClassLoader
 
     }
 
+
+    // ---------------------------------------------------- ClassLoader Methods
 
     /**
      * Return a list of "optional packages" (formerly "standard extensions")
@@ -514,7 +536,6 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * This class loader doesn't check for reloading.
      */
@@ -523,7 +544,6 @@ public class StandardClassLoader
         return (false);
 
     }
-
 
     /**
      * Render a String representation of this object.
@@ -562,10 +582,6 @@ public class StandardClassLoader
         return (sb.toString());
 
     }
-
-
-    // ---------------------------------------------------- ClassLoader Methods
-
 
     /**
      * Find the specified class in our local repositories, if possible.  If
@@ -635,7 +651,6 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * Find the specified resource in our local repository, and return a
      * <code>URL</code> refering to it, or <code>null</code> if this resource
@@ -659,7 +674,6 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * Return an enumeration of <code>URLs</code> representing all of the
      * resources with the given name.  If no resources with this name are
@@ -675,7 +689,6 @@ public class StandardClassLoader
         return (super.findResources(name));
 
     }
-
 
     /**
      * Find the resource with the given name.  A resource is some data
@@ -749,7 +762,6 @@ public class StandardClassLoader
         return (null);
 
     }
-
 
     /**
      * Find the resource with the given name, and return an input stream
@@ -830,6 +842,8 @@ public class StandardClassLoader
     }
 
 
+    // ------------------------------------------------------ Protected Methods
+
     /**
      * Load the class with the specified name.  This method searches for
      * classes in the same manner as <code>loadClass(String, boolean)</code>
@@ -843,7 +857,6 @@ public class StandardClassLoader
         return (loadClass(name, false));
 
     }
-
 
     /**
      * Load the class with the specified name, searching using the following
@@ -975,14 +988,13 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * Get the Permissions for a CodeSource.  If this instance
      * of StandardClassLoader is for a web application context,
      * add read FilePermissions for the base directory (if unpacked),
      * the context URL, and jar file resources.
      *
-     * @param CodeSource where the code was loaded from
+     * @param codeSource where the code was loaded from
      * @return PermissionCollection for CodeSource
      */
     protected final PermissionCollection getPermissions(CodeSource codeSource) {
@@ -1008,25 +1020,6 @@ public class StandardClassLoader
         return (pc);
 
     }
-
-
-    // ------------------------------------------------------ Protected Methods
-
-
-    /**
-     * Parse URL protocol.
-     *
-     * @return String protocol
-     */
-    protected static String parseProtocol(String spec) {
-        if (spec == null)
-            return "";
-        int pos = spec.indexOf(':');
-        if (pos <= 0)
-            return "";
-        return spec.substring(0, pos).trim();
-    }
-
 
     /**
      * Add a repository to our internal array only.
@@ -1109,46 +1102,6 @@ public class StandardClassLoader
         }
 
     }
-
-
-    /**
-     * Convert an array of String to an array of URL and return it.
-     *
-     * @param input The array of String to be converted
-     */
-    protected static URL[] convert(String[] input) {
-        return convert(input, null);
-    }
-
-
-    /**
-     * Convert an array of String to an array of URL and return it.
-     *
-     * @param input   The array of String to be converted
-     * @param factory Handler factory to use to generate the URLs
-     */
-    protected static URL[] convert(String[] input,
-                                   URLStreamHandlerFactory factory) {
-
-        URLStreamHandler streamHandler = null;
-
-        URL[] url = new URL[input.length];
-        for (int i = 0; i < url.length; i++) {
-            try {
-                String protocol = parseProtocol(input[i]);
-                if (factory != null)
-                    streamHandler = factory.createURLStreamHandler(protocol);
-                else
-                    streamHandler = null;
-                url[i] = new URL(null, input[i], streamHandler);
-            } catch (MalformedURLException e) {
-                url[i] = null;
-            }
-        }
-        return (url);
-
-    }
-
 
     /**
      * Finds the resource with the given name if it has previously been

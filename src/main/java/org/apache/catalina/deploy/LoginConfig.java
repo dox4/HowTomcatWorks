@@ -84,6 +84,28 @@ public final class LoginConfig {
 
 
     /**
+     * The authentication method to use for application login.  Must be
+     * BASIC, DIGEST, FORM, or CLIENT-CERT.
+     */
+    private String authMethod = null;
+    /**
+     * The context-relative URI of the error page for form login.
+     */
+    private String errorPage = null;
+
+
+    // ------------------------------------------------------------- Properties
+    /**
+     * The context-relative URI of the login page for form login.
+     */
+    private String loginPage = null;
+    /**
+     * The realm name used when challenging the user for authentication
+     * credentials.
+     */
+    private String realmName = null;
+
+    /**
      * Construct a new LoginConfig with default properties.
      */
     public LoginConfig() {
@@ -112,16 +134,6 @@ public final class LoginConfig {
 
     }
 
-
-    // ------------------------------------------------------------- Properties
-
-
-    /**
-     * The authentication method to use for application login.  Must be
-     * BASIC, DIGEST, FORM, or CLIENT-CERT.
-     */
-    private String authMethod = null;
-
     public String getAuthMethod() {
         return (this.authMethod);
     }
@@ -129,12 +141,6 @@ public final class LoginConfig {
     public void setAuthMethod(String authMethod) {
         this.authMethod = authMethod;
     }
-
-
-    /**
-     * The context-relative URI of the error page for form login.
-     */
-    private String errorPage = null;
 
     public String getErrorPage() {
         return (this.errorPage);
@@ -147,12 +153,6 @@ public final class LoginConfig {
         this.errorPage = RequestUtil.URLDecode(errorPage);
     }
 
-
-    /**
-     * The context-relative URI of the login page for form login.
-     */
-    private String loginPage = null;
-
     public String getLoginPage() {
         return (this.loginPage);
     }
@@ -163,13 +163,6 @@ public final class LoginConfig {
         //                ("Login Page resource path must start with a '/'");
         this.loginPage = RequestUtil.URLDecode(loginPage);
     }
-
-
-    /**
-     * The realm name used when challenging the user for authentication
-     * credentials.
-     */
-    private String realmName = null;
 
     public String getRealmName() {
         return (this.realmName);

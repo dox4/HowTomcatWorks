@@ -83,8 +83,28 @@ public class DirContextURLStreamHandler
     // ----------------------------------------------------------- Constructors
 
 
+    /**
+     * Bindings class loader - directory context. Keyed by CL id.
+     */
+    private static final Hashtable clBindings = new Hashtable();
+    /**
+     * Bindings thread - directory context. Keyed by thread id.
+     */
+    private static final Hashtable threadBindings = new Hashtable();
+
+
+    // -------------------------------------------------------------- Variables
+    /**
+     * Directory context.
+     */
+    protected DirContext context = null;
+
+
     public DirContextURLStreamHandler() {
     }
+
+
+    // ----------------------------------------------------- Instance Variables
 
 
     public DirContextURLStreamHandler(DirContext context) {
@@ -92,51 +112,10 @@ public class DirContextURLStreamHandler
     }
 
 
-    // -------------------------------------------------------------- Variables
-
-
-    /**
-     * Bindings class loader - directory context. Keyed by CL id.
-     */
-    private static final Hashtable clBindings = new Hashtable();
-
-
-    /**
-     * Bindings thread - directory context. Keyed by thread id.
-     */
-    private static final Hashtable threadBindings = new Hashtable();
-
-
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Directory context.
-     */
-    protected DirContext context = null;
-
-
     // ------------------------------------------------------------- Properties
 
 
     // ----------------------------------------------- URLStreamHandler Methods
-
-
-    /**
-     * Opens a connection to the object referenced by the <code>URL</code>
-     * argument.
-     */
-    protected URLConnection openConnection(URL u)
-            throws IOException {
-        DirContext currentContext = this.context;
-        if (currentContext == null)
-            currentContext = get();
-        return new DirContextURLConnection(currentContext, u);
-    }
-
-
-    // --------------------------------------------------------- Public Methods
-
 
     /**
      * Set the java.protocol.handler.pkgs system property.
@@ -153,6 +132,8 @@ public class DirContextURLStreamHandler
     }
 
 
+    // --------------------------------------------------------- Public Methods
+
     /**
      * Returns true if the thread or the context class loader of the current
      * thread is bound.
@@ -162,7 +143,6 @@ public class DirContextURLStreamHandler
                 (Thread.currentThread().getContextClassLoader()))
                 || (threadBindings.containsKey(Thread.currentThread()));
     }
-
 
     /**
      * Binds a directory context to a class loader.
@@ -174,7 +154,6 @@ public class DirContextURLStreamHandler
             clBindings.put(currentCL, dirContext);
     }
 
-
     /**
      * Unbinds a directory context to a class loader.
      */
@@ -185,7 +164,6 @@ public class DirContextURLStreamHandler
             clBindings.remove(currentCL);
     }
 
-
     /**
      * Binds a directory context to a thread.
      */
@@ -193,14 +171,12 @@ public class DirContextURLStreamHandler
         threadBindings.put(Thread.currentThread(), dirContext);
     }
 
-
     /**
      * Unbinds a directory context to a thread.
      */
     public static void unbindThread() {
         threadBindings.remove(Thread.currentThread());
     }
-
 
     /**
      * Get the bound context.
@@ -236,14 +212,12 @@ public class DirContextURLStreamHandler
 
     }
 
-
     /**
      * Binds a directory context to a class loader.
      */
     public static void bind(ClassLoader cl, DirContext dirContext) {
         clBindings.put(cl, dirContext);
     }
-
 
     /**
      * Unbinds a directory context to a class loader.
@@ -252,7 +226,6 @@ public class DirContextURLStreamHandler
         clBindings.remove(cl);
     }
 
-
     /**
      * Get the bound context.
      */
@@ -260,12 +233,23 @@ public class DirContextURLStreamHandler
         return (DirContext) clBindings.get(cl);
     }
 
-
     /**
      * Get the bound context.
      */
     public static DirContext get(Thread thread) {
         return (DirContext) threadBindings.get(thread);
+    }
+
+    /**
+     * Opens a connection to the object referenced by the <code>URL</code>
+     * argument.
+     */
+    protected URLConnection openConnection(URL u)
+            throws IOException {
+        DirContext currentContext = this.context;
+        if (currentContext == null)
+            currentContext = get();
+        return new DirContextURLConnection(currentContext, u);
     }
 
 

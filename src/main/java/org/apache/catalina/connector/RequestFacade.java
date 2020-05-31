@@ -91,6 +91,15 @@ public class RequestFacade implements ServletRequest {
 
 
     /**
+     * The wrapped request.
+     */
+    protected ServletRequest request = null;
+
+
+    // ----------------------------------------------------- Instance Variables
+
+
+    /**
      * Construct a wrapper for the specified request.
      *
      * @param request The request to be wrapped
@@ -103,17 +112,7 @@ public class RequestFacade implements ServletRequest {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The wrapped request.
-     */
-    protected ServletRequest request = null;
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Clear facade.

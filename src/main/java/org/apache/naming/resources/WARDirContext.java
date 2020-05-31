@@ -69,10 +69,7 @@ import org.apache.naming.NamingContextEnumeration;
 import org.apache.naming.NamingEntry;
 
 import javax.naming.*;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
-import javax.naming.directory.SearchControls;
+import javax.naming.directory.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -95,11 +92,24 @@ public class WARDirContext extends BaseDirContext {
 
 
     /**
+     * The WAR file.
+     */
+    protected ZipFile base = null;
+    /**
+     * WAR entries.
+     */
+    protected Entry entries = null;
+
+
+    /**
      * Builds a WAR directory context using the given environment.
      */
     public WARDirContext() {
         super();
     }
+
+
+    // ----------------------------------------------------- Instance Variables
 
 
     /**
@@ -119,23 +129,7 @@ public class WARDirContext extends BaseDirContext {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The WAR file.
-     */
-    protected ZipFile base = null;
-
-
-    /**
-     * WAR entries.
-     */
-    protected Entry entries = null;
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Set the document root.
@@ -871,26 +865,21 @@ public class WARDirContext extends BaseDirContext {
         // -------------------------------------------------------- Constructor
 
 
+        protected String name = null;
+
+
+        // --------------------------------------------------- Member Variables
+        protected ZipEntry entry = null;
+        protected Entry[] children = new Entry[0];
+
+
         public Entry(String name, ZipEntry entry) {
             this.name = name;
             this.entry = entry;
         }
 
 
-        // --------------------------------------------------- Member Variables
-
-
-        protected String name = null;
-
-
-        protected ZipEntry entry = null;
-
-
-        protected Entry[] children = new Entry[0];
-
-
         // ----------------------------------------------------- Public Methods
-
 
         public int compareTo(Object o) {
             if (!(o instanceof Entry))
@@ -948,19 +937,18 @@ public class WARDirContext extends BaseDirContext {
         // -------------------------------------------------------- Constructor
 
 
-        public WARResource(ZipEntry entry) {
-            this.entry = entry;
-        }
+        protected ZipEntry entry;
 
 
         // --------------------------------------------------- Member Variables
 
 
-        protected ZipEntry entry;
+        public WARResource(ZipEntry entry) {
+            this.entry = entry;
+        }
 
 
         // ----------------------------------------------------- Public Methods
-
 
         /**
          * Content accessor.

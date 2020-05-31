@@ -89,6 +89,19 @@ public class ResponseFacade implements ServletResponse {
 
 
     /**
+     * The wrapped response.
+     */
+    protected ServletResponse response = null;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The wrapped response.
+     */
+    protected Response resp = null;
+
+
+    /**
      * Construct a wrapper for the specified response.
      *
      * @param response The response to be wrapped
@@ -99,23 +112,7 @@ public class ResponseFacade implements ServletResponse {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The wrapped response.
-     */
-    protected ServletResponse response = null;
-
-
-    /**
-     * The wrapped response.
-     */
-    protected Response resp = null;
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Clear facade.
@@ -148,10 +145,23 @@ public class ResponseFacade implements ServletResponse {
     }
 
     @Override
+    public void setCharacterEncoding(String charset) {
+
+    }
+
+    @Override
     public String getContentType() {
         return null;
     }
 
+    public void setContentType(String type) {
+
+        if (isCommitted())
+            return;
+
+        response.setContentType(type);
+
+    }
 
     public ServletOutputStream getOutputStream()
             throws IOException {
@@ -167,7 +177,6 @@ public class ResponseFacade implements ServletResponse {
 
     }
 
-
     public PrintWriter getWriter()
             throws IOException {
 
@@ -181,12 +190,6 @@ public class ResponseFacade implements ServletResponse {
         return (writer);
 
     }
-
-    @Override
-    public void setCharacterEncoding(String charset) {
-
-    }
-
 
     public void setContentLength(int len) {
 
@@ -202,16 +205,9 @@ public class ResponseFacade implements ServletResponse {
 
     }
 
-
-    public void setContentType(String type) {
-
-        if (isCommitted())
-            return;
-
-        response.setContentType(type);
-
+    public int getBufferSize() {
+        return response.getBufferSize();
     }
-
 
     public void setBufferSize(int size) {
 
@@ -222,12 +218,6 @@ public class ResponseFacade implements ServletResponse {
         response.setBufferSize(size);
 
     }
-
-
-    public int getBufferSize() {
-        return response.getBufferSize();
-    }
-
 
     public void flushBuffer()
             throws IOException {
@@ -270,6 +260,9 @@ public class ResponseFacade implements ServletResponse {
 
     }
 
+    public Locale getLocale() {
+        return response.getLocale();
+    }
 
     public void setLocale(Locale loc) {
 
@@ -277,11 +270,6 @@ public class ResponseFacade implements ServletResponse {
             return;
 
         response.setLocale(loc);
-    }
-
-
-    public Locale getLocale() {
-        return response.getLocale();
     }
 
 

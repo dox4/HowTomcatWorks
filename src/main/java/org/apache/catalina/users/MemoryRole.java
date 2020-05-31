@@ -82,6 +82,15 @@ public class MemoryRole extends AbstractRole {
 
 
     /**
+     * The {@link MemoryUserDatabase} that owns this role.
+     */
+    protected MemoryUserDatabase database = null;
+
+
+    // ----------------------------------------------------- Instance Variables
+
+
+    /**
      * Package-private constructor used by the factory method in
      * {@link MemoryUserDatabase}.
      *
@@ -100,17 +109,7 @@ public class MemoryRole extends AbstractRole {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The {@link MemoryUserDatabase} that owns this role.
-     */
-    protected MemoryUserDatabase database = null;
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the {@link UserDatabase} within which this role is defined.

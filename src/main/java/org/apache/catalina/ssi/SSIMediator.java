@@ -83,14 +83,6 @@ public class SSIMediator {
     protected final static String DEFAULT_CONFIG_TIME_FMT = "%A, %d-%b-%Y %T %Z";
     protected final static String DEFAULT_CONFIG_SIZE_FMT = "abbrev";
     protected static URLEncoder urlEncoder;
-    protected String configErrMsg = DEFAULT_CONFIG_ERR_MSG;
-    protected String configTimeFmt = DEFAULT_CONFIG_TIME_FMT;
-    protected String configSizeFmt = DEFAULT_CONFIG_SIZE_FMT;
-    protected String className = getClass().getName();
-    protected SSIExternalResolver ssiExternalResolver;
-    protected Date lastModifiedDate;
-    protected int debug;
-    protected Strftime strftime;
 
     static {
         //We try to encode only the same characters that apache does
@@ -109,6 +101,15 @@ public class SSIMediator {
         urlEncoder.addSafeCharacter(')');
     }
 
+    protected String configErrMsg = DEFAULT_CONFIG_ERR_MSG;
+    protected String configTimeFmt = DEFAULT_CONFIG_TIME_FMT;
+    protected String configSizeFmt = DEFAULT_CONFIG_SIZE_FMT;
+    protected String className = getClass().getName();
+    protected SSIExternalResolver ssiExternalResolver;
+    protected Date lastModifiedDate;
+    protected int debug;
+    protected Strftime strftime;
+
     public SSIMediator(SSIExternalResolver ssiExternalResolver,
                        Date lastModifiedDate,
                        int debug) {
@@ -117,14 +118,6 @@ public class SSIMediator {
         this.debug = debug;
 
         setConfigTimeFmt(DEFAULT_CONFIG_TIME_FMT, true);
-    }
-
-    public void setConfigErrMsg(String configErrMsg) {
-        this.configErrMsg = configErrMsg;
-    }
-
-    public void setConfigTimeFmt(String configTimeFmt) {
-        setConfigTimeFmt(configTimeFmt, false);
     }
 
     public void setConfigTimeFmt(String configTimeFmt, boolean fromConstructor) {
@@ -138,20 +131,28 @@ public class SSIMediator {
         setDateVariables(fromConstructor);
     }
 
-    public void setConfigSizeFmt(String configSizeFmt) {
-        this.configSizeFmt = configSizeFmt;
-    }
-
     public String getConfigErrMsg() {
         return configErrMsg;
+    }
+
+    public void setConfigErrMsg(String configErrMsg) {
+        this.configErrMsg = configErrMsg;
     }
 
     public String getConfigTimeFmt() {
         return configTimeFmt;
     }
 
+    public void setConfigTimeFmt(String configTimeFmt) {
+        setConfigTimeFmt(configTimeFmt, false);
+    }
+
     public String getConfigSizeFmt() {
         return configSizeFmt;
+    }
+
+    public void setConfigSizeFmt(String configSizeFmt) {
+        this.configSizeFmt = configSizeFmt;
     }
 
     public Collection getVariableNames() {

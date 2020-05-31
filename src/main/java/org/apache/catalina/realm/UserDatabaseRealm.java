@@ -96,25 +96,24 @@ public class UserDatabaseRealm
 
 
     /**
-     * The <code>UserDatabase</code> we will use to authenticate users
-     * and identify associated roles.
+     * Descriptive information about this Realm implementation.
      */
-    protected UserDatabase database = null;
-
-
+    protected static final String name = "UserDatabaseRealm";
+    /**
+     * The string manager for this package.
+     */
+    private static final StringManager sm =
+            StringManager.getManager(Constants.Package);
     /**
      * Descriptive information about this Realm implementation.
      */
     protected final String info =
             "org.apache.catalina.realm.UserDatabaseRealm/1.0";
-
-
     /**
-     * Descriptive information about this Realm implementation.
+     * The <code>UserDatabase</code> we will use to authenticate users
+     * and identify associated roles.
      */
-    protected static final String name = "UserDatabaseRealm";
-
-
+    protected UserDatabase database = null;
     /**
      * The global JNDI name of the <code>UserDatabase</code> resource
      * we will be utilizing.
@@ -122,15 +121,7 @@ public class UserDatabaseRealm
     protected String resourceName = "UserDatabase";
 
 
-    /**
-     * The string manager for this package.
-     */
-    private static final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return descriptive information about this Realm implementation and
@@ -222,7 +213,7 @@ public class UserDatabaseRealm
         }
         Iterator<Group> groups = user.getGroups();
         while (groups.hasNext()) {
-            Group group = (Group) groups.next();
+            Group group = groups.next();
             roles = group.getRoles();
             while (roles.hasNext()) {
                 Role role = (Role) roles.next();

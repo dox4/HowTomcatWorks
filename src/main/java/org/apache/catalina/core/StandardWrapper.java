@@ -98,6 +98,93 @@ public final class StandardWrapper
 
 
     /**
+     * The descriptive information string for this implementation.
+     */
+    private static final String info =
+            "org.apache.catalina.core.StandardWrapper/1.0";
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The facade associated with this wrapper.
+     */
+    private final StandardWrapperFacade facade =
+            new StandardWrapperFacade(this);
+    /**
+     * The support object for our instance listeners.
+     */
+    private final InstanceSupport instanceSupport = new InstanceSupport(this);
+    /**
+     * The initialization parameters for this servlet, keyed by
+     * parameter name.
+     */
+    private final HashMap parameters = new HashMap();
+    /**
+     * The security role references for this servlet, keyed by role name
+     * used in the servlet.  The corresponding value is the role name of
+     * the web application itself.
+     */
+    private final HashMap references = new HashMap();
+    /**
+     * The date and time at which this servlet will become available (in
+     * milliseconds since the epoch), or zero if the servlet is available.
+     * If this value equals Long.MAX_VALUE, the unavailability of this
+     * servlet is considered permanent.
+     */
+    private long available = 0L;
+    /**
+     * The count of allocations that are currently active (even if they
+     * are for the same instance, as will be true on a non-STM servlet).
+     */
+    private int countAllocated = 0;
+    /**
+     * The debugging detail level for this component.
+     */
+    private int debug = 0;
+    /**
+     * The (single) initialized instance of this servlet.
+     */
+    private Servlet instance = null;
+    /**
+     * The context-relative URI of the JSP file for this servlet.
+     */
+    private String jspFile = null;
+    /**
+     * The load-on-startup order value (negative value means load on
+     * first call) for this servlet.
+     */
+    private int loadOnStartup = -1;
+    /**
+     * The run-as identity for this servlet.
+     */
+    private String runAs = null;
+    /**
+     * The fully qualified servlet class name for this servlet.
+     */
+    private String servletClass = null;
+    /**
+     * Does this servlet implement the SingleThreadModel interface?
+     */
+    private boolean singleThreadModel = false;
+    /**
+     * Are we unloading our servlet instance at the moment?
+     */
+    private boolean unloading = false;
+    /**
+     * Maximum number of STM instances.
+     */
+    private int maxInstances = 20;
+    /**
+     * Number of instances currently loaded for a STM servlet.
+     */
+    private int nInstances = 0;
+    /**
+     * Stack containing the STM instances.
+     */
+    private Stack instancePool = null;
+
+
+    /**
      * Create a new StandardWrapper component with the default basic Valve.
      */
     public StandardWrapper() {
@@ -108,129 +195,7 @@ public final class StandardWrapper
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The date and time at which this servlet will become available (in
-     * milliseconds since the epoch), or zero if the servlet is available.
-     * If this value equals Long.MAX_VALUE, the unavailability of this
-     * servlet is considered permanent.
-     */
-    private long available = 0L;
-
-
-    /**
-     * The count of allocations that are currently active (even if they
-     * are for the same instance, as will be true on a non-STM servlet).
-     */
-    private int countAllocated = 0;
-
-
-    /**
-     * The debugging detail level for this component.
-     */
-    private int debug = 0;
-
-
-    /**
-     * The facade associated with this wrapper.
-     */
-    private final StandardWrapperFacade facade =
-            new StandardWrapperFacade(this);
-
-
-    /**
-     * The descriptive information string for this implementation.
-     */
-    private static final String info =
-            "org.apache.catalina.core.StandardWrapper/1.0";
-
-
-    /**
-     * The (single) initialized instance of this servlet.
-     */
-    private Servlet instance = null;
-
-
-    /**
-     * The support object for our instance listeners.
-     */
-    private final InstanceSupport instanceSupport = new InstanceSupport(this);
-
-
-    /**
-     * The context-relative URI of the JSP file for this servlet.
-     */
-    private String jspFile = null;
-
-
-    /**
-     * The load-on-startup order value (negative value means load on
-     * first call) for this servlet.
-     */
-    private int loadOnStartup = -1;
-
-
-    /**
-     * The initialization parameters for this servlet, keyed by
-     * parameter name.
-     */
-    private final HashMap parameters = new HashMap();
-
-
-    /**
-     * The security role references for this servlet, keyed by role name
-     * used in the servlet.  The corresponding value is the role name of
-     * the web application itself.
-     */
-    private final HashMap references = new HashMap();
-
-
-    /**
-     * The run-as identity for this servlet.
-     */
-    private String runAs = null;
-
-
-    /**
-     * The fully qualified servlet class name for this servlet.
-     */
-    private String servletClass = null;
-
-
-    /**
-     * Does this servlet implement the SingleThreadModel interface?
-     */
-    private boolean singleThreadModel = false;
-
-
-    /**
-     * Are we unloading our servlet instance at the moment?
-     */
-    private boolean unloading = false;
-
-
-    /**
-     * Maximum number of STM instances.
-     */
-    private int maxInstances = 20;
-
-
-    /**
-     * Number of instances currently loaded for a STM servlet.
-     */
-    private int nInstances = 0;
-
-
-    /**
-     * Stack containing the STM instances.
-     */
-    private Stack instancePool = null;
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the available date/time for this servlet, in milliseconds since
@@ -502,22 +467,6 @@ public final class StandardWrapper
 
     }
 
-
-    /**
-     * Set the name of this servlet.  This is an alias for the normal
-     * <code>Container.setName()</code> method, and complements the
-     * <code>getServletName()</code> method required by the
-     * <code>ServletConfig</code> interface.
-     *
-     * @param name The new name of this servlet
-     */
-    public void setServletName(String name) {
-
-        setName(name);
-
-    }
-
-
     /**
      * Return <code>true</code> if the servlet class represented by this
      * component implements the <code>SingleThreadModel</code> interface.
@@ -531,7 +480,6 @@ public final class StandardWrapper
         return (singleThreadModel);
 
     }
-
 
     /**
      * Is this servlet currently unavailable?
@@ -549,10 +497,6 @@ public final class StandardWrapper
 
     }
 
-
-    // --------------------------------------------------------- Public Methods
-
-
     /**
      * Refuse to add a child Container, because Wrappers are the lowest level
      * of the Container hierarchy.
@@ -567,6 +511,8 @@ public final class StandardWrapper
 
     }
 
+
+    // --------------------------------------------------------- Public Methods
 
     /**
      * Add a new servlet initialization parameter for this servlet.
@@ -584,7 +530,6 @@ public final class StandardWrapper
 
     }
 
-
     /**
      * Add a new listener interested in InstanceEvents.
      *
@@ -596,7 +541,6 @@ public final class StandardWrapper
         instanceSupport.addInstanceListener(listener);
 
     }
-
 
     /**
      * Add a new security role reference record to the set of records for
@@ -614,7 +558,6 @@ public final class StandardWrapper
         fireContainerEvent("addSecurityReference", name);
 
     }
-
 
     /**
      * Allocate an initialized instance of this Servlet that is ready to have
@@ -698,7 +641,6 @@ public final class StandardWrapper
 
     }
 
-
     /**
      * Return this previously allocated servlet to the pool of available
      * instances.  If this servlet class does not implement SingleThreadModel,
@@ -725,7 +667,6 @@ public final class StandardWrapper
 
     }
 
-
     /**
      * Return the value for the specified initialization parameter name,
      * if any; otherwise return <code>null</code>.
@@ -741,7 +682,6 @@ public final class StandardWrapper
 
     }
 
-
     /**
      * Return the names of all defined initialization parameters for this
      * servlet.
@@ -755,7 +695,6 @@ public final class StandardWrapper
         }
 
     }
-
 
     /**
      * Return the security role link for the specified security role
@@ -772,7 +711,6 @@ public final class StandardWrapper
 
     }
 
-
     /**
      * Return the set of security role reference names associated with
      * this servlet, if any; otherwise return a zero-length array.
@@ -786,7 +724,6 @@ public final class StandardWrapper
         }
 
     }
-
 
     /**
      * Load and initialize an instance of this servlet, if there is not already
@@ -809,7 +746,6 @@ public final class StandardWrapper
     public synchronized void load() throws ServletException {
         instance = loadServlet();
     }
-
 
     /**
      * Load and initialize an instance of this servlet, if there is not already
@@ -975,7 +911,6 @@ public final class StandardWrapper
 
     }
 
-
     /**
      * Remove the specified initialization parameter from this servlet.
      *
@@ -991,7 +926,6 @@ public final class StandardWrapper
 
     }
 
-
     /**
      * Remove a listener no longer interested in InstanceEvents.
      *
@@ -1003,7 +937,6 @@ public final class StandardWrapper
         instanceSupport.removeInstanceListener(listener);
 
     }
-
 
     /**
      * Remove any security role reference for the specified role name.
@@ -1019,7 +952,6 @@ public final class StandardWrapper
         fireContainerEvent("removeSecurityReference", name);
 
     }
-
 
     /**
      * Return a String representation of this component.
@@ -1037,7 +969,6 @@ public final class StandardWrapper
         return (sb.toString());
 
     }
-
 
     /**
      * Process an UnavailableException, marking this servlet as unavailable
@@ -1062,7 +993,6 @@ public final class StandardWrapper
         }
 
     }
-
 
     /**
      * Unload all initialized instances of this servlet, after calling the
@@ -1170,10 +1100,6 @@ public final class StandardWrapper
 
     }
 
-
-    // -------------------------------------------------- ServletConfig Methods
-
-
     /**
      * Return the initialization parameter value for the specified name,
      * if any; otherwise return <code>null</code>.
@@ -1187,6 +1113,8 @@ public final class StandardWrapper
     }
 
 
+    // -------------------------------------------------- ServletConfig Methods
+
     /**
      * Return the set of initialization parameter names defined for this
      * servlet.  If none are defined, an empty Enumeration is returned.
@@ -1198,7 +1126,6 @@ public final class StandardWrapper
         }
 
     }
-
 
     /**
      * Return the servlet context with which this servlet is associated.
@@ -1214,7 +1141,6 @@ public final class StandardWrapper
 
     }
 
-
     /**
      * Return the name of this servlet.
      */
@@ -1224,12 +1150,25 @@ public final class StandardWrapper
 
     }
 
+    /**
+     * Set the name of this servlet.  This is an alias for the normal
+     * <code>Container.setName()</code> method, and complements the
+     * <code>getServletName()</code> method required by the
+     * <code>ServletConfig</code> interface.
+     *
+     * @param name The new name of this servlet
+     */
+    public void setServletName(String name) {
+
+        setName(name);
+
+    }
+
 
     // -------------------------------------------------------- Package Methods
 
 
     // -------------------------------------------------------- Private Methods
-
 
     /**
      * Add a default Mapper implementation if none have been configured

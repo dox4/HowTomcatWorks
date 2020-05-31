@@ -81,7 +81,18 @@ public final class FastHttpDateFormat {
 
 
     protected final static TimeZone gmtZone = TimeZone.getTimeZone("GMT");
-
+    /**
+     * Instant on which the currentDate object was generated.
+     */
+    protected static long currentDateGenerated = 0L;
+    /**
+     * Current formatted date.
+     */
+    protected static String currentDate = null;
+    /**
+     * Date cache.
+     */
+    protected static Map<Date, String> dateCache = new HashMap<>();
 
     /**
      * GMT timezone - all HTTP dates are on GMT
@@ -91,26 +102,7 @@ public final class FastHttpDateFormat {
     }
 
 
-    /**
-     * Instant on which the currentDate object was generated.
-     */
-    protected static long currentDateGenerated = 0L;
-
-
-    /**
-     * Current formatted date.
-     */
-    protected static String currentDate = null;
-
-
-    /**
-     * Date cache.
-     */
-    protected static Map<Date, String> dateCache = new HashMap<>();
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Get the current date in HTTP format.

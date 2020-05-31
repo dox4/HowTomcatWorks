@@ -36,146 +36,100 @@ public abstract class RequestBase
 
 
     /**
-     * The attributes associated with this Request, keyed by attribute name.
-     */
-    protected HashMap attributes = new HashMap();
-
-
-    /**
-     * The authorization credentials sent with this Request.
-     */
-    protected String authorization = null;
-
-
-    /**
-     * The character encoding for this Request.
-     */
-    protected String characterEncoding = null;
-
-
-    /**
-     * The Connector through which this Request was received.
-     */
-    protected Connector connector = null;
-
-
-    /**
-     * The content length associated with this request.
-     */
-    protected int contentLength = -1;
-
-
-    /**
-     * The content type associated with this request.
-     */
-    protected String contentType = null;
-
-
-    /**
-     * The Context within which this Request is being processed.
-     */
-    protected Context context = null;
-
-
-    /**
-     * The default Locale if none are specified.
-     */
-    protected static Locale defaultLocale = Locale.getDefault();
-
-
-    /**
-     * The facade associated with this request.
-     */
-    protected RequestFacade facade = new RequestFacade(this);
-
-
-    /**
      * Descriptive information about this Request implementation.
      */
     protected static final String info =
             "org.apache.catalina.connector.RequestBase/1.0";
-
-
     /**
-     * The input stream associated with this Request.
+     * The default Locale if none are specified.
      */
-    protected InputStream input = null;
-
-
-    /**
-     * The preferred Locales assocaited with this Request.
-     */
-    protected ArrayList locales = new ArrayList();
-
-
-    /**
-     * Internal notes associated with this request by Catalina components
-     * and event listeners.
-     */
-    private final transient HashMap notes = new HashMap();
-
-
-    /**
-     * The protocol name and version associated with this Request.
-     */
-    protected String protocol = null;
-
-
-    /**
-     * The reader that has been returned by <code>getReader</code>, if any.
-     */
-    protected BufferedReader reader = null;
-
-
-    /**
-     * The remote address associated with this request.
-     */
-    protected String remoteAddr = null;
-
-
-    /**
-     * The fully qualified name of the remote host.
-     */
-    protected String remoteHost = null;
-
-
-    /**
-     * The response with which this request is associated.
-     */
-    protected Response response = null;
-
-
-    /**
-     * The scheme associated with this Request.
-     */
-    protected String scheme = null;
-
-
-    /**
-     * Was this request received on a secure connection?
-     */
-    protected boolean secure = false;
-
-
-    /**
-     * The server name associated with this Request.
-     */
-    protected String serverName = null;
-
-
-    /**
-     * The server port associated with this Request.
-     */
-    protected int serverPort = -1;
-
-
+    protected static Locale defaultLocale = Locale.getDefault();
     /**
      * The string manager for this package.
      */
     protected static StringManager sm =
             StringManager.getManager(Constants.Package);
-
-
+    /**
+     * Internal notes associated with this request by Catalina components
+     * and event listeners.
+     */
+    private final transient HashMap notes = new HashMap();
+    /**
+     * The attributes associated with this Request, keyed by attribute name.
+     */
+    protected HashMap attributes = new HashMap();
+    /**
+     * The authorization credentials sent with this Request.
+     */
+    protected String authorization = null;
+    /**
+     * The character encoding for this Request.
+     */
+    protected String characterEncoding = null;
+    /**
+     * The Connector through which this Request was received.
+     */
+    protected Connector connector = null;
+    /**
+     * The content length associated with this request.
+     */
+    protected int contentLength = -1;
+    /**
+     * The content type associated with this request.
+     */
+    protected String contentType = null;
+    /**
+     * The Context within which this Request is being processed.
+     */
+    protected Context context = null;
+    /**
+     * The facade associated with this request.
+     */
+    protected RequestFacade facade = new RequestFacade(this);
+    /**
+     * The input stream associated with this Request.
+     */
+    protected InputStream input = null;
+    /**
+     * The preferred Locales assocaited with this Request.
+     */
+    protected ArrayList locales = new ArrayList();
+    /**
+     * The protocol name and version associated with this Request.
+     */
+    protected String protocol = null;
+    /**
+     * The reader that has been returned by <code>getReader</code>, if any.
+     */
+    protected BufferedReader reader = null;
+    /**
+     * The remote address associated with this request.
+     */
+    protected String remoteAddr = null;
+    /**
+     * The fully qualified name of the remote host.
+     */
+    protected String remoteHost = null;
+    /**
+     * The response with which this request is associated.
+     */
+    protected Response response = null;
+    /**
+     * The scheme associated with this Request.
+     */
+    protected String scheme = null;
+    /**
+     * Was this request received on a secure connection?
+     */
+    protected boolean secure = false;
+    /**
+     * The server name associated with this Request.
+     */
+    protected String serverName = null;
+    /**
+     * The server port associated with this Request.
+     */
+    protected int serverPort = -1;
     /**
      * The socket through which this Request was received.
      */
@@ -518,35 +472,6 @@ public abstract class RequestBase
 
     }
 
-
-    /**
-     * Set the content length associated with this Request.
-     *
-     * @param length The new content length
-     */
-    public void setContentLength(int length) {
-
-        this.contentLength = length;
-
-    }
-
-
-    /**
-     * Set the content type (and optionally the character encoding)
-     * associated with this Request.  For example,
-     * <code>text/html; charset=ISO-8859-4</code>.
-     *
-     * @param type The new content type
-     */
-    public void setContentType(String type) {
-
-        this.contentType = type;
-        if (type.indexOf(';') >= 0)
-            characterEncoding = RequestUtil.parseCharacterEncoding(type);
-
-    }
-
-
     /**
      * Bind an object to a specified name in the internal notes associated
      * with this request, replacing any existing binding for this name.
@@ -562,97 +487,6 @@ public abstract class RequestBase
 
     }
 
-
-    /**
-     * Set the protocol name and version associated with this Request.
-     *
-     * @param protocol Protocol name and version
-     */
-    public void setProtocol(String protocol) {
-
-        this.protocol = protocol;
-
-    }
-
-
-    /**
-     * Set the IP address of the remote client associated with this Request.
-     *
-     * @param remoteAddr The remote IP address
-     */
-    public void setRemoteAddr(String remoteAddr) {
-
-        this.remoteAddr = remoteAddr;
-
-    }
-
-
-    /**
-     * Set the fully qualified name of the remote client associated with this
-     * Request.
-     *
-     * @param remoteHost The remote host name
-     */
-    public void setRemoteHost(String remoteHost) {
-
-        this.remoteHost = remoteHost;
-
-    }
-
-
-    /**
-     * Set the name of the scheme associated with this request.  Typical values
-     * are <code>http</code>, <code>https</code>, and <code>ftp</code>.
-     *
-     * @param scheme The scheme
-     */
-    public void setScheme(String scheme) {
-
-        this.scheme = scheme;
-
-    }
-
-
-    /**
-     * Set the value to be returned by <code>isSecure()</code>
-     * for this Request.
-     *
-     * @param secure The new isSecure value
-     */
-    public void setSecure(boolean secure) {
-
-        this.secure = secure;
-
-    }
-
-
-    /**
-     * Set the name of the server (virtual host) to process this request.
-     *
-     * @param name The server name
-     */
-    public void setServerName(String name) {
-
-        this.serverName = name;
-
-    }
-
-
-    /**
-     * Set the port number of the server to process this request.
-     *
-     * @param port The server port
-     */
-    public void setServerPort(int port) {
-
-        this.serverPort = port;
-
-    }
-
-
-    // ------------------------------------------------- ServletRequest Methods
-
-
     /**
      * Return the specified request attribute if it exists; otherwise, return
      * <code>null</code>.
@@ -667,7 +501,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return the names of all request attributes for this Request, or an
      * empty <code>Enumeration</code> if there are none.
@@ -680,7 +513,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return the character encoding for this Request.
      */
@@ -690,6 +522,28 @@ public abstract class RequestBase
 
     }
 
+    /**
+     * Overrides the name of the character encoding used in the body of
+     * this request.  This method must be called prior to reading request
+     * parameters or reading input using <code>getReader()</code>.
+     *
+     * @param enc The character encoding to be used
+     * @throws UnsupportedEncodingException if the specified encoding
+     *                                      is not supported
+     * @since Servlet 2.3
+     */
+    public void setCharacterEncoding(String enc)
+            throws UnsupportedEncodingException {
+
+        // Ensure that the specified encoding is valid
+        byte[] buffer = new byte[1];
+        buffer[0] = (byte) 'a';
+        String dummy = new String(buffer, enc);
+
+        // Save the validated encoding
+        this.characterEncoding = enc;
+
+    }
 
     /**
      * Return the content length for this Request.
@@ -700,6 +554,16 @@ public abstract class RequestBase
 
     }
 
+    /**
+     * Set the content length associated with this Request.
+     *
+     * @param length The new content length
+     */
+    public void setContentLength(int length) {
+
+        this.contentLength = length;
+
+    }
 
     /**
      * Return the content type for this Request.
@@ -710,6 +574,20 @@ public abstract class RequestBase
 
     }
 
+    /**
+     * Set the content type (and optionally the character encoding)
+     * associated with this Request.  For example,
+     * <code>text/html; charset=ISO-8859-4</code>.
+     *
+     * @param type The new content type
+     */
+    public void setContentType(String type) {
+
+        this.contentType = type;
+        if (type.indexOf(';') >= 0)
+            characterEncoding = RequestUtil.parseCharacterEncoding(type);
+
+    }
 
     /**
      * Return the servlet input stream for this Request.  The default
@@ -733,6 +611,8 @@ public abstract class RequestBase
     }
 
 
+    // ------------------------------------------------- ServletRequest Methods
+
     /**
      * Return the preferred Locale that the client will accept content in,
      * based on the value for the first <code>Accept-Language</code> header
@@ -749,7 +629,6 @@ public abstract class RequestBase
         }
 
     }
-
 
     /**
      * Return the set of preferred Locales that the client will accept
@@ -769,7 +648,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return the value of the specified request parameter, if any; otherwise,
      * return <code>null</code>.  If there is more than one value defined,
@@ -778,7 +656,6 @@ public abstract class RequestBase
      * @param name Name of the desired request parameter
      */
     public abstract String getParameter(String name);
-
 
     /**
      * Returns a <code>Map</code> of the parameters of this request.
@@ -791,12 +668,10 @@ public abstract class RequestBase
      */
     public abstract Map getParameterMap();
 
-
     /**
      * Return the names of all defined request parameters for this request.
      */
     public abstract Enumeration getParameterNames();
-
 
     /**
      * Return the defined values for the specified request parameter, if any;
@@ -805,7 +680,6 @@ public abstract class RequestBase
      * @param name Name of the desired request parameter
      */
     public abstract String[] getParameterValues(String name);
-
 
     /**
      * Return the protocol and version used to make this Request.
@@ -816,6 +690,16 @@ public abstract class RequestBase
 
     }
 
+    /**
+     * Set the protocol name and version associated with this Request.
+     *
+     * @param protocol Protocol name and version
+     */
+    public void setProtocol(String protocol) {
+
+        this.protocol = protocol;
+
+    }
 
     /**
      * Read the Reader wrapping the input stream for this Request.  The
@@ -844,7 +728,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return the real path of the specified virtual path.
      *
@@ -869,7 +752,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return the remote IP address making this Request.
      */
@@ -879,6 +761,16 @@ public abstract class RequestBase
 
     }
 
+    /**
+     * Set the IP address of the remote client associated with this Request.
+     *
+     * @param remoteAddr The remote IP address
+     */
+    public void setRemoteAddr(String remoteAddr) {
+
+        this.remoteAddr = remoteAddr;
+
+    }
 
     /**
      * Return the remote host name making this Request.
@@ -889,6 +781,17 @@ public abstract class RequestBase
 
     }
 
+    /**
+     * Set the fully qualified name of the remote client associated with this
+     * Request.
+     *
+     * @param remoteHost The remote host name
+     */
+    public void setRemoteHost(String remoteHost) {
+
+        this.remoteHost = remoteHost;
+
+    }
 
     /**
      * Return a RequestDispatcher that wraps the resource at the specified
@@ -897,7 +800,6 @@ public abstract class RequestBase
      * @param path Path of the resource to be wrapped
      */
     public abstract RequestDispatcher getRequestDispatcher(String path);
-
 
     /**
      * Return the scheme used to make this Request.
@@ -908,6 +810,17 @@ public abstract class RequestBase
 
     }
 
+    /**
+     * Set the name of the scheme associated with this request.  Typical values
+     * are <code>http</code>, <code>https</code>, and <code>ftp</code>.
+     *
+     * @param scheme The scheme
+     */
+    public void setScheme(String scheme) {
+
+        this.scheme = scheme;
+
+    }
 
     /**
      * Return the server name responding to this Request.
@@ -918,6 +831,16 @@ public abstract class RequestBase
 
     }
 
+    /**
+     * Set the name of the server (virtual host) to process this request.
+     *
+     * @param name The server name
+     */
+    public void setServerName(String name) {
+
+        this.serverName = name;
+
+    }
 
     /**
      * Return the server port responding to this Request.
@@ -928,6 +851,16 @@ public abstract class RequestBase
 
     }
 
+    /**
+     * Set the port number of the server to process this request.
+     *
+     * @param port The server port
+     */
+    public void setServerPort(int port) {
+
+        this.serverPort = port;
+
+    }
 
     /**
      * Was this request received on a secure connection?
@@ -938,6 +871,17 @@ public abstract class RequestBase
 
     }
 
+    /**
+     * Set the value to be returned by <code>isSecure()</code>
+     * for this Request.
+     *
+     * @param secure The new isSecure value
+     */
+    public void setSecure(boolean secure) {
+
+        this.secure = secure;
+
+    }
 
     /**
      * Remove the specified request attribute if it exists.
@@ -951,7 +895,6 @@ public abstract class RequestBase
         }
 
     }
-
 
     /**
      * Set the specified request attribute to the specified value.
@@ -975,30 +918,6 @@ public abstract class RequestBase
         synchronized (attributes) {
             attributes.put(name, value);
         }
-
-    }
-
-
-    /**
-     * Overrides the name of the character encoding used in the body of
-     * this request.  This method must be called prior to reading request
-     * parameters or reading input using <code>getReader()</code>.
-     *
-     * @param enc The character encoding to be used
-     * @throws UnsupportedEncodingException if the specified encoding
-     *                                      is not supported
-     * @since Servlet 2.3
-     */
-    public void setCharacterEncoding(String enc)
-            throws UnsupportedEncodingException {
-
-        // Ensure that the specified encoding is valid
-        byte[] buffer = new byte[1];
-        buffer[0] = (byte) 'a';
-        String dummy = new String(buffer, enc);
-
-        // Save the validated encoding
-        this.characterEncoding = enc;
 
     }
 

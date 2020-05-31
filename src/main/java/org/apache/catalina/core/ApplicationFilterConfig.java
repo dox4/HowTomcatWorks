@@ -94,6 +94,23 @@ final class ApplicationFilterConfig implements FilterConfig {
 
 
     /**
+     * The Context with which we are associated.
+     */
+    private Context context = null;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The application Filter we are configured for.
+     */
+    private Filter filter = null;
+    /**
+     * The <code>FilterDef</code> that defines our associated Filter.
+     */
+    private FilterDef filterDef = null;
+
+
+    /**
      * Construct a new ApplicationFilterConfig for the specified filter
      * definition.
      *
@@ -121,29 +138,7 @@ final class ApplicationFilterConfig implements FilterConfig {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The Context with which we are associated.
-     */
-    private Context context = null;
-
-
-    /**
-     * The application Filter we are configured for.
-     */
-    private Filter filter = null;
-
-
-    /**
-     * The <code>FilterDef</code> that defines our associated Filter.
-     */
-    private FilterDef filterDef = null;
-
-
     // --------------------------------------------------- FilterConfig Methods
-
 
     /**
      * Return the name of the filter we are configuring.
@@ -265,20 +260,6 @@ final class ApplicationFilterConfig implements FilterConfig {
 
     }
 
-
-    /**
-     * Release the Filter instance associated with this FilterConfig,
-     * if there is one.
-     */
-    void release() {
-
-        if (this.filter != null)
-            filter.destroy();
-        this.filter = null;
-
-    }
-
-
     /**
      * Set the filter definition we are configured for.  This has the side
      * effect of instantiating an instance of the corresponding filter class.
@@ -312,6 +293,18 @@ final class ApplicationFilterConfig implements FilterConfig {
             Filter filter = getFilter();
 
         }
+
+    }
+
+    /**
+     * Release the Filter instance associated with this FilterConfig,
+     * if there is one.
+     */
+    void release() {
+
+        if (this.filter != null)
+            filter.destroy();
+        this.filter = null;
 
     }
 

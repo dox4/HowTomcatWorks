@@ -101,80 +101,66 @@ public class JDBCStore
      * Connection string to use when connecting to the DB.
      */
     protected String connString = null;
-
-    /**
-     * The database connection.
-     */
-    private Connection conn = null;
-
     /**
      * Driver to use.
      */
     protected String driverName = null;
-
-    // ------------------------------------------------------------- Table & cols
-
     /**
      * Table to use.
      */
     protected String sessionTable = "tomcat$sessions";
 
+    // ------------------------------------------------------------- Table & cols
     /**
      * Id column to use.
      */
     protected String sessionIdCol = "id";
-
     /**
      * Data column to use.
      */
     protected String sessionDataCol = "data";
-
     /**
      * Is Valid column to use.
      */
     protected String sessionValidCol = "valid";
-
     /**
      * Max Inactive column to use.
      */
     protected String sessionMaxInactiveCol = "maxinactive";
-
     /**
      * Last Accessed column to use.
      */
     protected String sessionLastAccessedCol = "lastaccess";
-
-    // ------------------------------------------------------------- SQL Variables
-
     /**
      * Variable to hold the <code>getSize()</code> prepared statement.
      */
     protected PreparedStatement preparedSizeSql = null;
 
+    // ------------------------------------------------------------- SQL Variables
     /**
      * Variable to hold the <code>keys()</code> prepared statement.
      */
     protected PreparedStatement preparedKeysSql = null;
-
     /**
      * Variable to hold the <code>save()</code> prepared statement.
      */
     protected PreparedStatement preparedSaveSql = null;
-
     /**
      * Variable to hold the <code>clear()</code> prepared statement.
      */
     protected PreparedStatement preparedClearSql = null;
-
     /**
      * Variable to hold the <code>remove()</code> prepared statement.
      */
     protected PreparedStatement preparedRemoveSql = null;
-
     /**
      * Variable to hold the <code>load()</code> prepared statement.
      */
     protected PreparedStatement preparedLoadSql = null;
+    /**
+     * The database connection.
+     */
+    private Connection conn = null;
 
     // ------------------------------------------------------------- Properties
 
@@ -200,6 +186,13 @@ public class JDBCStore
     }
 
     /**
+     * Return the driver for this Store.
+     */
+    public String getDriverName() {
+        return (this.driverName);
+    }
+
+    /**
      * Set the driver for this Store.
      *
      * @param driverName The new driver
@@ -214,10 +207,10 @@ public class JDBCStore
     }
 
     /**
-     * Return the driver for this Store.
+     * Return the Connection URL for this Store.
      */
-    public String getDriverName() {
-        return (this.driverName);
+    public String getConnectionURL() {
+        return (this.connString);
     }
 
     /**
@@ -234,10 +227,10 @@ public class JDBCStore
     }
 
     /**
-     * Return the Connection URL for this Store.
+     * Return the table for this Store.
      */
-    public String getConnectionURL() {
-        return (this.connString);
+    public String getSessionTable() {
+        return (this.sessionTable);
     }
 
     /**
@@ -254,10 +247,10 @@ public class JDBCStore
     }
 
     /**
-     * Return the table for this Store.
+     * Return the Id column for the table.
      */
-    public String getSessionTable() {
-        return (this.sessionTable);
+    public String getSessionIdCol() {
+        return (this.sessionIdCol);
     }
 
     /**
@@ -274,10 +267,10 @@ public class JDBCStore
     }
 
     /**
-     * Return the Id column for the table.
+     * Return the data column for the table
      */
-    public String getSessionIdCol() {
-        return (this.sessionIdCol);
+    public String getSessionDataCol() {
+        return (this.sessionDataCol);
     }
 
     /**
@@ -294,10 +287,10 @@ public class JDBCStore
     }
 
     /**
-     * Return the data column for the table
+     * Return the Is Valid column
      */
-    public String getSessionDataCol() {
-        return (this.sessionDataCol);
+    public String getSessionValidCol() {
+        return (this.sessionValidCol);
     }
 
     /**
@@ -314,10 +307,10 @@ public class JDBCStore
     }
 
     /**
-     * Return the Is Valid column
+     * Return the Max Inactive column
      */
-    public String getSessionValidCol() {
-        return (this.sessionValidCol);
+    public String getSessionMaxInactiveCol() {
+        return (this.sessionMaxInactiveCol);
     }
 
     /**
@@ -334,10 +327,10 @@ public class JDBCStore
     }
 
     /**
-     * Return the Max Inactive column
+     * Return the Last Accessed column
      */
-    public String getSessionMaxInactiveCol() {
-        return (this.sessionMaxInactiveCol);
+    public String getSessionLastAccessedCol() {
+        return (this.sessionLastAccessedCol);
     }
 
     /**
@@ -351,13 +344,6 @@ public class JDBCStore
         support.firePropertyChange("sessionLastAccessedCol",
                 oldSessionLastAccessedCol,
                 this.sessionLastAccessedCol);
-    }
-
-    /**
-     * Return the Last Accessed column
-     */
-    public String getSessionLastAccessedCol() {
-        return (this.sessionLastAccessedCol);
     }
 
     // --------------------------------------------------------- Public Methods

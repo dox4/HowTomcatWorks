@@ -81,9 +81,21 @@ public final class ContextResourceLink {
 
 
     /**
+     * The NamingResources with which we are associated (if any).
+     */
+    protected NamingResources resources = null;
+    /**
      * The name of this resource.
      */
     private String name = null;
+    /**
+     * The type of this resource.
+     */
+    private String type = null;
+    /**
+     * The global name of this resource.
+     */
+    private String global = null;
 
     public String getName() {
         return (this.name);
@@ -93,12 +105,6 @@ public final class ContextResourceLink {
         this.name = name;
     }
 
-
-    /**
-     * The type of this resource.
-     */
-    private String type = null;
-
     public String getType() {
         return (this.type);
     }
@@ -107,23 +113,19 @@ public final class ContextResourceLink {
         this.type = type;
     }
 
-
-    /**
-     * The global name of this resource.
-     */
-    private String global = null;
-
     public String getGlobal() {
         return (this.global);
     }
+
+
+    // --------------------------------------------------------- Public Methods
 
     public void setGlobal(String global) {
         this.global = global;
     }
 
 
-    // --------------------------------------------------------- Public Methods
-
+    // -------------------------------------------------------- Package Methods
 
     /**
      * Return a String representation of this object.
@@ -145,15 +147,6 @@ public final class ContextResourceLink {
         return (sb.toString());
 
     }
-
-
-    // -------------------------------------------------------- Package Methods
-
-
-    /**
-     * The NamingResources with which we are associated (if any).
-     */
-    protected NamingResources resources = null;
 
     public NamingResources getNamingResources() {
         return (this.resources);

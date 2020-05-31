@@ -84,9 +84,18 @@ public class NamingContextBindingsEnumeration
     // ----------------------------------------------------------- Constructors
 
 
+    /**
+     * Underlying enumeration.
+     */
+    protected Enumeration enums;
+
+
     public NamingContextBindingsEnumeration(Vector entries) {
         enums = entries.elements();
     }
+
+
+    // -------------------------------------------------------------- Variables
 
 
     public NamingContextBindingsEnumeration(Enumeration enums) {
@@ -94,17 +103,7 @@ public class NamingContextBindingsEnumeration
     }
 
 
-    // -------------------------------------------------------------- Variables
-
-
-    /**
-     * Underlying enumeration.
-     */
-    protected Enumeration enums;
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Retrieves the next element in the enumeration.

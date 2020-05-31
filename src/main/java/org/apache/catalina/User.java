@@ -125,6 +125,7 @@ public interface User extends Principal {
 
     /**
      * Return the set of {@link Role}s assigned specifically to this user.
+     *
      * @return
      */
     Iterator<Role> getRoles();

@@ -104,27 +104,22 @@ public class ErrorReportValve
 
 
     /**
-     * The debugging detail level for this component.
-     */
-    private final int debug = 0;
-
-
-    /**
      * The descriptive information related to this implementation.
      */
     private static final String info =
             "org.apache.catalina.valves.ErrorReportValve/1.0";
-
-
     /**
      * The StringManager for this package.
      */
     protected static StringManager sm =
             StringManager.getManager(Constants.Package);
+    /**
+     * The debugging detail level for this component.
+     */
+    private final int debug = 0;
 
 
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return descriptive information about this Valve implementation.

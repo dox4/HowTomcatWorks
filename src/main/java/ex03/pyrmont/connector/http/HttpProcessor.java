@@ -14,6 +14,7 @@ import java.net.Socket;
 /* this class used to be called HttpServer */
 public class HttpProcessor {
 
+    private final HttpRequestLine requestLine = new HttpRequestLine();
     protected String method = null;
     protected String queryString = null;
     /**
@@ -26,7 +27,6 @@ public class HttpProcessor {
      */
     private HttpConnector connector = null;
     private HttpRequest request;
-    private final HttpRequestLine requestLine = new HttpRequestLine();
     private HttpResponse response;
 
     public HttpProcessor(HttpConnector connector) {

@@ -84,25 +84,20 @@ public final class EmbeddedManager
 
 
     /**
+     * Embedded Catalina.
+     */
+    private final Embedded embedded = new Embedded();
+    /**
      * Status of the Slide domain.
      */
     private int state = STOPPED;
-
-
     /**
      * Notification sequence number.
      */
     private long sequenceNumber = 0;
 
 
-    /**
-     * Embedded Catalina.
-     */
-    private final Embedded embedded = new Embedded();
-
-
     // ---------------------------------------------- MBeanRegistration Methods
-
 
     public ObjectName preRegister(MBeanServer server, ObjectName name)
             throws Exception {

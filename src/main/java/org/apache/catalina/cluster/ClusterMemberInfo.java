@@ -87,31 +87,31 @@ public final class ClusterMemberInfo implements Serializable {
 
     // ------------------------------------------------------------- Properties
 
-    public void setClusterName(String clusterName) {
-        ClusterMemberInfo.clusterName = clusterName;
-    }
-
     public String getClusterName() {
         return (clusterName);
     }
 
-    public void setHostName(String hostName) {
-        ClusterMemberInfo.hostName = hostName;
+    public void setClusterName(String clusterName) {
+        ClusterMemberInfo.clusterName = clusterName;
     }
 
     public String getHostName() {
         return (hostName);
     }
 
+    public void setHostName(String hostName) {
+        ClusterMemberInfo.hostName = hostName;
+    }
+
     public String getServerVersion() {
         return (ServerInfo.getServerInfo());
     }
 
-    public void setClusterInfo(String clusterInfo) {
-        ClusterMemberInfo.clusterInfo = clusterInfo;
-    }
-
     public String getClusterInfo() {
         return (clusterInfo);
+    }
+
+    public void setClusterInfo(String clusterInfo) {
+        ClusterMemberInfo.clusterInfo = clusterInfo;
     }
 }

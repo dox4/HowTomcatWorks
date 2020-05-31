@@ -91,48 +91,34 @@ public final class UserConfig
 
 
     /**
-     * The Java class name of the Context configuration class we should use.
-     */
-    private String configClass = "org.apache.catalina.startup.ContextConfig";
-
-
-    /**
-     * The Java class name of the Context implementation we should use.
-     */
-    private String contextClass = "org.apache.catalina.core.StandardContext";
-
-
-    /**
-     * The debugging detail level for this component.
-     */
-    private int debug = 999;
-
-
-    /**
-     * The directory name to be searched for within each user home directory.
-     */
-    private String directoryName = "public_html";
-
-
-    /**
-     * The base directory containing user home directories.
-     */
-    private String homeBase = null;
-
-
-    /**
-     * The Host we are associated with.
-     */
-    private Host host = null;
-
-
-    /**
      * The string resources for this package.
      */
     private static final StringManager sm =
             StringManager.getManager(Constants.Package);
-
-
+    /**
+     * The Java class name of the Context configuration class we should use.
+     */
+    private String configClass = "org.apache.catalina.startup.ContextConfig";
+    /**
+     * The Java class name of the Context implementation we should use.
+     */
+    private String contextClass = "org.apache.catalina.core.StandardContext";
+    /**
+     * The debugging detail level for this component.
+     */
+    private int debug = 999;
+    /**
+     * The directory name to be searched for within each user home directory.
+     */
+    private String directoryName = "public_html";
+    /**
+     * The base directory containing user home directories.
+     */
+    private String homeBase = null;
+    /**
+     * The Host we are associated with.
+     */
+    private Host host = null;
     /**
      * The Java class name of the user database class we should use.
      */

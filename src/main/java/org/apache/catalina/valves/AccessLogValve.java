@@ -135,88 +135,60 @@ public final class AccessLogValve
 
 
     /**
-     * Construct a new instance of this class with default property values.
-     */
-    public AccessLogValve() {
-
-        super();
-        setPattern("common");
-
-
-    }
-
-
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The as-of date for the currently open log file, or a zero-length
-     * string if there is no open log file.
-     */
-    private String dateStamp = "";
-
-
-    /**
-     * The directory in which log files are created.
-     */
-    private String directory = "logs";
-
-
-    /**
      * The descriptive information about this implementation.
      */
     protected static final String info =
             "org.apache.catalina.valves.AccessLogValve/1.0";
 
 
-    /**
-     * The lifecycle event support for this component.
-     */
-    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
-
-
+    // ----------------------------------------------------- Instance Variables
     /**
      * The set of month abbreviations for log messages.
      */
     protected static final String[] months =
             {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
                     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-
-
+    /**
+     * The string manager for this package.
+     */
+    private final StringManager sm =
+            StringManager.getManager(Constants.Package);
+    /**
+     * When formatting log lines, we often use strings like this one (" ").
+     */
+    private final String space = " ";
+    /**
+     * The lifecycle event support for this component.
+     */
+    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
+    /**
+     * The as-of date for the currently open log file, or a zero-length
+     * string if there is no open log file.
+     */
+    private String dateStamp = "";
+    /**
+     * The directory in which log files are created.
+     */
+    private String directory = "logs";
     /**
      * If the current log pattern is the same as the common access log
      * format pattern, then we'll set this variable to true and log in
      * a more optimal and hard-coded way.
      */
     private boolean common = false;
-
-
     /**
      * For the combined format (common, plus useragent and referer), we do
      * the same
      */
     private boolean combined = false;
-
-
     /**
      * The pattern used to format our access log lines.
      */
     private String pattern = null;
-
-
     /**
      * The prefix that is added to log file filenames.
      */
     private String prefix = "access_log.";
-
-
-    /**
-     * The string manager for this package.
-     */
-    private final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
     /**
      * Has this component been started yet?
      */
@@ -281,28 +253,29 @@ public final class AccessLogValve
      * uses for log lines.
      */
     private Date currentDate = null;
-
-
-    /**
-     * When formatting log lines, we often use strings like this one (" ").
-     */
-    private final String space = " ";
-
-
     /**
      * Resolve hosts.
      */
     private boolean resolveHosts = false;
-
-
     /**
      * Instant when the log daily rotation was last checked.
      */
     private long rotationLastChecked = 0L;
 
 
-    // ------------------------------------------------------------- Properties
+    /**
+     * Construct a new instance of this class with default property values.
+     */
+    public AccessLogValve() {
 
+        super();
+        setPattern("common");
+
+
+    }
+
+
+    // ------------------------------------------------------------- Properties
 
     /**
      * Return the directory in which we create log files.
@@ -411,6 +384,14 @@ public final class AccessLogValve
 
     }
 
+    /**
+     * Get the value of the resolve hosts flag.
+     */
+    public boolean isResolveHosts() {
+
+        return resolveHosts;
+
+    }
 
     /**
      * Set the resolve hosts flag.
@@ -424,18 +405,7 @@ public final class AccessLogValve
     }
 
 
-    /**
-     * Get the value of the resolve hosts flag.
-     */
-    public boolean isResolveHosts() {
-
-        return resolveHosts;
-
-    }
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Log a message summarizing the specified request and response, according

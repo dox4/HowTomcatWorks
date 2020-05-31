@@ -105,6 +105,194 @@ public final class HTMLManagerServlet extends ManagerServlet {
 
     // --------------------------------------------------------- Public Methods
 
+    private static final String HTML_HEADER_SECTION =
+            "<html> \n" +
+                    "<head> \n" +
+                    "<style> \n" +
+                    "  table { width: 100%; } \n" +
+                    "  td.page-title {  \n" +
+                    "    text-align: center; \n" +
+                    "    vertical-align: top; \n" +
+                    "    font-family:verdana,sans-serif; \n" +
+                    "    font-weight: bold; \n" +
+                    "    background: white; \n" +
+                    "    color: black; \n" +
+                    "  } \n" +
+                    "  td.title { \n" +
+                    "    text-align: left; \n" +
+                    "    vertical-align: top; \n" +
+                    "    font-family:verdana,sans-serif; \n" +
+                    "    font-style:italic; \n" +
+                    "    font-weight: bold; \n" +
+                    "    background: #D2A41C; \n" +
+                    "  } \n" +
+                    "  td.header-left { \n" +
+                    "    text-align: left; \n" +
+                    "    vertical-align: top; \n" +
+                    "    font-family:verdana,sans-serif; \n" +
+                    "    font-weight: bold; \n" +
+                    "    background: #FFDC75; \n" +
+                    "  } \n" +
+                    "  td.header-center { \n" +
+                    "    text-align: center; \n" +
+                    "    vertical-align: top; \n" +
+                    "    font-family:verdana,sans-serif; \n" +
+                    "    font-weight: bold; \n" +
+                    "    background: #FFDC75; \n" +
+                    "  } \n" +
+                    "  td.row-left { \n" +
+                    "    text-align: left; \n" +
+                    "    vertical-align: middle; \n" +
+                    "    font-family:verdana,sans-serif; \n" +
+                    "    color: black; \n" +
+                    "    background: white; \n" +
+                    "  } \n" +
+                    "  td.row-center { \n" +
+                    "    text-align: center; \n" +
+                    "    vertical-align: middle; \n" +
+                    "    font-family:verdana,sans-serif; \n" +
+                    "    color: black; \n" +
+                    "    background: white; \n" +
+                    "  } \n" +
+                    "  td.row-right { \n" +
+                    "    text-align: right; \n" +
+                    "    vertical-align: middle; \n" +
+                    "    font-family:verdana,sans-serif; \n" +
+                    "    color: black; \n" +
+                    "    background: white; \n" +
+                    "  } \n" +
+                    "</style> \n";
+    private static final String BODY_HEADER_SECTION =
+            "<title>{0}</title> \n" +
+                    "</head> \n" +
+                    "\n" +
+                    "<body bgcolor=\"#FFFFFF\"> \n" +
+                    "\n" +
+                    "<table border=\"2\" cellspacing=\"0\" cellpadding=\"3\" " +
+                    "bordercolor=\"#000000\"> \n" +
+                    "<tr> \n" +
+                    " <td class=\"page-title\" bordercolor=\"#000000\" align=\"left\" " +
+                    "nowrap> \n" +
+                    "  <font size=\"+2\">{0}</font> \n" +
+                    " </td> \n" +
+                    "</tr> \n" +
+                    "</table> \n" +
+                    "<br> \n" +
+                    "\n";
+    private static final String MESSAGE_SECTION =
+            "<table border=\"1\" cellspacing=\"0\" cellpadding=\"3\"> \n" +
+                    " <tr> \n" +
+                    "  <td class=\"row-left\"><small><b>{0}</b>&nbsp;{1}</small></td>\n" +
+                    " </tr> \n" +
+                    "</table> \n" +
+                    "<br> \n" +
+                    "\n";
+    private static final String APPS_HEADER_SECTION =
+            "<table border=\"1\" cellspacing=\"0\" cellpadding=\"3\"> \n" +
+                    "<tr> \n" +
+                    " <td colspan=\"10\" class=\"title\">{0}</td> \n" +
+                    "</tr> \n" +
+                    "<tr> \n" +
+                    " <td class=\"header-left\"><small>{1}</small></td> \n" +
+                    " <td class=\"header-left\"><small>{2}</small></td> \n" +
+                    " <td class=\"header-center\"><small>{3}</small></td> \n" +
+                    " <td class=\"header-center\"><small>{4}</small></td> \n" +
+                    " <td class=\"header-center\">&nbsp;</td> \n" +
+                    "</tr> \n";
+    private static final String APPS_ROW_DETAILS_SECTION =
+            "<tr> \n" +
+                    " <td class=\"row-left\"><small><a href=\"{0}\">{0}</a>" +
+                    "</small></td> \n" +
+                    " <td class=\"row-left\"><small>{1}</small></td> \n" +
+                    " <td class=\"row-center\"><small>{2}</small></td> \n" +
+                    " <td class=\"row-center\">" +
+                    "<small><a href=\"sessions?path={0}\">{3}</a></small></td> \n";
+    private static final String MANAGER_APP_ROW_BUTTON_SECTION =
+            " <td class=\"row-left\"> \n" +
+                    "  <small> \n" +
+                    "  &nbsp;{1}&nbsp; \n" +
+                    "  &nbsp;{2}&nbsp; \n" +
+                    "  &nbsp;{3}&nbsp; \n" +
+                    "  &nbsp;{4}&nbsp; \n" +
+                    "  </small> \n" +
+                    " </td> \n" +
+                    "</tr> \n";
+    private static final String STARTED_APPS_ROW_BUTTON_SECTION =
+            " <td class=\"row-left\"> \n" +
+                    "  <small> \n" +
+                    "  &nbsp;{1}&nbsp; \n" +
+                    "  &nbsp;<a href=\"stop?path={0}\">{2}</a>&nbsp; \n" +
+                    "  &nbsp;<a href=\"reload?path={0}\">{3}</a>&nbsp; \n" +
+                    "  &nbsp;<a href=\"remove?path={0}\">{4}</a>&nbsp; \n" +
+                    "  </small> \n" +
+                    " </td> \n" +
+                    "</tr> \n";
+    private static final String STOPPED_APPS_ROW_BUTTON_SECTION =
+            " <td class=\"row-left\"> \n" +
+                    "  <small> \n" +
+                    "  &nbsp;<a href=\"start?path={0}\">{1}</a>&nbsp; \n" +
+                    "  &nbsp;{2}&nbsp; \n" +
+                    "  &nbsp;{3}&nbsp; \n" +
+                    "  &nbsp;<a href=\"remove?path={0}\">{4}</a>&nbsp; \n" +
+                    "  </small> \n" +
+                    " </td> \n" +
+                    "</tr> \n";
+
+    // ------------------------------------------------------ Private Constants
+
+    // These HTML sections are broken in relatively small sections, because of
+    // limited number of subsitutions MessageFormat can process
+    // (maximium of 10).
+    private static final String INSTALL_SECTION =
+            "<tr> \n" +
+                    " <td colspan=\"10\" class=\"header-left\"><small>{0}</small></td>\n" +
+                    "</tr> \n" +
+                    "<tr> \n" +
+                    "<form method=\"get\" action=\"install\"> \n" +
+                    "<input type=\"hidden\" name=\"path\"> \n" +
+                    " <td colspan=\"10\" class=\"row-left\"> \n" +
+                    "  <small>{1}</small> \n" +
+                    "  <input type=\"text\" name=\"installPath\" size=\"10\"> \n" +
+                    "  &nbsp;<small>{2}</small> \n" +
+                    "  <input type=\"text\" name=\"installConfig\" size=\"18\"> \n" +
+                    "  &nbsp;<small>{3}</small> \n" +
+                    "  <input type=\"text\" name=\"installWar\" size=\"18\">&nbsp; \n" +
+                    "  <input type=\"submit\" value=\"{4}\"> \n" +
+                    " </td> \n" +
+                    "</form> \n" +
+                    "</tr> \n" +
+                    "</table> \n" +
+                    "<br> \n" +
+                    "\n";
+    private static final String SERVER_HEADER_SECTION =
+            "<table border=\"1\" cellspacing=\"0\" cellpadding=\"3\"> \n" +
+                    "<tr> \n" +
+                    " <td colspan=\"10\" class=\"title\">{0}</td>  \n" +
+                    "</tr> \n" +
+                    "<tr> \n" +
+                    " <td class=\"header-center\"><small>{1}</small></td> \n" +
+                    " <td class=\"header-center\"><small>{2}</small></td> \n" +
+                    " <td class=\"header-center\"><small>{3}</small></td> \n" +
+                    " <td class=\"header-center\"><small>{4}</small></td> \n" +
+                    " <td class=\"header-center\"><small>{5}</small></td> \n" +
+                    " <td class=\"header-center\"><small>{6}</small></td> \n" +
+                    "</tr> \n";
+    private static final String SERVER_ROW_SECTION =
+            "<tr> \n" +
+                    " <td class=\"row-center\"><small>{0}</small></td> \n" +
+                    " <td class=\"row-center\"><small>{1}</small></td> \n" +
+                    " <td class=\"row-center\"><small>{2}</small></td> \n" +
+                    " <td class=\"row-center\"><small>{3}</small></td> \n" +
+                    " <td class=\"row-center\"><small>{4}</small></td> \n" +
+                    " <td class=\"row-center\"><small>{5}</small></td> \n" +
+                    "</tr> \n" +
+                    "</table> \n" +
+                    "<br> \n" +
+                    "\n";
+    private static final String HTML_TAIL_SECTION =
+            "</body> \n" +
+                    "</html>";
+
     /**
      * Process a GET request for the specified resource.
      *
@@ -392,203 +580,4 @@ public final class HTMLManagerServlet extends ManagerServlet {
 
         list(writer, stringWriter.toString());
     }
-
-    // ------------------------------------------------------ Private Constants
-
-    // These HTML sections are broken in relatively small sections, because of
-    // limited number of subsitutions MessageFormat can process
-    // (maximium of 10).
-
-    private static final String HTML_HEADER_SECTION =
-            "<html> \n" +
-                    "<head> \n" +
-                    "<style> \n" +
-                    "  table { width: 100%; } \n" +
-                    "  td.page-title {  \n" +
-                    "    text-align: center; \n" +
-                    "    vertical-align: top; \n" +
-                    "    font-family:verdana,sans-serif; \n" +
-                    "    font-weight: bold; \n" +
-                    "    background: white; \n" +
-                    "    color: black; \n" +
-                    "  } \n" +
-                    "  td.title { \n" +
-                    "    text-align: left; \n" +
-                    "    vertical-align: top; \n" +
-                    "    font-family:verdana,sans-serif; \n" +
-                    "    font-style:italic; \n" +
-                    "    font-weight: bold; \n" +
-                    "    background: #D2A41C; \n" +
-                    "  } \n" +
-                    "  td.header-left { \n" +
-                    "    text-align: left; \n" +
-                    "    vertical-align: top; \n" +
-                    "    font-family:verdana,sans-serif; \n" +
-                    "    font-weight: bold; \n" +
-                    "    background: #FFDC75; \n" +
-                    "  } \n" +
-                    "  td.header-center { \n" +
-                    "    text-align: center; \n" +
-                    "    vertical-align: top; \n" +
-                    "    font-family:verdana,sans-serif; \n" +
-                    "    font-weight: bold; \n" +
-                    "    background: #FFDC75; \n" +
-                    "  } \n" +
-                    "  td.row-left { \n" +
-                    "    text-align: left; \n" +
-                    "    vertical-align: middle; \n" +
-                    "    font-family:verdana,sans-serif; \n" +
-                    "    color: black; \n" +
-                    "    background: white; \n" +
-                    "  } \n" +
-                    "  td.row-center { \n" +
-                    "    text-align: center; \n" +
-                    "    vertical-align: middle; \n" +
-                    "    font-family:verdana,sans-serif; \n" +
-                    "    color: black; \n" +
-                    "    background: white; \n" +
-                    "  } \n" +
-                    "  td.row-right { \n" +
-                    "    text-align: right; \n" +
-                    "    vertical-align: middle; \n" +
-                    "    font-family:verdana,sans-serif; \n" +
-                    "    color: black; \n" +
-                    "    background: white; \n" +
-                    "  } \n" +
-                    "</style> \n";
-
-    private static final String BODY_HEADER_SECTION =
-            "<title>{0}</title> \n" +
-                    "</head> \n" +
-                    "\n" +
-                    "<body bgcolor=\"#FFFFFF\"> \n" +
-                    "\n" +
-                    "<table border=\"2\" cellspacing=\"0\" cellpadding=\"3\" " +
-                    "bordercolor=\"#000000\"> \n" +
-                    "<tr> \n" +
-                    " <td class=\"page-title\" bordercolor=\"#000000\" align=\"left\" " +
-                    "nowrap> \n" +
-                    "  <font size=\"+2\">{0}</font> \n" +
-                    " </td> \n" +
-                    "</tr> \n" +
-                    "</table> \n" +
-                    "<br> \n" +
-                    "\n";
-
-    private static final String MESSAGE_SECTION =
-            "<table border=\"1\" cellspacing=\"0\" cellpadding=\"3\"> \n" +
-                    " <tr> \n" +
-                    "  <td class=\"row-left\"><small><b>{0}</b>&nbsp;{1}</small></td>\n" +
-                    " </tr> \n" +
-                    "</table> \n" +
-                    "<br> \n" +
-                    "\n";
-
-    private static final String APPS_HEADER_SECTION =
-            "<table border=\"1\" cellspacing=\"0\" cellpadding=\"3\"> \n" +
-                    "<tr> \n" +
-                    " <td colspan=\"10\" class=\"title\">{0}</td> \n" +
-                    "</tr> \n" +
-                    "<tr> \n" +
-                    " <td class=\"header-left\"><small>{1}</small></td> \n" +
-                    " <td class=\"header-left\"><small>{2}</small></td> \n" +
-                    " <td class=\"header-center\"><small>{3}</small></td> \n" +
-                    " <td class=\"header-center\"><small>{4}</small></td> \n" +
-                    " <td class=\"header-center\">&nbsp;</td> \n" +
-                    "</tr> \n";
-
-    private static final String APPS_ROW_DETAILS_SECTION =
-            "<tr> \n" +
-                    " <td class=\"row-left\"><small><a href=\"{0}\">{0}</a>" +
-                    "</small></td> \n" +
-                    " <td class=\"row-left\"><small>{1}</small></td> \n" +
-                    " <td class=\"row-center\"><small>{2}</small></td> \n" +
-                    " <td class=\"row-center\">" +
-                    "<small><a href=\"sessions?path={0}\">{3}</a></small></td> \n";
-
-    private static final String MANAGER_APP_ROW_BUTTON_SECTION =
-            " <td class=\"row-left\"> \n" +
-                    "  <small> \n" +
-                    "  &nbsp;{1}&nbsp; \n" +
-                    "  &nbsp;{2}&nbsp; \n" +
-                    "  &nbsp;{3}&nbsp; \n" +
-                    "  &nbsp;{4}&nbsp; \n" +
-                    "  </small> \n" +
-                    " </td> \n" +
-                    "</tr> \n";
-
-    private static final String STARTED_APPS_ROW_BUTTON_SECTION =
-            " <td class=\"row-left\"> \n" +
-                    "  <small> \n" +
-                    "  &nbsp;{1}&nbsp; \n" +
-                    "  &nbsp;<a href=\"stop?path={0}\">{2}</a>&nbsp; \n" +
-                    "  &nbsp;<a href=\"reload?path={0}\">{3}</a>&nbsp; \n" +
-                    "  &nbsp;<a href=\"remove?path={0}\">{4}</a>&nbsp; \n" +
-                    "  </small> \n" +
-                    " </td> \n" +
-                    "</tr> \n";
-
-    private static final String STOPPED_APPS_ROW_BUTTON_SECTION =
-            " <td class=\"row-left\"> \n" +
-                    "  <small> \n" +
-                    "  &nbsp;<a href=\"start?path={0}\">{1}</a>&nbsp; \n" +
-                    "  &nbsp;{2}&nbsp; \n" +
-                    "  &nbsp;{3}&nbsp; \n" +
-                    "  &nbsp;<a href=\"remove?path={0}\">{4}</a>&nbsp; \n" +
-                    "  </small> \n" +
-                    " </td> \n" +
-                    "</tr> \n";
-
-    private static final String INSTALL_SECTION =
-            "<tr> \n" +
-                    " <td colspan=\"10\" class=\"header-left\"><small>{0}</small></td>\n" +
-                    "</tr> \n" +
-                    "<tr> \n" +
-                    "<form method=\"get\" action=\"install\"> \n" +
-                    "<input type=\"hidden\" name=\"path\"> \n" +
-                    " <td colspan=\"10\" class=\"row-left\"> \n" +
-                    "  <small>{1}</small> \n" +
-                    "  <input type=\"text\" name=\"installPath\" size=\"10\"> \n" +
-                    "  &nbsp;<small>{2}</small> \n" +
-                    "  <input type=\"text\" name=\"installConfig\" size=\"18\"> \n" +
-                    "  &nbsp;<small>{3}</small> \n" +
-                    "  <input type=\"text\" name=\"installWar\" size=\"18\">&nbsp; \n" +
-                    "  <input type=\"submit\" value=\"{4}\"> \n" +
-                    " </td> \n" +
-                    "</form> \n" +
-                    "</tr> \n" +
-                    "</table> \n" +
-                    "<br> \n" +
-                    "\n";
-
-    private static final String SERVER_HEADER_SECTION =
-            "<table border=\"1\" cellspacing=\"0\" cellpadding=\"3\"> \n" +
-                    "<tr> \n" +
-                    " <td colspan=\"10\" class=\"title\">{0}</td>  \n" +
-                    "</tr> \n" +
-                    "<tr> \n" +
-                    " <td class=\"header-center\"><small>{1}</small></td> \n" +
-                    " <td class=\"header-center\"><small>{2}</small></td> \n" +
-                    " <td class=\"header-center\"><small>{3}</small></td> \n" +
-                    " <td class=\"header-center\"><small>{4}</small></td> \n" +
-                    " <td class=\"header-center\"><small>{5}</small></td> \n" +
-                    " <td class=\"header-center\"><small>{6}</small></td> \n" +
-                    "</tr> \n";
-
-    private static final String SERVER_ROW_SECTION =
-            "<tr> \n" +
-                    " <td class=\"row-center\"><small>{0}</small></td> \n" +
-                    " <td class=\"row-center\"><small>{1}</small></td> \n" +
-                    " <td class=\"row-center\"><small>{2}</small></td> \n" +
-                    " <td class=\"row-center\"><small>{3}</small></td> \n" +
-                    " <td class=\"row-center\"><small>{4}</small></td> \n" +
-                    " <td class=\"row-center\"><small>{5}</small></td> \n" +
-                    "</tr> \n" +
-                    "</table> \n" +
-                    "<br> \n" +
-                    "\n";
-
-    private static final String HTML_TAIL_SECTION =
-            "</body> \n" +
-                    "</html>";
 }

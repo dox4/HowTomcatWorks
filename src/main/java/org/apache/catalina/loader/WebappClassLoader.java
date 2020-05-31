@@ -128,27 +128,6 @@ public class WebappClassLoader
         extends URLClassLoader
         implements Reloader, Lifecycle {
 
-    protected class PrivilegedFindResource
-            implements PrivilegedAction {
-
-        private final String name;
-        private final String path;
-
-        PrivilegedFindResource(String name, String path) {
-            this.name = name;
-            this.path = path;
-        }
-
-        public Object run() {
-            return findResourceInternal(name, path);
-        }
-
-    }
-
-
-    // ------------------------------------------------------- Static Variables
-
-
     /**
      * The set of trigger classes that will cause a proposed repository not
      * to be added if this class is visible to the class loader that loaded
@@ -162,6 +141,7 @@ public class WebappClassLoader
     };
 
 
+    // ------------------------------------------------------- Static Variables
     /**
      * Set of package names which are not allowed to be loaded from a webapp
      * class loader without delegating first.
@@ -173,50 +153,26 @@ public class WebappClassLoader
             "org.apache.xerces",                         // Xerces 1 & 2
             "org.apache.xalan"                           // Xalan
     };
+    /**
+     * A list of read File and Jndi Permission's required if this loader
+     * is for a web application context.
+     */
+    private final ArrayList permissionList = new ArrayList();
 
 
     // ----------------------------------------------------------- Constructors
-
-
     /**
-     * Construct a new ClassLoader with no defined repositories and no
-     * parent ClassLoader.
+     * The PermissionCollection for each CodeSource for a web
+     * application context.
      */
-    public WebappClassLoader() {
-
-        super(new URL[0]);
-        this.parent = getParent();
-        system = getSystemClassLoader();
-        securityManager = System.getSecurityManager();
-
-        if (securityManager != null) {
-            refreshPolicy();
-        }
-
-    }
-
-
+    private final HashMap loaderPC = new HashMap();
     /**
-     * Construct a new ClassLoader with no defined repositories and no
-     * parent ClassLoader.
+     * All permission.
      */
-    public WebappClassLoader(ClassLoader parent) {
-
-        super(new URL[0], parent);
-        this.parent = getParent();
-        system = getSystemClassLoader();
-        securityManager = System.getSecurityManager();
-
-        if (securityManager != null) {
-            refreshPolicy();
-        }
-
-    }
+    private final Permission allPermission = new java.security.AllPermission();
 
 
     // ----------------------------------------------------- Instance Variables
-
-
     /**
      * Associated directory context giving access to the resources in this
      * webapp.
@@ -326,22 +282,14 @@ public class WebappClassLoader
      * <code>org.apache.catalina.loader.Extension</code>.
      */
     protected ArrayList required = new ArrayList();
-
-
     /**
-     * A list of read File and Jndi Permission's required if this loader
-     * is for a web application context.
+     * Has this component been started?
      */
-    private final ArrayList permissionList = new ArrayList();
-
-
+    protected boolean started = false;
     /**
-     * The PermissionCollection for each CodeSource for a web
-     * application context.
+     * Has external repositories.
      */
-    private final HashMap loaderPC = new HashMap();
-
-
+    protected boolean hasExternalRepositories = false;
     /**
      * Instance of the SecurityManager installed.
      */
@@ -361,25 +309,39 @@ public class WebappClassLoader
 
 
     /**
-     * Has this component been started?
+     * Construct a new ClassLoader with no defined repositories and no
+     * parent ClassLoader.
      */
-    protected boolean started = false;
+    public WebappClassLoader() {
+
+        super(new URL[0]);
+        this.parent = getParent();
+        system = getSystemClassLoader();
+        securityManager = System.getSecurityManager();
+
+        if (securityManager != null) {
+            refreshPolicy();
+        }
+
+    }
 
 
     /**
-     * Has external repositories.
+     * Construct a new ClassLoader with no defined repositories and no
+     * parent ClassLoader.
      */
-    protected boolean hasExternalRepositories = false;
+    public WebappClassLoader(ClassLoader parent) {
 
+        super(new URL[0], parent);
+        this.parent = getParent();
+        system = getSystemClassLoader();
+        securityManager = System.getSecurityManager();
 
-    /**
-     * All permission.
-     */
-    private final Permission allPermission = new java.security.AllPermission();
+        if (securityManager != null) {
+            refreshPolicy();
+        }
 
-
-    // ------------------------------------------------------------- Properties
-
+    }
 
     /**
      * Get associated resources.
@@ -391,6 +353,8 @@ public class WebappClassLoader
     }
 
 
+    // ------------------------------------------------------------- Properties
+
     /**
      * Set associated resources.
      */
@@ -400,7 +364,6 @@ public class WebappClassLoader
 
     }
 
-
     /**
      * Return the debugging detail level for this component.
      */
@@ -409,7 +372,6 @@ public class WebappClassLoader
         return (this.debug);
 
     }
-
 
     /**
      * Set the debugging detail level for this component.
@@ -422,7 +384,6 @@ public class WebappClassLoader
 
     }
 
-
     /**
      * Return the "delegate first" flag for this class loader.
      */
@@ -431,7 +392,6 @@ public class WebappClassLoader
         return (this.delegate);
 
     }
-
 
     /**
      * Set the "delegate first" flag for this class loader.
@@ -443,7 +403,6 @@ public class WebappClassLoader
         this.delegate = delegate;
 
     }
-
 
     /**
      * If there is a Java SecurityManager create a read FilePermission
@@ -463,7 +422,6 @@ public class WebappClassLoader
         }
     }
 
-
     /**
      * If there is a Java SecurityManager create a read FilePermission
      * or JndiPermission for URL.
@@ -474,18 +432,14 @@ public class WebappClassLoader
         addPermission(url.toString());
     }
 
-
     /**
      * If there is a Java SecurityManager create a Permission.
-     *
-     * @param url URL for a file or directory on local system
      */
     public void addPermission(Permission permission) {
         if ((securityManager != null) && (permission != null)) {
             permissionList.add(permission);
         }
     }
-
 
     /**
      * Return the JAR path.
@@ -496,7 +450,6 @@ public class WebappClassLoader
 
     }
 
-
     /**
      * Change the Jar path.
      */
@@ -505,10 +458,6 @@ public class WebappClassLoader
         this.jarPath = jarPath;
 
     }
-
-
-    // ------------------------------------------------------- Reloader Methods
-
 
     /**
      * Add a new repository to the set of places this ClassLoader can look for
@@ -538,6 +487,8 @@ public class WebappClassLoader
 
     }
 
+
+    // ------------------------------------------------------- Reloader Methods
 
     /**
      * Add a new repository to the set of places this ClassLoader can look for
@@ -578,7 +529,6 @@ public class WebappClassLoader
         files = result2;
 
     }
-
 
     synchronized void addJar(String jar, JarFile jarFile, File file)
             throws IOException {
@@ -671,7 +621,6 @@ public class WebappClassLoader
 
     }
 
-
     /**
      * Return a list of "optional packages" (formerly "standard extensions")
      * that have been declared to be available in the repositories associated
@@ -706,7 +655,6 @@ public class WebappClassLoader
 
     }
 
-
     /**
      * Return a String array of the current repositories for this class
      * loader.  If there are no repositories, a zero-length array is
@@ -717,7 +665,6 @@ public class WebappClassLoader
         return (repositories);
 
     }
-
 
     /**
      * Return a list of "optional packages" (formerly "standard extensions")
@@ -752,7 +699,6 @@ public class WebappClassLoader
         return ((Extension[]) results.toArray(extensions));
 
     }
-
 
     /**
      * Have one or more classes or resources been modified so that a reload
@@ -846,7 +792,6 @@ public class WebappClassLoader
 
     }
 
-
     /**
      * Render a String representation of this object.
      */
@@ -884,10 +829,6 @@ public class WebappClassLoader
         return (sb.toString());
 
     }
-
-
-    // ---------------------------------------------------- ClassLoader Methods
-
 
     /**
      * Find the specified class in our local repositories, if possible.  If
@@ -969,6 +910,8 @@ public class WebappClassLoader
     }
 
 
+    // ---------------------------------------------------- ClassLoader Methods
+
     /**
      * Find the specified resource in our local repository, and return a
      * <code>URL</code> refering to it, or <code>null</code> if this resource
@@ -1009,7 +952,6 @@ public class WebappClassLoader
         return (url);
 
     }
-
 
     /**
      * Return an enumeration of <code>URLs</code> representing all of the
@@ -1075,7 +1017,6 @@ public class WebappClassLoader
         return result.elements();
 
     }
-
 
     /**
      * Find the resource with the given name.  A resource is some data
@@ -1149,7 +1090,6 @@ public class WebappClassLoader
         return (null);
 
     }
-
 
     /**
      * Find the resource with the given name, and return an input stream
@@ -1232,7 +1172,6 @@ public class WebappClassLoader
 
     }
 
-
     /**
      * Load the class with the specified name.  This method searches for
      * classes in the same manner as <code>loadClass(String, boolean)</code>
@@ -1246,7 +1185,6 @@ public class WebappClassLoader
         return (loadClass(name, false));
 
     }
-
 
     /**
      * Load the class with the specified name, searching using the following
@@ -1396,7 +1334,6 @@ public class WebappClassLoader
 
     }
 
-
     /**
      * Get the Permissions for a CodeSource.  If this instance
      * of WebappClassLoader is for a web application context,
@@ -1404,7 +1341,7 @@ public class WebappClassLoader
      * directory (if unpacked),
      * the context URL, and jar file resources.
      *
-     * @param CodeSource where the code was loaded from
+     * @param codeSource where the code was loaded from
      * @return PermissionCollection for CodeSource
      */
     protected PermissionCollection getPermissions(CodeSource codeSource) {
@@ -1425,7 +1362,6 @@ public class WebappClassLoader
         return (pc);
 
     }
-
 
     /**
      * Returns the search path of URLs for loading classes and resources.
@@ -1464,10 +1400,6 @@ public class WebappClassLoader
 
     }
 
-
-    // ------------------------------------------------------ Lifecycle Methods
-
-
     /**
      * Add a lifecycle event listener to this component.
      *
@@ -1477,6 +1409,8 @@ public class WebappClassLoader
     }
 
 
+    // ------------------------------------------------------ Lifecycle Methods
+
     /**
      * Get the lifecycle listeners associated with this lifecycle. If this
      * Lifecycle has no listeners registered, a zero-length array is returned.
@@ -1485,7 +1419,6 @@ public class WebappClassLoader
         return new LifecycleListener[0];
     }
 
-
     /**
      * Remove a lifecycle event listener from this component.
      *
@@ -1493,7 +1426,6 @@ public class WebappClassLoader
      */
     public void removeLifecycleListener(LifecycleListener listener) {
     }
-
 
     /**
      * Start the class loader.
@@ -1505,7 +1437,6 @@ public class WebappClassLoader
         started = true;
 
     }
-
 
     /**
      * Stop the class loader.
@@ -1543,10 +1474,6 @@ public class WebappClassLoader
         loaderPC.clear();
 
     }
-
-
-    // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Find specified class in local repositories.
@@ -1645,6 +1572,8 @@ public class WebappClassLoader
 
     }
 
+
+    // ------------------------------------------------------ Protected Methods
 
     /**
      * Find specified resource in local repositories.
@@ -1824,7 +1753,6 @@ public class WebappClassLoader
 
     }
 
-
     /**
      * Returns true if the specified package name is sealed according to the
      * given manifest.
@@ -1846,7 +1774,6 @@ public class WebappClassLoader
 
     }
 
-
     /**
      * Finds the resource with the given name if it has previously been
      * loaded and cached by this class loader, and return an input stream
@@ -1866,7 +1793,6 @@ public class WebappClassLoader
 
     }
 
-
     /**
      * Finds the class with the given name if it has previously been
      * loaded and cached by this class loader, and return the Class object.
@@ -1883,7 +1809,6 @@ public class WebappClassLoader
         return (null);  // FIXME - findLoadedResource()
 
     }
-
 
     /**
      * Refresh the system policy file, to pick up eventual changes.
@@ -1902,7 +1827,6 @@ public class WebappClassLoader
         }
 
     }
-
 
     /**
      * Filter classes.
@@ -1932,7 +1856,6 @@ public class WebappClassLoader
 
     }
 
-
     /**
      * Validate a classname. As per SRV.9.7.2, we must restict loading of
      * classes from J2SE (java.*) and classes of the servlet API
@@ -1951,12 +1874,11 @@ public class WebappClassLoader
 
     }
 
-
     /**
      * Check the specified JAR file, and return <code>true</code> if it does
      * not contain any of the trigger classes.
      *
-     * @param jarFile The JAR file to be checked
+     * @param jarfile The JAR file to be checked
      * @throws IOException if an input/output error occurs
      */
     private boolean validateJarFile(File jarfile)
@@ -1995,7 +1917,6 @@ public class WebappClassLoader
 
     }
 
-
     /**
      * Get URL.
      */
@@ -2014,7 +1935,6 @@ public class WebappClassLoader
 
     }
 
-
     /**
      * Log a debugging output message.
      *
@@ -2026,7 +1946,6 @@ public class WebappClassLoader
 
     }
 
-
     /**
      * Log a debugging output message with an exception.
      *
@@ -2037,6 +1956,23 @@ public class WebappClassLoader
 
         System.out.println("WebappClassLoader: " + message);
         throwable.printStackTrace(System.out);
+
+    }
+
+    protected class PrivilegedFindResource
+            implements PrivilegedAction {
+
+        private final String name;
+        private final String path;
+
+        PrivilegedFindResource(String name, String path) {
+            this.name = name;
+            this.path = path;
+        }
+
+        public Object run() {
+            return findResourceInternal(name, path);
+        }
 
     }
 

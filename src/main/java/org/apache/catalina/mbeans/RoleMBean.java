@@ -87,6 +87,24 @@ public class RoleMBean extends BaseModelMBean {
 
 
     /**
+     * The configuration information registry for our managed beans.
+     */
+    protected Registry registry = MBeanUtils.createRegistry();
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The <code>MBeanServer</code> in which we are registered.
+     */
+    protected MBeanServer mserver = MBeanUtils.createServer();
+    /**
+     * The <code>ManagedBean</code> information describing this MBean.
+     */
+    protected ManagedBean managed =
+            registry.findManagedBean("Role");
+
+
+    /**
      * Construct a <code>ModelMBean</code> with default
      * <code>ModelMBeanInfo</code> information.
      *
@@ -101,28 +119,6 @@ public class RoleMBean extends BaseModelMBean {
         super();
 
     }
-
-
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The configuration information registry for our managed beans.
-     */
-    protected Registry registry = MBeanUtils.createRegistry();
-
-
-    /**
-     * The <code>MBeanServer</code> in which we are registered.
-     */
-    protected MBeanServer mserver = MBeanUtils.createServer();
-
-
-    /**
-     * The <code>ManagedBean</code> information describing this MBean.
-     */
-    protected ManagedBean managed =
-            registry.findManagedBean("Role");
 
 
     // ------------------------------------------------------------- Attributes

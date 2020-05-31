@@ -80,6 +80,11 @@ public final class ResourceParams {
     // ------------------------------------------------------------- Properties
 
 
+    private final Hashtable resourceParams = new Hashtable();
+    /**
+     * The NamingResources with which we are associated (if any).
+     */
+    protected NamingResources resources = null;
     /**
      * The name of this resource parameters. Must be the name of the resource
      * in the java: namespace.
@@ -94,18 +99,18 @@ public final class ResourceParams {
         this.name = name;
     }
 
-    private final Hashtable resourceParams = new Hashtable();
-
     public void addParameter(String name, String value) {
         resourceParams.put(name, value);
     }
+
+    // --------------------------------------------------------- Public Methods
 
     public Hashtable getParameters() {
         return resourceParams;
     }
 
-    // --------------------------------------------------------- Public Methods
 
+    // -------------------------------------------------------- Package Methods
 
     /**
      * Return a String representation of this object.
@@ -121,15 +126,6 @@ public final class ResourceParams {
         return (sb.toString());
 
     }
-
-
-    // -------------------------------------------------------- Package Methods
-
-
-    /**
-     * The NamingResources with which we are associated (if any).
-     */
-    protected NamingResources resources = null;
 
     public NamingResources getNamingResources() {
         return (this.resources);

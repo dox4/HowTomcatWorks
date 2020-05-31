@@ -90,6 +90,27 @@ public final class SecurityCollection {
 
 
     /**
+     * Description of this web resource collection.
+     */
+    private String description = null;
+    /**
+     * The HTTP methods covered by this web resource collection.
+     */
+    private String[] methods = new String[0];
+    /**
+     * The name of this web resource collection.
+     */
+    private String name = null;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The URL patterns protected by this security collection.
+     */
+    private String[] patterns = new String[0];
+
+
+    /**
      * Construct a new security collection instance with default values.
      */
     public SecurityCollection() {
@@ -126,35 +147,7 @@ public final class SecurityCollection {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Description of this web resource collection.
-     */
-    private String description = null;
-
-
-    /**
-     * The HTTP methods covered by this web resource collection.
-     */
-    private String[] methods = new String[0];
-
-
-    /**
-     * The name of this web resource collection.
-     */
-    private String name = null;
-
-
-    /**
-     * The URL patterns protected by this security collection.
-     */
-    private String[] patterns = new String[0];
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the description of this web resource collection.

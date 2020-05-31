@@ -94,6 +94,20 @@ public class NamingResourcesMBean extends BaseModelMBean {
 
 
     /**
+     * The configuration information registry for our managed beans.
+     */
+    protected Registry registry = MBeanUtils.createRegistry();
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The <code>ManagedBean</code> information describing this MBean.
+     */
+    protected ManagedBean managed =
+            registry.findManagedBean("NamingResources");
+
+
+    /**
      * Construct a <code>ModelMBean</code> with default
      * <code>ModelMBeanInfo</code> information.
      *
@@ -109,23 +123,7 @@ public class NamingResourcesMBean extends BaseModelMBean {
 
     }
 
-
-    // ----------------------------------------------------- Instance Variables
-
-    /**
-     * The configuration information registry for our managed beans.
-     */
-    protected Registry registry = MBeanUtils.createRegistry();
-
-
-    /**
-     * The <code>ManagedBean</code> information describing this MBean.
-     */
-    protected ManagedBean managed =
-            registry.findManagedBean("NamingResources");
-
     // ------------------------------------------------------------- Attributes
-
 
     /**
      * Return the MBean Names of the set of defined environment entries for
@@ -303,7 +301,7 @@ public class NamingResourcesMBean extends BaseModelMBean {
     /**
      * Remove any environment entry with the specified name.
      *
-     * @param name Name of the environment entry to remove
+     * @param envName Name of the environment entry to remove
      */
     public void removeEnvironment(String envName) {
 

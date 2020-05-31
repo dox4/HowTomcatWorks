@@ -57,6 +57,10 @@ public interface Response {
      */
     void setContext(Context context);
 
+    /**
+     * Application commit flag accessor.
+     */
+    boolean isAppCommitted();
 
     /**
      * Set the application commit flag.
@@ -64,13 +68,6 @@ public interface Response {
      * @param appCommitted The new application committed flag value
      */
     void setAppCommitted(boolean appCommitted);
-
-
-    /**
-     * Application commit flag accessor.
-     */
-    boolean isAppCommitted();
-
 
     /**
      * Return the "processing inside an include" flag.
@@ -129,6 +126,10 @@ public interface Response {
      */
     void setStream(OutputStream stream);
 
+    /**
+     * Suspended flag accessor.
+     */
+    boolean isSuspended();
 
     /**
      * Set the suspended flag.
@@ -136,13 +137,6 @@ public interface Response {
      * @param suspended The new suspended flag value
      */
     void setSuspended(boolean suspended);
-
-
-    /**
-     * Suspended flag accessor.
-     */
-    boolean isSuspended();
-
 
     /**
      * Set the error flag.

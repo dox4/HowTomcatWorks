@@ -79,6 +79,13 @@ public interface ClusterSender {
     // --------------------------------------------------------- Public Methods
 
     /**
+     * get the senderId used to identify messages being sent in a Cluster.
+     *
+     * @return The senderId for this ClusterSender
+     */
+    String getSenderId();
+
+    /**
      * The senderId is a identifier used to identify different
      * packages being sent in a Cluster. Each package sent through
      * the concrete implementation of this interface will have
@@ -90,11 +97,11 @@ public interface ClusterSender {
     void setSenderId(String senderId);
 
     /**
-     * get the senderId used to identify messages being sent in a Cluster.
+     * Get the debug level for this component
      *
-     * @return The senderId for this ClusterSender
+     * @return The debug level
      */
-    String getSenderId();
+    int getDebug();
 
     /**
      * Set the debug detail level for this component.
@@ -104,25 +111,18 @@ public interface ClusterSender {
     void setDebug(int debug);
 
     /**
-     * Get the debug level for this component
-     *
-     * @return The debug level
-     */
-    int getDebug();
-
-    /**
-     * Set the Logger for this component.
-     *
-     * @param debug The Logger to use with this component.
-     */
-    void setLogger(Logger logger);
-
-    /**
      * Get the Logger for this component
      *
      * @return The Logger associated with this component.
      */
     Logger getLogger();
+
+    /**
+     * Set the Logger for this component.
+     *
+     * @param logger The Logger to use with this component.
+     */
+    void setLogger(Logger logger);
 
     /**
      * The log method to use in the implementation

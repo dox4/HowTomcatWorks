@@ -95,6 +95,15 @@ public abstract class RequestWrapper implements Request {
 
 
     /**
+     * The wrapped request.
+     */
+    protected Request request = null;
+
+
+    // ----------------------------------------------------- Instance Variables
+
+
+    /**
      * Construct a wrapper for the specified request.
      *
      * @param request The request to be wrapped
@@ -105,16 +114,6 @@ public abstract class RequestWrapper implements Request {
         this.request = request;
 
     }
-
-
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The wrapped request.
-     */
-    protected Request request = null;
-
 
     /**
      * Return the wrapped request.

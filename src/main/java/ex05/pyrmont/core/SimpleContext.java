@@ -15,11 +15,11 @@ import java.util.Map;
 
 public class SimpleContext implements Context, Pipeline {
 
+    protected final Map<String, String> servletMappings = new HashMap<>();
     private final Container parent = null;
     protected Map<String, Container> children = new HashMap<>();
     protected Loader loader = null;
     protected SimplePipeline pipeline = new SimplePipeline(this);
-    protected final Map<String, String> servletMappings = new HashMap<>();
     protected Mapper mapper = null;
     protected Map<String, Mapper> mappers = new HashMap<>();
 

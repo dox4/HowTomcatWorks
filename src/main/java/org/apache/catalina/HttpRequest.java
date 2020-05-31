@@ -230,15 +230,6 @@ public interface HttpRequest extends Request {
      */
     void setRequestURI(String uri);
 
-
-    /**
-     * Set the decoded request URI.
-     *
-     * @param uri The decoded request URI
-     */
-    void setDecodedRequestURI(String uri);
-
-
     /**
      * Get the decoded request URI.
      *
@@ -246,6 +237,12 @@ public interface HttpRequest extends Request {
      */
     String getDecodedRequestURI();
 
+    /**
+     * Set the decoded request URI.
+     *
+     * @param uri The decoded request URI
+     */
+    void setDecodedRequestURI(String uri);
 
     /**
      * Set the servlet path for this Request.  This will normally be called

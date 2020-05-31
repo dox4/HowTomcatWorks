@@ -90,36 +90,38 @@ public class GlobalResourcesLifecycleListener
 
 
     /**
+     * The configuration information registry for our managed beans.
+     */
+    protected static Registry registry = MBeanUtils.createRegistry();
+    /**
      * The owning Catalina component that we are attached to.
      */
     protected Lifecycle component = null;
 
 
-    /**
-     * The configuration information registry for our managed beans.
-     */
-    protected static Registry registry = MBeanUtils.createRegistry();
-
-
     // ------------------------------------------------------------- Properties
-
-
     /**
      * The debugging detail level for this component.
      */
     protected int debug = 0;
+    /**
+     * The destination for log messages.
+     */
+    protected java.io.PrintStream stream = System.out;
 
     public int getDebug() {
         return (this.debug);
     }
+
+
+    // ---------------------------------------------- LifecycleListener Methods
 
     public void setDebug(int debug) {
         this.debug = debug;
     }
 
 
-    // ---------------------------------------------- LifecycleListener Methods
-
+    // ------------------------------------------------------ Protected Methods
 
     /**
      * Primary entry point for startup and shutdown events.
@@ -137,10 +139,6 @@ public class GlobalResourcesLifecycleListener
         }
 
     }
-
-
-    // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Create the MBeans for the interesting global JNDI resources.
@@ -165,7 +163,6 @@ public class GlobalResourcesLifecycleListener
         }
 
     }
-
 
     /**
      * Create the MBeans for the interesting global JNDI resources in
@@ -204,7 +201,6 @@ public class GlobalResourcesLifecycleListener
         }
 
     }
-
 
     /**
      * Create the MBeans for the specified UserDatabase and its contents.
@@ -267,7 +263,6 @@ public class GlobalResourcesLifecycleListener
 
     }
 
-
     /**
      * Destroy the MBeans for the interesting global JNDI resources.
      */
@@ -278,13 +273,6 @@ public class GlobalResourcesLifecycleListener
         }
 
     }
-
-
-    /**
-     * The destination for log messages.
-     */
-    protected java.io.PrintStream stream = System.out;
-
 
     /**
      * Log a message.

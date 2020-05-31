@@ -137,38 +137,28 @@ public class JAASRealm
 
 
     /**
-     * The application name passed to the JAAS <code>LoginContext</code>,
-     * which uses it to select the set of relevant <code>LoginModules</code>.
-     */
-    protected String appName = "Tomcat";
-
-
-    /**
      * Descriptive information about this Realm implementation.
      */
     protected static final String info =
             "org.apache.catalina.realm.JAASRealm/1.0";
-
-
     /**
      * Descriptive information about this Realm implementation.
      */
     protected static final String name = "JAASRealm";
-
-
-    /**
-     * The list of role class names, split out for easy processing.
-     */
-    protected ArrayList roleClasses = new ArrayList();
-
-
     /**
      * The string manager for this package.
      */
     protected static final StringManager sm =
             StringManager.getManager(Constants.Package);
-
-
+    /**
+     * The application name passed to the JAAS <code>LoginContext</code>,
+     * which uses it to select the set of relevant <code>LoginModules</code>.
+     */
+    protected String appName = "Tomcat";
+    /**
+     * The list of role class names, split out for easy processing.
+     */
+    protected ArrayList roleClasses = new ArrayList();
     /**
      * The set of user class names, split out for easy processing.
      */
@@ -176,14 +166,16 @@ public class JAASRealm
 
 
     // ------------------------------------------------------------- Properties
-
-
     /**
-     * setter for the appName member variable
+     * Comma-delimited list of <code>javax.security.Principal</code> classes
+     * that represent security roles.
      */
-    public void setAppName(String name) {
-        appName = name;
-    }
+    protected String roleClassNames = null;
+    /**
+     * Comma-delimited list of <code>javax.security.Principal</code> classes
+     * that represent individual users.
+     */
+    protected String userClassNames = null;
 
     /**
      * getter for the appName member variable
@@ -193,10 +185,11 @@ public class JAASRealm
     }
 
     /**
-     * Comma-delimited list of <code>javax.security.Principal</code> classes
-     * that represent security roles.
+     * setter for the appName member variable
      */
-    protected String roleClassNames = null;
+    public void setAppName(String name) {
+        appName = name;
+    }
 
     public String getRoleClassNames() {
         return (this.roleClassNames);
@@ -222,13 +215,6 @@ public class JAASRealm
             roleClasses.add(temp);
         }
     }
-
-
-    /**
-     * Comma-delimited list of <code>javax.security.Principal</code> classes
-     * that represent individual users.
-     */
-    protected String userClassNames = null;
 
     public String getUserClassNames() {
         return (this.userClassNames);

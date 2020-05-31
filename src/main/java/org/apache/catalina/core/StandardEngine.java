@@ -86,6 +86,39 @@ public class StandardEngine
 
 
     /**
+     * The descriptive information string for this implementation.
+     */
+    private static final String info =
+            "org.apache.catalina.core.StandardEngine/1.0";
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * Host name to use when no server host, or an unknown host,
+     * is specified in the request.
+     */
+    private String defaultHost = null;
+    /**
+     * The Java class name of the default Mapper class for this Container.
+     */
+    private String mapperClass =
+            "org.apache.catalina.core.StandardEngineMapper";
+    /**
+     * The <code>Service</code> that owns this Engine, if any.
+     */
+    private Service service = null;
+    /**
+     * DefaultContext config
+     */
+    private DefaultContext defaultContext;
+    /**
+     * The JVM Route ID for this Tomcat instance. All Route ID's must be unique
+     * across the cluster.
+     */
+    private String jvmRouteId;
+
+
+    /**
      * Create a new StandardEngine component with the default basic Valve.
      */
     public StandardEngine() {
@@ -96,51 +129,7 @@ public class StandardEngine
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Host name to use when no server host, or an unknown host,
-     * is specified in the request.
-     */
-    private String defaultHost = null;
-
-
-    /**
-     * The descriptive information string for this implementation.
-     */
-    private static final String info =
-            "org.apache.catalina.core.StandardEngine/1.0";
-
-
-    /**
-     * The Java class name of the default Mapper class for this Container.
-     */
-    private String mapperClass =
-            "org.apache.catalina.core.StandardEngineMapper";
-
-
-    /**
-     * The <code>Service</code> that owns this Engine, if any.
-     */
-    private Service service = null;
-
-
-    /**
-     * DefaultContext config
-     */
-    private DefaultContext defaultContext;
-
-
-    /**
-     * The JVM Route ID for this Tomcat instance. All Route ID's must be unique
-     * across the cluster.
-     */
-    private String jvmRouteId;
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the default host.
@@ -170,6 +159,13 @@ public class StandardEngine
 
     }
 
+    /**
+     * Retrieve the cluster-wide unique identifier for this Engine.
+     * This value is only useful in a load-balancing scenario.
+     */
+    public String getJvmRoute() {
+        return jvmRouteId;
+    }
 
     /**
      * Set the cluster-wide unique identifier for this Engine.
@@ -181,16 +177,6 @@ public class StandardEngine
         this.log("setJvmRoute=" + routeId);
         jvmRouteId = routeId;
     }
-
-
-    /**
-     * Retrieve the cluster-wide unique identifier for this Engine.
-     * This value is only useful in a load-balancing scenario.
-     */
-    public String getJvmRoute() {
-        return jvmRouteId;
-    }
-
 
     /**
      * Set the DefaultContext

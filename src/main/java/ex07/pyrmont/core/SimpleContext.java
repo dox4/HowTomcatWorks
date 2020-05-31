@@ -1,4 +1,3 @@
-
 // difference from ex06.pyrmont.core.SimpleContext is that
 // this one defines the private method log, which is called
 // from different places.
@@ -19,20 +18,20 @@ import java.util.Map;
 
 public class SimpleContext implements Context, Pipeline, Lifecycle {
 
+    private final SimplePipeline pipeline = new SimplePipeline(this);
+    private final Map<String, String> servletMappings = new HashMap<>();
+    private final Container parent = null;
+    protected Map<String, Container> children = new HashMap<>();
+    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
+    protected Mapper mapper = null;
+    protected Map<String, Mapper> mappers = new HashMap<>();
+    protected boolean started = false;
+    private Loader loader = null;
+    private Logger logger = null;
+
     public SimpleContext() {
         pipeline.setBasic(new SimpleContextValve());
     }
-
-    protected Map<String, Container> children = new HashMap<>();
-    private Loader loader = null;
-    private Logger logger = null;
-    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
-    private final SimplePipeline pipeline = new SimplePipeline(this);
-    private final Map<String, String> servletMappings = new HashMap<>();
-    protected Mapper mapper = null;
-    protected Map<String, Mapper> mappers = new HashMap<>();
-    private Container parent = null;
-    protected boolean started = false;
 
     @Override
     public Object[] getApplicationListeners() {
@@ -445,7 +444,7 @@ public class SimpleContext implements Context, Pipeline, Lifecycle {
     @Override
     public String findServletMapping(String pattern) {
         synchronized (servletMappings) {
-            return ((String) servletMappings.get(pattern));
+            return servletMappings.get(pattern);
         }
     }
 
@@ -684,7 +683,7 @@ public class SimpleContext implements Context, Pipeline, Lifecycle {
 
     @Override
     public void addChild(Container child) {
-        child.setParent((Container) this);
+        child.setParent(this);
         children.put(child.getName(), child);
     }
 
@@ -696,14 +695,14 @@ public class SimpleContext implements Context, Pipeline, Lifecycle {
     public void addMapper(Mapper mapper) {
         // this method is adopted from addMapper in ContainerBase
         // the first mapper added becomes the default mapper
-        mapper.setContainer((Container) this);      // May throw IAE
+        mapper.setContainer(this);      // May throw IAE
         this.mapper = mapper;
         synchronized (mappers) {
             if (mappers.get(mapper.getProtocol()) != null) {
                 throw new IllegalArgumentException("addMapper:  Protocol '" +
                         mapper.getProtocol() + "' is not unique");
             }
-            mapper.setContainer((Container) this);      // May throw IAE
+            mapper.setContainer(this);      // May throw IAE
             mappers.put(mapper.getProtocol(), mapper);
             if (mappers.size() == 1) {
                 this.mapper = mapper;
@@ -723,7 +722,7 @@ public class SimpleContext implements Context, Pipeline, Lifecycle {
             return (null);
         }
         synchronized (children) {       // Required by post-start changes
-            return ((Container) children.get(name));
+            return children.get(name);
         }
     }
 
@@ -731,7 +730,7 @@ public class SimpleContext implements Context, Pipeline, Lifecycle {
     public Container[] findChildren() {
         synchronized (children) {
             Container[] results = new Container[children.size()];
-            return ((Container[]) children.values().toArray(results));
+            return children.values().toArray(results);
         }
     }
 
@@ -748,7 +747,7 @@ public class SimpleContext implements Context, Pipeline, Lifecycle {
             return (mapper);
         } else {
             synchronized (mappers) {
-                return ((Mapper) mappers.get(protocol));
+                return mappers.get(protocol);
             }
         }
     }

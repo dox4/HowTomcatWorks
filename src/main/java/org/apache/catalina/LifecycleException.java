@@ -81,6 +81,16 @@ public final class LifecycleException extends Exception {
 
 
     /**
+     * The error message passed to our constructor (if any)
+     */
+    protected String message = null;
+    /**
+     * The underlying exception or error passed to our constructor (if any)
+     */
+    protected Throwable throwable = null;
+
+
+    /**
      * Construct a new LifecycleException with no other information.
      */
     public LifecycleException() {
@@ -100,6 +110,9 @@ public final class LifecycleException extends Exception {
         this(message, null);
 
     }
+
+
+    //------------------------------------------------------ Instance Variables
 
 
     /**
@@ -130,23 +143,7 @@ public final class LifecycleException extends Exception {
     }
 
 
-    //------------------------------------------------------ Instance Variables
-
-
-    /**
-     * The error message passed to our constructor (if any)
-     */
-    protected String message = null;
-
-
-    /**
-     * The underlying exception or error passed to our constructor (if any)
-     */
-    protected Throwable throwable = null;
-
-
     //---------------------------------------------------------- Public Methods
-
 
     /**
      * Returns the message associated with this exception, if any.

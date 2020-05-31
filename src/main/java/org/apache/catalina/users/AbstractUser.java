@@ -167,6 +167,7 @@ public abstract class AbstractUser implements User {
 
     /**
      * Return the set of {@link Role}s assigned specifically to this user.
+     *
      * @return
      */
     @Override

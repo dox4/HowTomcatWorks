@@ -90,73 +90,54 @@ public final class StandardService
 
 
     /**
-     * The set of Connectors associated with this Service.
-     */
-    private Connector[] connectors = new Connector[0];
-
-
-    /**
-     * The Container associated with this Service.
-     */
-    private Container container = null;
-
-
-    /**
-     * The debugging detail level for this component.
-     */
-    private int debug = 0;
-
-
-    /**
      * Descriptive information about this component implementation.
      */
     private static final String info =
             "org.apache.catalina.core.StandardService/1.0";
-
-
-    /**
-     * Has this component been initialized?
-     */
-    private boolean initialized = false;
-
-
-    /**
-     * The name of this service.
-     */
-    private String name = null;
-
-
-    /**
-     * The lifecycle event support for this component.
-     */
-    private final LifecycleSupport lifecycle = new LifecycleSupport(this);
-
-
     /**
      * The string manager for this package.
      */
     private static final StringManager sm =
             StringManager.getManager(Constants.Package);
-
+    /**
+     * The lifecycle event support for this component.
+     */
+    private final LifecycleSupport lifecycle = new LifecycleSupport(this);
+    /**
+     * The property change support for this component.
+     */
+    protected PropertyChangeSupport support = new PropertyChangeSupport(this);
+    /**
+     * The set of Connectors associated with this Service.
+     */
+    private Connector[] connectors = new Connector[0];
+    /**
+     * The Container associated with this Service.
+     */
+    private Container container = null;
+    /**
+     * The debugging detail level for this component.
+     */
+    private int debug = 0;
+    /**
+     * Has this component been initialized?
+     */
+    private boolean initialized = false;
+    /**
+     * The name of this service.
+     */
+    private String name = null;
     /**
      * The <code>Server</code> that owns this Service, if any.
      */
     private Server server = null;
-
     /**
      * Has this component been started?
      */
     private boolean started = false;
 
 
-    /**
-     * The property change support for this component.
-     */
-    protected PropertyChangeSupport support = new PropertyChangeSupport(this);
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the <code>Container</code> that handles requests for all

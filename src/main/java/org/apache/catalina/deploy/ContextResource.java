@@ -81,10 +81,31 @@ public final class ContextResource {
 
 
     /**
+     * The NamingResources with which we are associated (if any).
+     */
+    protected NamingResources resources = null;
+    /**
      * The authorization requirement for this resource
      * (<code>Application</code> or <code>Container</code>).
      */
     private String auth = null;
+    /**
+     * The description of this resource.
+     */
+    private String description = null;
+    /**
+     * The name of this resource.
+     */
+    private String name = null;
+    /**
+     * The sharing scope of this resource factory (<code>Shareable</code>
+     * or <code>Unshareable</code>).
+     */
+    private String scope = "Shareable";
+    /**
+     * The type of this resource.
+     */
+    private String type = null;
 
     public String getAuth() {
         return (this.auth);
@@ -94,12 +115,6 @@ public final class ContextResource {
         this.auth = auth;
     }
 
-
-    /**
-     * The description of this resource.
-     */
-    private String description = null;
-
     public String getDescription() {
         return (this.description);
     }
@@ -107,12 +122,6 @@ public final class ContextResource {
     public void setDescription(String description) {
         this.description = description;
     }
-
-
-    /**
-     * The name of this resource.
-     */
-    private String name = null;
 
     public String getName() {
         return (this.name);
@@ -122,13 +131,6 @@ public final class ContextResource {
         this.name = name;
     }
 
-
-    /**
-     * The sharing scope of this resource factory (<code>Shareable</code>
-     * or <code>Unshareable</code>).
-     */
-    private String scope = "Shareable";
-
     public String getScope() {
         return (this.scope);
     }
@@ -137,23 +139,19 @@ public final class ContextResource {
         this.scope = scope;
     }
 
-
-    /**
-     * The type of this resource.
-     */
-    private String type = null;
-
     public String getType() {
         return (this.type);
     }
+
+
+    // --------------------------------------------------------- Public Methods
 
     public void setType(String type) {
         this.type = type;
     }
 
 
-    // --------------------------------------------------------- Public Methods
-
+    // -------------------------------------------------------- Package Methods
 
     /**
      * Return a String representation of this object.
@@ -183,15 +181,6 @@ public final class ContextResource {
         return (sb.toString());
 
     }
-
-
-    // -------------------------------------------------------- Package Methods
-
-
-    /**
-     * The NamingResources with which we are associated (if any).
-     */
-    protected NamingResources resources = null;
 
     public NamingResources getNamingResources() {
         return (this.resources);

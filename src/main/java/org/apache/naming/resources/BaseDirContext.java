@@ -68,10 +68,7 @@ import org.apache.naming.NameParserImpl;
 import org.apache.naming.StringManager;
 
 import javax.naming.*;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
-import javax.naming.directory.SearchControls;
+import javax.naming.directory.*;
 import java.util.Hashtable;
 
 /**
@@ -91,6 +88,43 @@ public abstract class BaseDirContext implements DirContext {
 
 
     /**
+     * Name parser for this context.
+     */
+    protected final NameParser nameParser = new NameParserImpl();
+    /**
+     * The debugging detail level for this component.
+     */
+    protected int debug = 0;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The document base path.
+     */
+    protected String docBase = null;
+    /**
+     * Environment.
+     */
+    protected Hashtable env;
+    /**
+     * The string manager for this package.
+     */
+    protected StringManager sm = StringManager.getManager(Constants.Package);
+    /**
+     * Cached.
+     */
+    protected boolean cached = true;
+    /**
+     * Cache TTL.
+     */
+    protected int cacheTTL = 5000; // 5s
+    /**
+     * Max size of resources which will have their content cached.
+     */
+    protected int cacheObjectMaxSize = 32768; // 32 KB
+
+
+    /**
      * Builds a base directory context.
      */
     public BaseDirContext() {
@@ -106,59 +140,7 @@ public abstract class BaseDirContext implements DirContext {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The debugging detail level for this component.
-     */
-    protected int debug = 0;
-
-
-    /**
-     * The document base path.
-     */
-    protected String docBase = null;
-
-
-    /**
-     * Environment.
-     */
-    protected Hashtable env;
-
-
-    /**
-     * The string manager for this package.
-     */
-    protected StringManager sm = StringManager.getManager(Constants.Package);
-
-
-    /**
-     * Name parser for this context.
-     */
-    protected final NameParser nameParser = new NameParserImpl();
-
-
-    /**
-     * Cached.
-     */
-    protected boolean cached = true;
-
-
-    /**
-     * Cache TTL.
-     */
-    protected int cacheTTL = 5000; // 5s
-
-
-    /**
-     * Max size of resources which will have their content cached.
-     */
-    protected int cacheObjectMaxSize = 32768; // 32 KB
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the debugging detail level for this component.
@@ -207,6 +189,12 @@ public abstract class BaseDirContext implements DirContext {
 
     }
 
+    /**
+     * Is cached ?
+     */
+    public boolean isCached() {
+        return cached;
+    }
 
     /**
      * Set cached.
@@ -215,14 +203,12 @@ public abstract class BaseDirContext implements DirContext {
         this.cached = cached;
     }
 
-
     /**
-     * Is cached ?
+     * Get cache TTL.
      */
-    public boolean isCached() {
-        return cached;
+    public int getCacheTTL() {
+        return cacheTTL;
     }
-
 
     /**
      * Set cache TTL.
@@ -231,14 +217,12 @@ public abstract class BaseDirContext implements DirContext {
         this.cacheTTL = cacheTTL;
     }
 
-
     /**
-     * Get cache TTL.
+     * Get cacheObjectMaxSize.
      */
-    public int getCacheTTL() {
-        return cacheTTL;
+    public int getCacheObjectMaxSize() {
+        return cacheObjectMaxSize;
     }
-
 
     /**
      * Set cacheObjectMaxSize.
@@ -248,16 +232,7 @@ public abstract class BaseDirContext implements DirContext {
     }
 
 
-    /**
-     * Get cacheObjectMaxSize.
-     */
-    public int getCacheObjectMaxSize() {
-        return cacheObjectMaxSize;
-    }
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Allocate resources for this directory context.

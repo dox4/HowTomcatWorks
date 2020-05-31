@@ -79,6 +79,13 @@ public interface ClusterReceiver extends Runnable {
     // --------------------------------------------------------- Public Methods
 
     /**
+     * get the senderId used to identify messages being received in a Cluster.
+     *
+     * @return The senderId for this ClusterReceiver
+     */
+    String getSenderId();
+
+    /**
      * The senderId is a identifier used to identify different
      * packages being received in a Cluster. Each package received through
      * the concrete implementation of this interface will have
@@ -90,11 +97,11 @@ public interface ClusterReceiver extends Runnable {
     void setSenderId(String senderId);
 
     /**
-     * get the senderId used to identify messages being received in a Cluster.
+     * Get the debug level for this component
      *
-     * @return The senderId for this ClusterReceiver
+     * @return The debug level
      */
-    String getSenderId();
+    int getDebug();
 
     /**
      * Set the debug detail level for this component.
@@ -104,11 +111,11 @@ public interface ClusterReceiver extends Runnable {
     void setDebug(int debug);
 
     /**
-     * Get the debug level for this component
+     * Get the time in seconds this implementation sleeps
      *
-     * @return The debug level
+     * @return The time in seconds this implementation sleeps
      */
-    int getDebug();
+    int getCheckInterval();
 
     /**
      * Set the time in seconds for this component to
@@ -119,25 +126,18 @@ public interface ClusterReceiver extends Runnable {
     void setCheckInterval(int checkInterval);
 
     /**
-     * Get the time in seconds this implementation sleeps
-     *
-     * @return The time in seconds this implementation sleeps
-     */
-    int getCheckInterval();
-
-    /**
-     * Set the Logger for this component.
-     *
-     * @param debug The Logger to use with this component.
-     */
-    void setLogger(Logger logger);
-
-    /**
      * Get the Logger for this component
      *
      * @return The Logger associated with this component.
      */
     Logger getLogger();
+
+    /**
+     * Set the Logger for this component.
+     *
+     * @param logger The Logger to use with this component.
+     */
+    void setLogger(Logger logger);
 
     /**
      * The log method to use in the implementation

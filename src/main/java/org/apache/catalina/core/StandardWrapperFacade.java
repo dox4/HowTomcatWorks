@@ -84,6 +84,15 @@ public final class StandardWrapperFacade
 
 
     /**
+     * Wrapped config.
+     */
+    private ServletConfig config = null;
+
+
+    // ----------------------------------------------------- Instance Variables
+
+
+    /**
      * Create a new facede around a StandardWrapper.
      */
     public StandardWrapperFacade(StandardWrapper config) {
@@ -94,17 +103,7 @@ public final class StandardWrapperFacade
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Wrapped config.
-     */
-    private ServletConfig config = null;
-
-
     // -------------------------------------------------- ServletConfig Methods
-
 
     public String getServletName() {
         return config.getServletName();

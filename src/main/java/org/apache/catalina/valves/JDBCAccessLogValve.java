@@ -155,6 +155,46 @@ public final class JDBCAccessLogValve
 
 
     /**
+     * The descriptive information about this implementation.
+     */
+    protected static String info =
+            "org.apache.catalina.valves.JDBCAccessLogValve/1.0";
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The string manager for this package.
+     */
+    private final StringManager sm = StringManager.getManager(Constants.Package);
+    /**
+     * The lifecycle event support for this component.
+     */
+    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
+    private String driverName;
+    private String connectionURL;
+    private String tableName;
+    private String remoteHostField;
+    private String userField;
+    private String timestampField;
+    private String virtualHostField;
+    private String methodField;
+    private String queryField;
+    private String statusField;
+    private String bytesField;
+    private String refererField;
+    private String userAgentField;
+    private String pattern;
+    private boolean resolveHosts;
+    private Connection conn;
+    private PreparedStatement ps;
+    private long currentTimeMillis;
+    /**
+     * Has this component been started yet?
+     */
+    private boolean started = false;
+
+
+    /**
      * Class constructor. Initializes the fields with the default values.
      * The defaults are:
      * <pre>
@@ -198,60 +238,7 @@ public final class JDBCAccessLogValve
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    private String driverName;
-    private String connectionURL;
-    private String tableName;
-    private String remoteHostField;
-    private String userField;
-    private String timestampField;
-    private String virtualHostField;
-    private String methodField;
-    private String queryField;
-    private String statusField;
-    private String bytesField;
-    private String refererField;
-    private String userAgentField;
-    private String pattern;
-    private boolean resolveHosts;
-
-
-    private Connection conn;
-    private PreparedStatement ps;
-
-
-    private long currentTimeMillis;
-
-
-    /**
-     * The descriptive information about this implementation.
-     */
-    protected static String info =
-            "org.apache.catalina.valves.JDBCAccessLogValve/1.0";
-
-
-    /**
-     * The lifecycle event support for this component.
-     */
-    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
-
-
-    /**
-     * The string manager for this package.
-     */
-    private final StringManager sm = StringManager.getManager(Constants.Package);
-
-
-    /**
-     * Has this component been started yet?
-     */
-    private boolean started = false;
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Sets the database driver name.

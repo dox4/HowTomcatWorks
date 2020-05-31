@@ -86,6 +86,19 @@ public final class ApplicationParameter {
      * The description of this environment entry.
      */
     private String description = null;
+    /**
+     * The name of this application parameter.
+     */
+    private String name = null;
+    /**
+     * Does this application parameter allow overrides by the application
+     * deployment descriptor?
+     */
+    private boolean override = true;
+    /**
+     * The value of this application parameter.
+     */
+    private String value = null;
 
     public String getDescription() {
         return (this.description);
@@ -95,12 +108,6 @@ public final class ApplicationParameter {
         this.description = description;
     }
 
-
-    /**
-     * The name of this application parameter.
-     */
-    private String name = null;
-
     public String getName() {
         return (this.name);
     }
@@ -109,13 +116,6 @@ public final class ApplicationParameter {
         this.name = name;
     }
 
-
-    /**
-     * Does this application parameter allow overrides by the application
-     * deployment descriptor?
-     */
-    private boolean override = true;
-
     public boolean getOverride() {
         return (this.override);
     }
@@ -123,12 +123,6 @@ public final class ApplicationParameter {
     public void setOverride(boolean override) {
         this.override = override;
     }
-
-
-    /**
-     * The value of this application parameter.
-     */
-    private String value = null;
 
     public String getValue() {
         return (this.value);

@@ -68,10 +68,7 @@ import org.apache.commons.collections.LRUMap;
 import org.apache.naming.StringManager;
 
 import javax.naming.*;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
-import javax.naming.directory.SearchControls;
+import javax.naming.directory.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -97,6 +94,50 @@ public class ProxyDirContext implements DirContext {
 
 
     // ----------------------------------------------------------- Constructors
+    /**
+     * Environment.
+     */
+    protected Hashtable env;
+    /**
+     * The string manager for this package.
+     */
+    protected StringManager sm = StringManager.getManager(Constants.Package);
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * Associated DirContext.
+     */
+    protected DirContext dirContext;
+    /**
+     * Virtual path.
+     */
+    protected String vPath = null;
+    /**
+     * Host name.
+     */
+    protected String hostName;
+    /**
+     * Context name.
+     */
+    protected String contextName;
+    /**
+     * Cache.
+     * Path -> Cache entry.
+     */
+    protected Map cache = null;
+    /**
+     * Cache size
+     */
+    protected int cacheSize = 1000;
+    /**
+     * Cache TTL.
+     */
+    protected int cacheTTL = 5000; // 5s
+    /**
+     * Max size of resources which will have their content cached.
+     */
+    protected int cacheObjectMaxSize = 32768; // 32 KB
 
 
     /**
@@ -138,72 +179,7 @@ public class ProxyDirContext implements DirContext {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Environment.
-     */
-    protected Hashtable env;
-
-
-    /**
-     * The string manager for this package.
-     */
-    protected StringManager sm = StringManager.getManager(Constants.Package);
-
-
-    /**
-     * Associated DirContext.
-     */
-    protected DirContext dirContext;
-
-
-    /**
-     * Virtual path.
-     */
-    protected String vPath = null;
-
-
-    /**
-     * Host name.
-     */
-    protected String hostName;
-
-
-    /**
-     * Context name.
-     */
-    protected String contextName;
-
-
-    /**
-     * Cache.
-     * Path -> Cache entry.
-     */
-    protected Map cache = null;
-
-
-    /**
-     * Cache size
-     */
-    protected int cacheSize = 1000;
-
-
-    /**
-     * Cache TTL.
-     */
-    protected int cacheTTL = 5000; // 5s
-
-
-    /**
-     * Max size of resources which will have their content cached.
-     */
-    protected int cacheObjectMaxSize = 32768; // 32 KB
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Return the actual directory context we are wrapping.

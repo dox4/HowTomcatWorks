@@ -115,20 +115,20 @@ public final class ReplicationWrapper implements Serializable {
     }
 
     /**
-     * Set the sender id for this wrapper
-     *
-     * @param senderId The sender id
-     */
-    public final void setSenderId(String senderId) {
-        this.senderId = senderId;
-    }
-
-    /**
      * get the sender id for this wrapper
      *
      * @return The sender Id associated with this wrapper
      */
     public final String getSenderId() {
         return (this.senderId);
+    }
+
+    /**
+     * Set the sender id for this wrapper
+     *
+     * @param senderId The sender id
+     */
+    public final void setSenderId(String senderId) {
+        this.senderId = senderId;
     }
 }

@@ -89,6 +89,23 @@ public class MemoryUser extends AbstractUser {
 
 
     /**
+     * The {@link MemoryUserDatabase} that owns this user.
+     */
+    protected MemoryUserDatabase database = null;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The set of {@link Group}s that this user is a member of.
+     */
+    protected ArrayList groups = new ArrayList();
+    /**
+     * The set of {@link Role}s associated with this user.
+     */
+    protected ArrayList roles = new ArrayList();
+
+
+    /**
      * Package-private constructor used by the factory method in
      * {@link MemoryUserDatabase}.
      *
@@ -109,29 +126,7 @@ public class MemoryUser extends AbstractUser {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The {@link MemoryUserDatabase} that owns this user.
-     */
-    protected MemoryUserDatabase database = null;
-
-
-    /**
-     * The set of {@link Group}s that this user is a member of.
-     */
-    protected ArrayList groups = new ArrayList();
-
-
-    /**
-     * The set of {@link Role}s associated with this user.
-     */
-    protected ArrayList roles = new ArrayList();
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the set of {@link Group}s to which this user belongs.
@@ -148,6 +143,7 @@ public class MemoryUser extends AbstractUser {
 
     /**
      * Return the set of {@link Role}s assigned specifically to this user.
+     *
      * @return
      */
     @Override

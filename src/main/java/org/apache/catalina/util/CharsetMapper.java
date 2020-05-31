@@ -98,6 +98,11 @@ public class CharsetMapper {
 
 
     // ---------------------------------------------------------- Constructors
+    /**
+     * The mapping properties that have been initialized from the specified or
+     * default properties resource.
+     */
+    private final Properties map = new Properties();
 
 
     /**
@@ -108,6 +113,9 @@ public class CharsetMapper {
         this(DEFAULT_RESOURCE);
 
     }
+
+
+    // ---------------------------------------------------- Instance Variables
 
 
     /**
@@ -132,18 +140,7 @@ public class CharsetMapper {
     }
 
 
-    // ---------------------------------------------------- Instance Variables
-
-
-    /**
-     * The mapping properties that have been initialized from the specified or
-     * default properties resource.
-     */
-    private final Properties map = new Properties();
-
-
     // ------------------------------------------------------- Public Methods
-
 
     /**
      * Calculate the name of a character set to be assumed, given the specified

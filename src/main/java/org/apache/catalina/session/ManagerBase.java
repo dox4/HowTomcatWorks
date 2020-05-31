@@ -105,108 +105,76 @@ public abstract class ManagerBase implements Manager {
      * session identifier.
      */
     protected static final int SESSION_ID_BYTES = 16;
-
-
+    /**
+     * The descriptive information string for this implementation.
+     */
+    private static final String info = "ManagerBase/1.0";
+    /**
+     * The descriptive name of this Manager implementation (for logging).
+     */
+    protected static String name = "ManagerBase";
+    /**
+     * The string manager for this package.
+     */
+    protected static StringManager sm =
+            StringManager.getManager(Constants.Package);
     /**
      * The message digest algorithm to be used when generating session
      * identifiers.  This must be an algorithm supported by the
      * <code>java.security.MessageDigest</code> class on your platform.
      */
     protected String algorithm = DEFAULT_ALGORITHM;
-
-
     /**
      * The Container with which this Manager is associated.
      */
     protected Container container;
-
-
     /**
      * The debugging detail level for this component.
      */
     protected int debug = 0;
-
-
     /**
      * The DefaultContext with which this Manager is associated.
      */
     protected DefaultContext defaultContext = null;
-
-
     /**
      * Return the MessageDigest implementation to be used when
      * creating session identifiers.
      */
     protected MessageDigest digest = null;
-
-
     /**
      * The distributable flag for Sessions created by this Manager.  If this
      * flag is set to <code>true</code>, any user attributes added to a
      * session controlled by this Manager must be Serializable.
      */
     protected boolean distributable;
-
-
     /**
      * A String initialization parameter used to increase the entropy of
      * the initialization of our random number generator.
      */
     protected String entropy = null;
-
-
-    /**
-     * The descriptive information string for this implementation.
-     */
-    private static final String info = "ManagerBase/1.0";
-
-
     /**
      * The default maximum inactive interval for Sessions created by
      * this Manager.
      */
     protected int maxInactiveInterval = 60;
-
-
-    /**
-     * The descriptive name of this Manager implementation (for logging).
-     */
-    protected static String name = "ManagerBase";
-
-
     /**
      * A random number generator to use when generating session identifiers.
      */
     protected Random random = null;
-
-
     /**
      * The Java class name of the random number generator class to be used
      * when generating session identifiers.
      */
     protected String randomClass = "java.security.SecureRandom";
-
-
     /**
      * The set of previously recycled Sessions for this Manager.
      */
     protected ArrayList recycled = new ArrayList();
-
-
     /**
      * The set of currently active Sessions for this Manager, keyed by
      * session identifier.
      */
     protected HashMap sessions = new HashMap();
-
-
-    /**
-     * The string manager for this package.
-     */
-    protected static StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
     /**
      * The property change support for this component.
      */

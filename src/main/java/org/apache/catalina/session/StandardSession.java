@@ -110,6 +110,127 @@ class StandardSession
 
 
     /**
+     * The dummy attribute value serialized when a NotSerializableException is
+     * encountered in <code>writeObject()</code>.
+     */
+    private static final String NOT_SERIALIZED =
+            "___NOT_SERIALIZABLE_EXCEPTION___";
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The method signature for the <code>fireContainerEvent</code> method.
+     */
+    private static final Class[] containerEventTypes =
+            {String.class, Object.class};
+    /**
+     * Descriptive information describing this Session implementation.
+     */
+    private static final String info = "StandardSession/1.0";
+    /**
+     * The string manager for this package.
+     */
+    private static final StringManager sm =
+            StringManager.getManager(Constants.Package);
+    /**
+     * The HTTP session context associated with this session.
+     */
+    private static HttpSessionContext sessionContext = null;
+    /**
+     * The session event listeners for this Session.
+     */
+    private final transient ArrayList listeners = new ArrayList();
+    /**
+     * Internal notes associated with this session by Catalina components
+     * and event listeners.  <b>IMPLEMENTATION NOTE:</b> This object is
+     * <em>not</em> saved and restored across session serializations!
+     */
+    private final transient HashMap notes = new HashMap();
+    /**
+     * The property change support for this component.  NOTE:  This value
+     * is not included in the serialized version of this object.
+     */
+    private final transient PropertyChangeSupport support =
+            new PropertyChangeSupport(this);
+    /**
+     * The collection of user data attributes associated with this Session.
+     */
+    private HashMap attributes = new HashMap();
+    /**
+     * The authentication type used to authenticate our cached Principal,
+     * if any.  NOTE:  This value is not included in the serialized
+     * version of this object.
+     */
+    private transient String authType = null;
+    /**
+     * The <code>java.lang.Method</code> for the
+     * <code>fireContainerEvent()</code> method of the
+     * <code>org.apache.catalina.core.StandardContext</code> method,
+     * if our Context implementation is of this class.  This value is
+     * computed dynamically the first time it is needed, or after
+     * a session reload (since it is declared transient).
+     */
+    private transient Method containerEventMethod = null;
+    /**
+     * The time this session was created, in milliseconds since midnight,
+     * January 1, 1970 GMT.
+     */
+    private long creationTime = 0L;
+    /**
+     * The debugging detail level for this component.  NOTE:  This value
+     * is not included in the serialized version of this object.
+     */
+    private transient int debug = 0;
+    /**
+     * We are currently processing a session expiration, so bypass
+     * certain IllegalStateException tests.  NOTE:  This value is not
+     * included in the serialized version of this object.
+     */
+    private transient boolean expiring = false;
+    /**
+     * The facade associated with this session.  NOTE:  This value is not
+     * included in the serialized version of this object.
+     */
+    private transient StandardSessionFacade facade = null;
+    /**
+     * The session identifier of this Session.
+     */
+    private String id = null;
+    /**
+     * The last accessed time for this Session.
+     */
+    private long lastAccessedTime = creationTime;
+    /**
+     * The Manager with which this Session is associated.
+     */
+    private Manager manager = null;
+    /**
+     * The maximum time interval, in seconds, between client requests before
+     * the servlet container may invalidate this session.  A negative time
+     * indicates that the session should never time out.
+     */
+    private int maxInactiveInterval = -1;
+    /**
+     * Flag indicating whether this session is new or not.
+     */
+    private boolean isNew = false;
+    /**
+     * Flag indicating whether this session is valid or not.
+     */
+    private boolean isValid = false;
+    /**
+     * The authenticated Principal associated with this session, if any.
+     * <b>IMPLEMENTATION NOTE:</b>  This object is <i>not</i> saved and
+     * restored across session serializations!
+     */
+    private transient Principal principal = null;
+    /**
+     * The current accessed time for this session.
+     */
+    private long thisAccessedTime = creationTime;
+
+
+    /**
      * Construct a new Session associated with the specified Manager.
      *
      * @param manager The manager with which this Session is associated
@@ -124,173 +245,7 @@ class StandardSession
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The dummy attribute value serialized when a NotSerializableException is
-     * encountered in <code>writeObject()</code>.
-     */
-    private static final String NOT_SERIALIZED =
-            "___NOT_SERIALIZABLE_EXCEPTION___";
-
-
-    /**
-     * The collection of user data attributes associated with this Session.
-     */
-    private HashMap attributes = new HashMap();
-
-
-    /**
-     * The authentication type used to authenticate our cached Principal,
-     * if any.  NOTE:  This value is not included in the serialized
-     * version of this object.
-     */
-    private transient String authType = null;
-
-
-    /**
-     * The <code>java.lang.Method</code> for the
-     * <code>fireContainerEvent()</code> method of the
-     * <code>org.apache.catalina.core.StandardContext</code> method,
-     * if our Context implementation is of this class.  This value is
-     * computed dynamically the first time it is needed, or after
-     * a session reload (since it is declared transient).
-     */
-    private transient Method containerEventMethod = null;
-
-
-    /**
-     * The method signature for the <code>fireContainerEvent</code> method.
-     */
-    private static final Class[] containerEventTypes =
-            {String.class, Object.class};
-
-
-    /**
-     * The time this session was created, in milliseconds since midnight,
-     * January 1, 1970 GMT.
-     */
-    private long creationTime = 0L;
-
-
-    /**
-     * The debugging detail level for this component.  NOTE:  This value
-     * is not included in the serialized version of this object.
-     */
-    private transient int debug = 0;
-
-
-    /**
-     * We are currently processing a session expiration, so bypass
-     * certain IllegalStateException tests.  NOTE:  This value is not
-     * included in the serialized version of this object.
-     */
-    private transient boolean expiring = false;
-
-
-    /**
-     * The facade associated with this session.  NOTE:  This value is not
-     * included in the serialized version of this object.
-     */
-    private transient StandardSessionFacade facade = null;
-
-
-    /**
-     * The session identifier of this Session.
-     */
-    private String id = null;
-
-
-    /**
-     * Descriptive information describing this Session implementation.
-     */
-    private static final String info = "StandardSession/1.0";
-
-
-    /**
-     * The last accessed time for this Session.
-     */
-    private long lastAccessedTime = creationTime;
-
-
-    /**
-     * The session event listeners for this Session.
-     */
-    private final transient ArrayList listeners = new ArrayList();
-
-
-    /**
-     * The Manager with which this Session is associated.
-     */
-    private Manager manager = null;
-
-
-    /**
-     * The maximum time interval, in seconds, between client requests before
-     * the servlet container may invalidate this session.  A negative time
-     * indicates that the session should never time out.
-     */
-    private int maxInactiveInterval = -1;
-
-
-    /**
-     * Flag indicating whether this session is new or not.
-     */
-    private boolean isNew = false;
-
-
-    /**
-     * Flag indicating whether this session is valid or not.
-     */
-    private boolean isValid = false;
-
-
-    /**
-     * Internal notes associated with this session by Catalina components
-     * and event listeners.  <b>IMPLEMENTATION NOTE:</b> This object is
-     * <em>not</em> saved and restored across session serializations!
-     */
-    private final transient HashMap notes = new HashMap();
-
-
-    /**
-     * The authenticated Principal associated with this session, if any.
-     * <b>IMPLEMENTATION NOTE:</b>  This object is <i>not</i> saved and
-     * restored across session serializations!
-     */
-    private transient Principal principal = null;
-
-
-    /**
-     * The string manager for this package.
-     */
-    private static final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
-    /**
-     * The HTTP session context associated with this session.
-     */
-    private static HttpSessionContext sessionContext = null;
-
-
-    /**
-     * The property change support for this component.  NOTE:  This value
-     * is not included in the serialized version of this object.
-     */
-    private final transient PropertyChangeSupport support =
-            new PropertyChangeSupport(this);
-
-
-    /**
-     * The current accessed time for this session.
-     */
-    private long thisAccessedTime = creationTime;
-
-
     // ----------------------------------------------------- Session Properties
-
 
     /**
      * Return the authentication type used to authenticate our cached
@@ -317,22 +272,6 @@ class StandardSession
 
     }
 
-
-    /**
-     * Set the creation time for this session.  This method is called by the
-     * Manager when an existing Session instance is reused.
-     *
-     * @param time The new creation time
-     */
-    public void setCreationTime(long time) {
-
-        this.creationTime = time;
-        this.lastAccessedTime = time;
-        this.thisAccessedTime = time;
-
-    }
-
-
     /**
      * Return the session identifier for this session.
      */
@@ -341,7 +280,6 @@ class StandardSession
         return (this.id);
 
     }
-
 
     /**
      * Set the session identifier for this session.
@@ -395,7 +333,6 @@ class StandardSession
 
     }
 
-
     /**
      * Return descriptive information about this Session implementation and
      * the corresponding version number, in the format
@@ -406,7 +343,6 @@ class StandardSession
         return (info);
 
     }
-
 
     /**
      * Return the last time the client sent a request associated with this
@@ -420,7 +356,6 @@ class StandardSession
 
     }
 
-
     /**
      * Return the Manager within which this Session is valid.
      */
@@ -429,7 +364,6 @@ class StandardSession
         return (this.manager);
 
     }
-
 
     /**
      * Set the Manager within which this Session is valid.
@@ -442,7 +376,6 @@ class StandardSession
 
     }
 
-
     /**
      * Return the maximum time interval, in seconds, between client requests
      * before the servlet container will invalidate the session.  A negative
@@ -453,7 +386,6 @@ class StandardSession
         return (this.maxInactiveInterval);
 
     }
-
 
     /**
      * Set the maximum time interval, in seconds, between client requests
@@ -468,19 +400,6 @@ class StandardSession
 
     }
 
-
-    /**
-     * Set the <code>isNew</code> flag for this session.
-     *
-     * @param isNew The new value for the <code>isNew</code> flag
-     */
-    public void setNew(boolean isNew) {
-
-        this.isNew = isNew;
-
-    }
-
-
     /**
      * Return the authenticated Principal that is associated with this Session.
      * This provides an <code>Authenticator</code> with a means to cache a
@@ -493,7 +412,6 @@ class StandardSession
         return (this.principal);
 
     }
-
 
     /**
      * Set the authenticated Principal that is associated with this Session.
@@ -511,7 +429,6 @@ class StandardSession
 
     }
 
-
     /**
      * Return the <code>HttpSession</code> for which this object
      * is the facade.
@@ -524,7 +441,6 @@ class StandardSession
 
     }
 
-
     /**
      * Return the <code>isValid</code> flag for this session.
      */
@@ -533,7 +449,6 @@ class StandardSession
         return (this.isValid);
 
     }
-
 
     /**
      * Set the <code>isValid</code> flag for this session.
@@ -544,10 +459,6 @@ class StandardSession
 
         this.isValid = isValid;
     }
-
-
-    // ------------------------------------------------- Session Public Methods
-
 
     /**
      * Update the accessed time information for this session.  This method
@@ -562,7 +473,6 @@ class StandardSession
 
     }
 
-
     /**
      * Add a session event listener to this component.
      */
@@ -575,6 +485,8 @@ class StandardSession
     }
 
 
+    // ------------------------------------------------- Session Public Methods
+
     /**
      * Perform the internal processing required to invalidate this session,
      * without triggering an exception if the session has already expired.
@@ -584,7 +496,6 @@ class StandardSession
         expire(true);
 
     }
-
 
     /**
      * Perform the internal processing required to invalidate this session,
@@ -657,7 +568,6 @@ class StandardSession
 
     }
 
-
     /**
      * Perform the internal processing required to passivate
      * this session.
@@ -678,7 +588,6 @@ class StandardSession
         }
 
     }
-
 
     /**
      * Perform internal processing required to activate this
@@ -701,7 +610,6 @@ class StandardSession
 
     }
 
-
     /**
      * Return the object bound with the specified name to the internal notes
      * for this session, or <code>null</code> if no such binding exists.
@@ -716,7 +624,6 @@ class StandardSession
 
     }
 
-
     /**
      * Return an Iterator containing the String names of all notes bindings
      * that exist for this session.
@@ -728,7 +635,6 @@ class StandardSession
         }
 
     }
-
 
     /**
      * Release all object references, and initialize instance variables, in
@@ -757,7 +663,6 @@ class StandardSession
 
     }
 
-
     /**
      * Remove any object bound to the specified name in the internal notes
      * for this session.
@@ -772,7 +677,6 @@ class StandardSession
 
     }
 
-
     /**
      * Remove a session event listener from this component.
      */
@@ -783,7 +687,6 @@ class StandardSession
         }
 
     }
-
 
     /**
      * Bind an object to a specified name in the internal notes associated
@@ -800,7 +703,6 @@ class StandardSession
 
     }
 
-
     /**
      * Return a string representation of this object.
      */
@@ -813,10 +715,6 @@ class StandardSession
         return (sb.toString());
 
     }
-
-
-    // ------------------------------------------------ Session Package Methods
-
 
     /**
      * Read a serialized version of the contents of this session object from
@@ -834,7 +732,6 @@ class StandardSession
 
     }
 
-
     /**
      * Write a serialized version of the contents of this session object to
      * the specified object output stream, without requiring that the
@@ -851,8 +748,7 @@ class StandardSession
     }
 
 
-    // ------------------------------------------------- HttpSession Properties
-
+    // ------------------------------------------------ Session Package Methods
 
     /**
      * Return the time when this session was created, in milliseconds since
@@ -871,6 +767,22 @@ class StandardSession
 
     }
 
+    /**
+     * Set the creation time for this session.  This method is called by the
+     * Manager when an existing Session instance is reused.
+     *
+     * @param time The new creation time
+     */
+    public void setCreationTime(long time) {
+
+        this.creationTime = time;
+        this.lastAccessedTime = time;
+        this.thisAccessedTime = time;
+
+    }
+
+
+    // ------------------------------------------------- HttpSession Properties
 
     /**
      * Return the ServletContext to which this session belongs.
@@ -887,7 +799,6 @@ class StandardSession
 
     }
 
-
     /**
      * Return the session context with which this session is associated.
      *
@@ -902,10 +813,6 @@ class StandardSession
         return (sessionContext);
 
     }
-
-
-    // ----------------------------------------------HttpSession Public Methods
-
 
     /**
      * Return the object bound with the specified name in this session, or
@@ -928,6 +835,8 @@ class StandardSession
     }
 
 
+    // ----------------------------------------------HttpSession Public Methods
+
     /**
      * Return an <code>Enumeration</code> of <code>String</code> objects
      * containing the names of the objects bound to this session.
@@ -947,7 +856,6 @@ class StandardSession
 
     }
 
-
     /**
      * Return the object bound with the specified name in this session, or
      * <code>null</code> if no object is bound with that name.
@@ -963,7 +871,6 @@ class StandardSession
         return (getAttribute(name));
 
     }
-
 
     /**
      * Return the set of names of objects bound to this session.  If there
@@ -984,7 +891,6 @@ class StandardSession
 
     }
 
-
     /**
      * Invalidates this session and unbinds any objects bound to it.
      *
@@ -1001,7 +907,6 @@ class StandardSession
         expire();
 
     }
-
 
     /**
      * Return <code>true</code> if the client does not yet know about the
@@ -1023,6 +928,16 @@ class StandardSession
 
     }
 
+    /**
+     * Set the <code>isNew</code> flag for this session.
+     *
+     * @param isNew The new value for the <code>isNew</code> flag
+     */
+    public void setNew(boolean isNew) {
+
+        this.isNew = isNew;
+
+    }
 
     /**
      * Bind an object to this session, using the specified name.  If an object

@@ -283,6 +283,9 @@ public class ContextRuleSet extends RuleSetBase {
 
 final class CreateLoaderRule extends Rule {
 
+    private final String attributeName;
+    private final String loaderClass;
+
     public CreateLoaderRule(Digester digester, String loaderClass,
                             String attributeName) {
 
@@ -291,10 +294,6 @@ final class CreateLoaderRule extends Rule {
         this.attributeName = attributeName;
 
     }
-
-    private final String attributeName;
-
-    private final String loaderClass;
 
     public void begin(Attributes attributes) throws Exception {
 

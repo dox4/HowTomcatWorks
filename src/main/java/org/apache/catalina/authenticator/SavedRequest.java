@@ -94,6 +94,35 @@ public final class SavedRequest {
      * The set of Cookies associated with this Request.
      */
     private final ArrayList cookies = new ArrayList();
+    /**
+     * The set of Headers associated with this Request.  Each key is a header
+     * name, while the value is a ArrayList containing one or more actual
+     * values for this header.  The values are returned as an Iterator when
+     * you ask for them.
+     */
+    private final HashMap headers = new HashMap();
+    /**
+     * The set of Locales associated with this Request.
+     */
+    private final ArrayList locales = new ArrayList();
+    /**
+     * The set of request parameters associated with this Request.  Each
+     * entry is keyed by the parameter name, pointing at a String array of
+     * the corresponding values.
+     */
+    private final HashMap parameters = new HashMap();
+    /**
+     * The request method used on this Request.
+     */
+    private String method = null;
+    /**
+     * The query string associated with this Request.
+     */
+    private String queryString = null;
+    /**
+     * The request URI associated with this Request.
+     */
+    private String requestURI = null;
 
     public void addCookie(Cookie cookie) {
         cookies.add(cookie);
@@ -102,15 +131,6 @@ public final class SavedRequest {
     public Iterator getCookies() {
         return (cookies.iterator());
     }
-
-
-    /**
-     * The set of Headers associated with this Request.  Each key is a header
-     * name, while the value is a ArrayList containing one or more actual
-     * values for this header.  The values are returned as an Iterator when
-     * you ask for them.
-     */
-    private final HashMap headers = new HashMap();
 
     public void addHeader(String name, String value) {
         ArrayList values = (ArrayList) headers.get(name);
@@ -133,12 +153,6 @@ public final class SavedRequest {
             return (values.iterator());
     }
 
-
-    /**
-     * The set of Locales associated with this Request.
-     */
-    private final ArrayList locales = new ArrayList();
-
     public void addLocale(Locale locale) {
         locales.add(locale);
     }
@@ -147,12 +161,6 @@ public final class SavedRequest {
         return (locales.iterator());
     }
 
-
-    /**
-     * The request method used on this Request.
-     */
-    private String method = null;
-
     public String getMethod() {
         return (this.method);
     }
@@ -160,14 +168,6 @@ public final class SavedRequest {
     public void setMethod(String method) {
         this.method = method;
     }
-
-
-    /**
-     * The set of request parameters associated with this Request.  Each
-     * entry is keyed by the parameter name, pointing at a String array of
-     * the corresponding values.
-     */
-    private final HashMap parameters = new HashMap();
 
     public void addParameter(String name, String[] values) {
         parameters.put(name, values);
@@ -181,12 +181,6 @@ public final class SavedRequest {
         return ((String[]) parameters.get(name));
     }
 
-
-    /**
-     * The query string associated with this Request.
-     */
-    private String queryString = null;
-
     public String getQueryString() {
         return (this.queryString);
     }
@@ -194,12 +188,6 @@ public final class SavedRequest {
     public void setQueryString(String queryString) {
         this.queryString = queryString;
     }
-
-
-    /**
-     * The request URI associated with this Request.
-     */
-    private String requestURI = null;
 
     public String getRequestURI() {
         return (this.requestURI);

@@ -121,45 +121,34 @@ public abstract class RequestFilterValve
 
 
     /**
+     * The descriptive information related to this implementation.
+     */
+    private static final String info =
+            "org.apache.catalina.valves.RequestFilterValve/1.0";
+    /**
+     * The StringManager for this package.
+     */
+    protected static StringManager sm =
+            StringManager.getManager(Constants.Package);
+    /**
      * The comma-delimited set of <code>allow</code> expressions.
      */
     protected String allow = null;
-
-
     /**
      * The set of <code>allow</code> regular expressions we will evaluate.
      */
     protected RE[] allows = new RE[0];
-
-
     /**
      * The set of <code>deny</code> regular expressions we will evaluate.
      */
     protected RE[] denies = new RE[0];
-
-
     /**
      * The comma-delimited set of <code>deny</code> expressions.
      */
     protected String deny = null;
 
 
-    /**
-     * The descriptive information related to this implementation.
-     */
-    private static final String info =
-            "org.apache.catalina.valves.RequestFilterValve/1.0";
-
-
-    /**
-     * The StringManager for this package.
-     */
-    protected static StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return a comma-delimited set of the <code>allow</code> expressions

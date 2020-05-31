@@ -95,80 +95,56 @@ public class JDBCRealm
 
 
     /**
-     * The connection username to use when trying to connect to the database.
-     */
-    protected String connectionName = null;
-
-
-    /**
-     * The connection URL to use when trying to connect to the database.
-     */
-    protected String connectionPassword = null;
-
-
-    /**
-     * The connection URL to use when trying to connect to the database.
-     */
-    protected String connectionURL = null;
-
-
-    /**
-     * The connection to the database.
-     */
-    protected Connection dbConnection = null;
-
-
-    /**
-     * Instance of the JDBC Driver class we use as a connection factory.
-     */
-    protected Driver driver = null;
-
-
-    /**
-     * The JDBC driver to use.
-     */
-    protected String driverName = null;
-
-
-    /**
      * Descriptive information about this Realm implementation.
      */
     protected static final String info =
             "org.apache.catalina.realm.JDBCRealm/1.0";
-
-
     /**
      * Descriptive information about this Realm implementation.
      */
     protected static final String name = "JDBCRealm";
-
-
-    /**
-     * The PreparedStatement to use for authenticating users.
-     */
-    protected PreparedStatement preparedCredentials = null;
-
-
-    /**
-     * The PreparedStatement to use for identifying the roles for
-     * a specified user.
-     */
-    protected PreparedStatement preparedRoles = null;
-
-
-    /**
-     * The column in the user role table that names a role
-     */
-    protected String roleNameCol = null;
-
-
     /**
      * The string manager for this package.
      */
     protected static final StringManager sm =
             StringManager.getManager(Constants.Package);
-
-
+    /**
+     * The connection username to use when trying to connect to the database.
+     */
+    protected String connectionName = null;
+    /**
+     * The connection URL to use when trying to connect to the database.
+     */
+    protected String connectionPassword = null;
+    /**
+     * The connection URL to use when trying to connect to the database.
+     */
+    protected String connectionURL = null;
+    /**
+     * The connection to the database.
+     */
+    protected Connection dbConnection = null;
+    /**
+     * Instance of the JDBC Driver class we use as a connection factory.
+     */
+    protected Driver driver = null;
+    /**
+     * The JDBC driver to use.
+     */
+    protected String driverName = null;
+    /**
+     * The PreparedStatement to use for authenticating users.
+     */
+    protected PreparedStatement preparedCredentials = null;
+    /**
+     * The PreparedStatement to use for identifying the roles for
+     * a specified user.
+     */
+    protected PreparedStatement preparedRoles = null;
+    /**
+     * The column in the user role table that names a role
+     */
+    protected String roleNameCol = null;
     /**
      * The column in the user table that holds the user's credintials
      */
@@ -594,7 +570,7 @@ public class JDBCRealm
     /**
      * Release our use of this connection so that it can be recycled.
      *
-     * @param dbConnnection The connection to be released
+     * @param dbConnection The connection to be released
      */
     protected void release(Connection dbConnection) {
 

@@ -94,21 +94,18 @@ public class MulticastSender
      * The name of our component, used for logging.
      */
     private final String senderName = "MulticastSender";
-
-    /**
-     * The MulticastSocket to use
-     */
-    private MulticastSocket multicastSocket = null;
-
-    /**
-     * The multicastAdress this socket is bound to
-     */
-    private InetAddress multicastAddress = null;
-
     /**
      * The multicastPort this socket is bound to
      */
     private final int multicastPort;
+    /**
+     * The MulticastSocket to use
+     */
+    private MulticastSocket multicastSocket = null;
+    /**
+     * The multicastAdress this socket is bound to
+     */
+    private InetAddress multicastAddress = null;
 
 
     // --------------------------------------------------------- Public Methods

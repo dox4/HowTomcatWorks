@@ -128,82 +128,58 @@ public abstract class AuthenticatorBase
      * session identifier.
      */
     protected static final int SESSION_ID_BYTES = 16;
-
-
+    /**
+     * Descriptive information about this implementation.
+     */
+    protected static final String info =
+            "org.apache.catalina.authenticator.AuthenticatorBase/1.0";
+    /**
+     * The string manager for this package.
+     */
+    protected static final StringManager sm =
+            StringManager.getManager(Constants.Package);
     /**
      * The message digest algorithm to be used when generating session
      * identifiers.  This must be an algorithm supported by the
      * <code>java.security.MessageDigest</code> class on your platform.
      */
     protected String algorithm = DEFAULT_ALGORITHM;
-
-
     /**
      * Should we cache authenticated Principals if the request is part of
      * an HTTP session?
      */
     protected boolean cache = true;
-
-
     /**
      * The Context to which this Valve is attached.
      */
     protected Context context = null;
-
-
     /**
      * The debugging detail level for this component.
      */
     protected int debug = 0;
-
-
     /**
      * Return the MessageDigest implementation to be used when
      * creating session identifiers.
      */
     protected MessageDigest digest = null;
-
-
     /**
      * A String initialization parameter used to increase the entropy of
      * the initialization of our random number generator.
      */
     protected String entropy = null;
-
-
-    /**
-     * Descriptive information about this implementation.
-     */
-    protected static final String info =
-            "org.apache.catalina.authenticator.AuthenticatorBase/1.0";
-
-
     /**
      * The lifecycle event support for this component.
      */
     protected LifecycleSupport lifecycle = new LifecycleSupport(this);
-
-
     /**
      * A random number generator to use when generating session identifiers.
      */
     protected Random random = null;
-
-
     /**
      * The Java class name of the random number generator class to be used
      * when generating session identifiers.
      */
     protected String randomClass = "java.security.SecureRandom";
-
-
-    /**
-     * The string manager for this package.
-     */
-    protected static final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
     /**
      * The SingleSignOn implementation in our request processing chain,
      * if there is one.
@@ -622,7 +598,7 @@ public abstract class AuthenticatorBase
      *
      * @param request  Request we are processing
      * @param response Response we are creating
-     * @param config    Login configuration describing how authentication
+     * @param config   Login configuration describing how authentication
      *                 should be performed
      * @throws IOException if an input/output error occurs
      */

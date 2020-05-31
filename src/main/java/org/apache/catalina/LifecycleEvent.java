@@ -86,6 +86,23 @@ public final class LifecycleEvent
 
 
     /**
+     * The event data associated with this event.
+     */
+    private Object data = null;
+    /**
+     * The Lifecycle on which this event occurred.
+     */
+    private Lifecycle lifecycle = null;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The event type this instance represents.
+     */
+    private String type = null;
+
+
+    /**
      * Construct a new LifecycleEvent with the specified parameters.
      *
      * @param lifecycle Component on which this event occurred
@@ -115,29 +132,7 @@ public final class LifecycleEvent
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The event data associated with this event.
-     */
-    private Object data = null;
-
-
-    /**
-     * The Lifecycle on which this event occurred.
-     */
-    private Lifecycle lifecycle = null;
-
-
-    /**
-     * The event type this instance represents.
-     */
-    private String type = null;
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the event data of this event.

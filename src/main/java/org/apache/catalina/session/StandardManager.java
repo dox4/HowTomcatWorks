@@ -99,35 +99,25 @@ public class StandardManager
 
 
     /**
-     * The interval (in seconds) between checks for expired sessions.
-     */
-    private int checkInterval = 60;
-
-
-    /**
      * The descriptive information about this implementation.
      */
     private static final String info = "StandardManager/1.0";
-
-
-    /**
-     * The lifecycle event support for this component.
-     */
-    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
-
-
-    /**
-     * The maximum number of active Sessions allowed, or -1 for no limit.
-     */
-    private int maxActiveSessions = -1;
-
-
     /**
      * The descriptive name of this Manager implementation (for logging).
      */
     protected static String name = "StandardManager";
-
-
+    /**
+     * The lifecycle event support for this component.
+     */
+    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
+    /**
+     * The interval (in seconds) between checks for expired sessions.
+     */
+    private int checkInterval = 60;
+    /**
+     * The maximum number of active Sessions allowed, or -1 for no limit.
+     */
+    private int maxActiveSessions = -1;
     /**
      * Path name of the disk file in which active sessions are saved
      * when we stop, and from which these sessions are loaded when we start.

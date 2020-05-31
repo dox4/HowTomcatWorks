@@ -85,6 +85,13 @@ import java.util.*;
 public class MappingRequest
         implements HttpRequest, HttpServletRequest {
 
+    protected String contextPath = null;
+    protected String decodedURI = null;
+    protected String queryString = null;
+    protected String pathInfo = null;
+    protected String servletPath = null;
+    protected Wrapper wrapper = null;
+
     public MappingRequest(String contextPath, String decodedURI,
                           String queryString) {
         this.contextPath = contextPath;
@@ -92,16 +99,11 @@ public class MappingRequest
         this.queryString = queryString;
     }
 
-    protected String contextPath = null;
-    protected String decodedURI = null;
-    protected String queryString = null;
-
-    protected String pathInfo = null;
-    protected String servletPath = null;
-    protected Wrapper wrapper = null;
-
     public String getContextPath() {
         return (contextPath);
+    }
+
+    public void setContextPath(String path) {
     }
 
     public ServletRequest getRequest() {
@@ -110,6 +112,9 @@ public class MappingRequest
 
     public String getDecodedRequestURI() {
         return decodedURI;
+    }
+
+    public void setDecodedRequestURI(String uri) {
     }
 
     public String getQueryString() {
@@ -211,28 +216,7 @@ public class MappingRequest
     public void removeNote(String name) {
     }
 
-    public void setContentType(String type) {
-    }
-
     public void setNote(String name, Object value) {
-    }
-
-    public void setProtocol(String protocol) {
-    }
-
-    public void setRemoteAddr(String remoteAddr) {
-    }
-
-    public void setRemoteHost(String remoteHost) {
-    }
-
-    public void setScheme(String scheme) {
-    }
-
-    public void setServerName(String name) {
-    }
-
-    public void setServerPort(int port) {
     }
 
     public Object getAttribute(String name) {
@@ -247,8 +231,15 @@ public class MappingRequest
         return null;
     }
 
+    public void setCharacterEncoding(String enc)
+            throws UnsupportedEncodingException {
+    }
+
     public int getContentLength() {
         return -1;
+    }
+
+    public void setContentLength(int length) {
     }
 
     @Override
@@ -256,11 +247,11 @@ public class MappingRequest
         return 0;
     }
 
-    public void setContentLength(int length) {
-    }
-
     public String getContentType() {
         return null;
+    }
+
+    public void setContentType(String type) {
     }
 
     public ServletInputStream getInputStream() throws IOException {
@@ -277,6 +268,9 @@ public class MappingRequest
 
     public String getProtocol() {
         return null;
+    }
+
+    public void setProtocol(String protocol) {
     }
 
     public BufferedReader getReader() throws IOException {
@@ -346,34 +340,48 @@ public class MappingRequest
         return null;
     }
 
+    public void setRemoteAddr(String remoteAddr) {
+    }
+
     public String getRemoteHost() {
         return null;
+    }
+
+    public void setRemoteHost(String remoteHost) {
     }
 
     public String getScheme() {
         return null;
     }
 
+    public void setScheme(String scheme) {
+    }
+
     public String getServerName() {
         return null;
+    }
+
+    public void setServerName(String name) {
     }
 
     public int getServerPort() {
         return -1;
     }
 
+    public void setServerPort(int port) {
+    }
+
     public boolean isSecure() {
         return false;
+    }
+
+    public void setSecure(boolean secure) {
     }
 
     public void removeAttribute(String name) {
     }
 
     public void setAttribute(String name, Object value) {
-    }
-
-    public void setCharacterEncoding(String enc)
-            throws UnsupportedEncodingException {
     }
 
     public void addCookie(Cookie cookie) {
@@ -400,31 +408,10 @@ public class MappingRequest
     public void recycle() {
     }
 
-    public void setAuthType(String authType) {
-    }
-
-    public void setContextPath(String path) {
-    }
-
-    public void setMethod(String method) {
-    }
-
     public void setRequestedSessionCookie(boolean flag) {
     }
 
-    public void setRequestedSessionId(String id) {
-    }
-
     public void setRequestedSessionURL(boolean flag) {
-    }
-
-    public void setRequestURI(String uri) {
-    }
-
-    public void setSecure(boolean secure) {
-    }
-
-    public void setUserPrincipal(Principal principal) {
     }
 
     public String getParameter(String name) {
@@ -449,6 +436,9 @@ public class MappingRequest
 
     public String getAuthType() {
         return null;
+    }
+
+    public void setAuthType(String authType) {
     }
 
     public Cookie[] getCookies() {
@@ -479,6 +469,9 @@ public class MappingRequest
         return null;
     }
 
+    public void setMethod(String method) {
+    }
+
     public String getPathTranslated() {
         return null;
     }
@@ -491,11 +484,14 @@ public class MappingRequest
         return null;
     }
 
+    public void setRequestedSessionId(String id) {
+    }
+
     public String getRequestURI() {
         return null;
     }
 
-    public void setDecodedRequestURI(String uri) {
+    public void setRequestURI(String uri) {
     }
 
     public StringBuffer getRequestURL() {
@@ -567,6 +563,9 @@ public class MappingRequest
 
     public Principal getUserPrincipal() {
         return null;
+    }
+
+    public void setUserPrincipal(Principal principal) {
     }
 
 

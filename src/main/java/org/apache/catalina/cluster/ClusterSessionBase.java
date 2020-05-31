@@ -80,26 +80,33 @@ public abstract class ClusterSessionBase {
     // ----------------------------------------------------- Instance Variables
 
     /**
+     * The string manager for this package.
+     */
+    protected StringManager sm = StringManager.getManager(Constants.Package);
+    /**
      * The senderId associated with this component
      */
     private String senderId = null;
-
     /**
      * The debug level for this component
      */
     private int debug = 0;
-
     /**
      * The Logger associated with this component.
      */
     private Logger logger = null;
 
-    /**
-     * The string manager for this package.
-     */
-    protected StringManager sm = StringManager.getManager(Constants.Package);
-
     // --------------------------------------------------------- Public Methods
+
+    /**
+     * get the senderId used to identify messages being
+     * send or received in a Cluster.
+     *
+     * @return The senderId for this component
+     */
+    public String getSenderId() {
+        return (this.senderId);
+    }
 
     /**
      * The senderId is a identifier used to identify different
@@ -115,13 +122,12 @@ public abstract class ClusterSessionBase {
     }
 
     /**
-     * get the senderId used to identify messages being
-     * send or received in a Cluster.
+     * Get the debug level for this component
      *
-     * @return The senderId for this component
+     * @return The debug level
      */
-    public String getSenderId() {
-        return (this.senderId);
+    public int getDebug() {
+        return (this.debug);
     }
 
     /**
@@ -134,30 +140,21 @@ public abstract class ClusterSessionBase {
     }
 
     /**
-     * Get the debug level for this component
-     *
-     * @return The debug level
-     */
-    public int getDebug() {
-        return (this.debug);
-    }
-
-    /**
-     * Set the Logger for this component.
-     *
-     * @param debug The Logger to use with this component.
-     */
-    public void setLogger(Logger logger) {
-        this.logger = logger;
-    }
-
-    /**
      * Get the Logger for this component
      *
      * @return The Logger associated with this component.
      */
     public Logger getLogger() {
         return (this.logger);
+    }
+
+    /**
+     * Set the Logger for this component.
+     *
+     * @param logger The Logger to use with this component.
+     */
+    public void setLogger(Logger logger) {
+        this.logger = logger;
     }
 
     public abstract String getName();

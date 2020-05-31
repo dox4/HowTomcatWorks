@@ -98,27 +98,54 @@ public class ErrorDispatcherValve
 
 
     /**
-     * The debugging detail level for this component.
-     */
-    protected int debug = 0;
-
-
-    /**
      * The descriptive information related to this implementation.
      */
     protected static final String info =
             "org.apache.catalina.valves.ErrorDispatcherValve/1.0";
-
-
     /**
      * The StringManager for this package.
      */
     protected static StringManager sm =
             StringManager.getManager(Constants.Package);
+    /**
+     * The debugging detail level for this component.
+     */
+    protected int debug = 0;
 
 
     // ------------------------------------------------------------- Properties
 
+    /**
+     * Find and return the ErrorPage instance for the specified exception's
+     * class, or an ErrorPage instance for the closest superclass for which
+     * there is such a definition.  If no associated ErrorPage instance is
+     * found, return <code>null</code>.
+     *
+     * @param context   The Context in which to search
+     * @param exception The exception for which to find an ErrorPage
+     */
+    protected static ErrorPage findErrorPage
+    (Context context, Throwable exception) {
+
+        if (exception == null)
+            return (null);
+        Class clazz = exception.getClass();
+        String name = clazz.getName();
+        while (!"java.lang.Object".equals(clazz)) {
+            ErrorPage errorPage = context.findErrorPage(name);
+            if (errorPage != null)
+                return (errorPage);
+            clazz = clazz.getSuperclass();
+            if (clazz == null)
+                break;
+            name = clazz.getName();
+        }
+        return (null);
+
+    }
+
+
+    // --------------------------------------------------------- Public Methods
 
     /**
      * Return descriptive information about this Valve implementation.
@@ -128,10 +155,6 @@ public class ErrorDispatcherValve
         return (info);
 
     }
-
-
-    // --------------------------------------------------------- Public Methods
-
 
     /**
      * Invoke the next Valve in the sequence. When the invoke returns, check
@@ -166,6 +189,8 @@ public class ErrorDispatcherValve
     }
 
 
+    // ------------------------------------------------------ Protected Methods
+
     /**
      * Return a String rendering of this object.
      */
@@ -177,10 +202,6 @@ public class ErrorDispatcherValve
         return (sb.toString());
 
     }
-
-
-    // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Handle the specified Throwable encountered while processing
@@ -241,7 +262,6 @@ public class ErrorDispatcherValve
 
     }
 
-
     /**
      * Handle the HTTP status code (and corresponding message) generated
      * while processing the specified Request to produce the specified
@@ -295,37 +315,6 @@ public class ErrorDispatcherValve
         }
 
     }
-
-
-    /**
-     * Find and return the ErrorPage instance for the specified exception's
-     * class, or an ErrorPage instance for the closest superclass for which
-     * there is such a definition.  If no associated ErrorPage instance is
-     * found, return <code>null</code>.
-     *
-     * @param context   The Context in which to search
-     * @param exception The exception for which to find an ErrorPage
-     */
-    protected static ErrorPage findErrorPage
-    (Context context, Throwable exception) {
-
-        if (exception == null)
-            return (null);
-        Class clazz = exception.getClass();
-        String name = clazz.getName();
-        while (!"java.lang.Object".equals(clazz)) {
-            ErrorPage errorPage = context.findErrorPage(name);
-            if (errorPage != null)
-                return (errorPage);
-            clazz = clazz.getSuperclass();
-            if (clazz == null)
-                break;
-            name = clazz.getName();
-        }
-        return (null);
-
-    }
-
 
     /**
      * Handle an HTTP status code or Java exception by forwarding control

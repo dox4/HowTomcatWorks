@@ -91,6 +91,15 @@ public final class ApplicationContextFacade
 
 
     /**
+     * Wrapped application context.
+     */
+    private ApplicationContext context = null;
+
+
+    // ----------------------------------------------------- Instance Variables
+
+
+    /**
      * Construct a new instance of this class, associated with the specified
      * Context instance.
      *
@@ -102,17 +111,7 @@ public final class ApplicationContextFacade
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Wrapped application context.
-     */
-    private ApplicationContext context = null;
-
-
     // ------------------------------------------------- ServletContext Methods
-
 
     @Override
     public String getContextPath() {

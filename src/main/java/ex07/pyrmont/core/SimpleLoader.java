@@ -1,18 +1,13 @@
 package ex07.pyrmont.core;
 
+import org.apache.catalina.*;
+
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLStreamHandler;
-
-import org.apache.catalina.Container;
-import org.apache.catalina.Lifecycle;
-import org.apache.catalina.LifecycleException;
-import org.apache.catalina.LifecycleListener;
-import org.apache.catalina.Loader;
-import org.apache.catalina.DefaultContext;
 
 public class SimpleLoader implements Loader, Lifecycle {
 

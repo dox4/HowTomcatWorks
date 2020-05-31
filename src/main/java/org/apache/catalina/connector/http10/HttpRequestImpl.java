@@ -86,20 +86,17 @@ final class HttpRequestImpl
 
 
     /**
+     * Descriptive information about this Request implementation.
+     */
+    protected static final String info =
+            "org.apache.catalina.connector.http10.HttpRequestImpl/1.0";
+    /**
      * The InetAddress of the remote client of ths request.
      */
     protected InetAddress inet = null;
 
 
-    /**
-     * Descriptive information about this Request implementation.
-     */
-    protected static final String info =
-            "org.apache.catalina.connector.http10.HttpRequestImpl/1.0";
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * [Package Private] Return the InetAddress of the remote client of

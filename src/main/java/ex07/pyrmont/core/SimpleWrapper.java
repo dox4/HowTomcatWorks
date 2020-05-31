@@ -1,46 +1,30 @@
 package ex07.pyrmont.core;
 
-import java.beans.PropertyChangeListener;
-import java.io.IOException;
+import org.apache.catalina.*;
+import org.apache.catalina.util.LifecycleSupport;
+
 import javax.naming.directory.DirContext;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.UnavailableException;
-
-import org.apache.catalina.Cluster;
-import org.apache.catalina.Container;
-import org.apache.catalina.ContainerListener;
-import org.apache.catalina.InstanceListener;
-import org.apache.catalina.Lifecycle;
-import org.apache.catalina.LifecycleException;
-import org.apache.catalina.LifecycleListener;
-import org.apache.catalina.Loader;
-import org.apache.catalina.Logger;
-import org.apache.catalina.Manager;
-import org.apache.catalina.Mapper;
-import org.apache.catalina.Pipeline;
-import org.apache.catalina.Realm;
-import org.apache.catalina.Request;
-import org.apache.catalina.Response;
-import org.apache.catalina.Valve;
-import org.apache.catalina.Wrapper;
-import org.apache.catalina.util.LifecycleSupport;
+import java.beans.PropertyChangeListener;
+import java.io.IOException;
 
 public class SimpleWrapper implements Wrapper, Pipeline, Lifecycle {
 
-    public SimpleWrapper() {
-        pipeline.setBasic(new SimpleWrapperValve());
-    }
-
+    private final SimplePipeline pipeline = new SimplePipeline(this);
+    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
+    protected Container parent = null;
+    protected boolean started = false;
     // the servlet instance
     private Servlet instance = null;
     private String servletClass;
     private Loader loader;
     private String name;
-    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
-    private SimplePipeline pipeline = new SimplePipeline(this);
-    protected Container parent = null;
-    protected boolean started = false;
+
+    public SimpleWrapper() {
+        pipeline.setBasic(new SimpleWrapperValve());
+    }
 
     @Override
     public synchronized void addValve(Valve valve) {

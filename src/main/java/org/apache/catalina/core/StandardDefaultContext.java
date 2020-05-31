@@ -93,6 +93,114 @@ public class StandardDefaultContext
 
 
     /**
+     * The descriptive information string for this implementation.
+     */
+    private static final String info =
+            "org.apache.catalina.core.DefaultContext/1.0";
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The string manager for this package.
+     */
+    protected static StringManager sm =
+            StringManager.getManager(Constants.Package);
+    /**
+     * Contexts we are currently associated with.
+     */
+    private final Hashtable contexts = new Hashtable();
+    /**
+     * The Java class name of the default Mapper class for this Container.
+     */
+    private final String mapperClass =
+            "org.apache.catalina.core.StandardContextMapper";
+    /**
+     * The associated naming resources.
+     */
+    private final NamingResources namingResources = new NamingResources();
+    /**
+     * The context initialization parameters for this web application,
+     * keyed by name.
+     */
+    private final HashMap parameters = new HashMap();
+    /**
+     * The human-readable name of this Container.
+     */
+    protected String name = "defaultContext";
+    /**
+     * The parent Container to which this Container is a child.
+     */
+    protected Container parent = null;
+    /**
+     * The Loader implementation with which this Container is associated.
+     */
+    protected Loader loader = null;
+    /**
+     * The Manager implementation with which this Container is associated.
+     */
+    protected Manager manager = null;
+    /**
+     * The property change support for this component.
+     */
+    protected PropertyChangeSupport support = new PropertyChangeSupport(this);
+    /**
+     * The resources DirContext object with which this Container is
+     * associated.
+     */
+    DirContext dirContext = null;
+    /**
+     * The set of application listener class names configured for this
+     * application, in the order they were encountered in the web.xml file.
+     */
+    private String[] applicationListeners = new String[0];
+    /**
+     * The set of application parameters defined for this application.
+     */
+    private ApplicationParameter[] applicationParameters =
+            new ApplicationParameter[0];
+    /**
+     * Should we attempt to use cookies for session id communication?
+     */
+    private boolean cookies = true;
+    /**
+     * Should we allow the <code>ServletContext.getContext()</code> method
+     * to access the context of other web applications in this server?
+     */
+    private boolean crossContext = true;
+    /**
+     * The set of classnames of InstanceListeners that will be added
+     * to each newly created Wrapper by <code>createWrapper()</code>.
+     */
+    private String[] instanceListeners = new String[0];
+    /**
+     * The reloadable flag for this web application.
+     */
+    private boolean reloadable = false;
+    /**
+     * The swallowOutput flag for this web application.
+     */
+    private boolean swallowOutput = false;
+    /**
+     * The set of classnames of LifecycleListeners that will be added
+     * to each newly created Wrapper by <code>createWrapper()</code>.
+     */
+    private String[] wrapperLifecycles = new String[0];
+    /**
+     * The set of classnames of ContainerListeners that will be added
+     * to each newly created Wrapper by <code>createWrapper()</code>.
+     */
+    private String[] wrapperListeners = new String[0];
+    /**
+     * Java class name of the Wrapper class implementation we use.
+     */
+    private String wrapperClass = "org.apache.catalina.core.StandardWrapper";
+    /**
+     * JNDI use flag.
+     */
+    private boolean useNaming = true;
+
+
+    /**
      * Create the DefaultContext
      */
     public StandardDefaultContext() {
@@ -102,160 +210,7 @@ public class StandardDefaultContext
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Contexts we are currently associated with.
-     */
-    private final Hashtable contexts = new Hashtable();
-
-
-    /**
-     * The set of application listener class names configured for this
-     * application, in the order they were encountered in the web.xml file.
-     */
-    private String[] applicationListeners = new String[0];
-
-
-    /**
-     * The set of application parameters defined for this application.
-     */
-    private ApplicationParameter[] applicationParameters =
-            new ApplicationParameter[0];
-
-
-    /**
-     * Should we attempt to use cookies for session id communication?
-     */
-    private boolean cookies = true;
-
-
-    /**
-     * Should we allow the <code>ServletContext.getContext()</code> method
-     * to access the context of other web applications in this server?
-     */
-    private boolean crossContext = true;
-
-
-    /**
-     * The descriptive information string for this implementation.
-     */
-    private static final String info =
-            "org.apache.catalina.core.DefaultContext/1.0";
-
-
-    /**
-     * The set of classnames of InstanceListeners that will be added
-     * to each newly created Wrapper by <code>createWrapper()</code>.
-     */
-    private String[] instanceListeners = new String[0];
-
-
-    /**
-     * The Java class name of the default Mapper class for this Container.
-     */
-    private final String mapperClass =
-            "org.apache.catalina.core.StandardContextMapper";
-
-
-    /**
-     * The associated naming resources.
-     */
-    private final NamingResources namingResources = new NamingResources();
-
-
-    /**
-     * The context initialization parameters for this web application,
-     * keyed by name.
-     */
-    private final HashMap parameters = new HashMap();
-
-
-    /**
-     * The reloadable flag for this web application.
-     */
-    private boolean reloadable = false;
-
-
-    /**
-     * The swallowOutput flag for this web application.
-     */
-    private boolean swallowOutput = false;
-
-
-    /**
-     * The set of classnames of LifecycleListeners that will be added
-     * to each newly created Wrapper by <code>createWrapper()</code>.
-     */
-    private String[] wrapperLifecycles = new String[0];
-
-
-    /**
-     * The set of classnames of ContainerListeners that will be added
-     * to each newly created Wrapper by <code>createWrapper()</code>.
-     */
-    private String[] wrapperListeners = new String[0];
-
-
-    /**
-     * Java class name of the Wrapper class implementation we use.
-     */
-    private String wrapperClass = "org.apache.catalina.core.StandardWrapper";
-
-
-    /**
-     * JNDI use flag.
-     */
-    private boolean useNaming = true;
-
-
-    /**
-     * The resources DirContext object with which this Container is
-     * associated.
-     */
-    DirContext dirContext = null;
-
-
-    /**
-     * The human-readable name of this Container.
-     */
-    protected String name = "defaultContext";
-
-
-    /**
-     * The parent Container to which this Container is a child.
-     */
-    protected Container parent = null;
-
-
-    /**
-     * The Loader implementation with which this Container is associated.
-     */
-    protected Loader loader = null;
-
-
-    /**
-     * The Manager implementation with which this Container is associated.
-     */
-    protected Manager manager = null;
-
-
-    /**
-     * The string manager for this package.
-     */
-    protected static StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
-    /**
-     * The property change support for this component.
-     */
-    protected PropertyChangeSupport support = new PropertyChangeSupport(this);
-
-
     // ----------------------------------------------------- Context Properties
-
 
     /**
      * Returns true if the internal naming support is used.
@@ -397,6 +352,15 @@ public class StandardDefaultContext
 
     }
 
+    /**
+     * Get the resources DirContext object with which this Container is
+     * associated.
+     */
+    public DirContext getResources() {
+
+        return this.dirContext;
+
+    }
 
     /**
      * Set the resources DirContext object with which this Container is
@@ -408,19 +372,6 @@ public class StandardDefaultContext
         this.dirContext = resources;
 
     }
-
-    /**
-     * Get the resources DirContext object with which this Container is
-     * associated.
-     *
-     * @param resources The new associated DirContext
-     */
-    public DirContext getResources() {
-
-        return this.dirContext;
-
-    }
-
 
     /**
      * Return the Loader with which this Container is associated.  If there is
@@ -678,7 +629,7 @@ public class StandardDefaultContext
     /**
      * Add a resource link for this web application.
      *
-     * @param resource New resource link
+     * @param resourceLink New resource link
      */
     public void addResourceLink(ContextResourceLink resourceLink) {
 

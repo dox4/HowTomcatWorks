@@ -116,6 +116,7 @@ public interface Group extends Principal {
 
     /**
      * Return the set of {@link Role}s assigned specifically to this group.
+     *
      * @return
      */
     Iterator<Role> getRoles();

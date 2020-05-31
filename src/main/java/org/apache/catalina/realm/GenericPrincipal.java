@@ -87,6 +87,28 @@ public class GenericPrincipal implements Principal {
 
 
     /**
+     * The username of the user represented by this Principal.
+     */
+    protected String name = null;
+    /**
+     * The authentication credentials for the user represented by
+     * this Principal.
+     */
+    protected String password = null;
+
+
+    // ------------------------------------------------------------- Properties
+    /**
+     * The Realm with which this Principal is associated.
+     */
+    protected Realm realm = null;
+    /**
+     * The set of roles associated with this user.
+     */
+    protected String[] roles = new String[0];
+
+
+    /**
      * Construct a new Principal, associated with the specified Realm, for the
      * specified username and password.
      *
@@ -99,7 +121,6 @@ public class GenericPrincipal implements Principal {
         this(realm, name, password, null);
 
     }
-
 
     /**
      * Construct a new Principal, associated with the specified Realm, for the
@@ -127,45 +148,17 @@ public class GenericPrincipal implements Principal {
 
     }
 
-
-    // ------------------------------------------------------------- Properties
-
-
-    /**
-     * The username of the user represented by this Principal.
-     */
-    protected String name = null;
-
     public String getName() {
         return (this.name);
     }
-
-
-    /**
-     * The authentication credentials for the user represented by
-     * this Principal.
-     */
-    protected String password = null;
 
     public String getPassword() {
         return (this.password);
     }
 
-
-    /**
-     * The Realm with which this Principal is associated.
-     */
-    protected Realm realm = null;
-
     public Realm getRealm() {
         return (this.realm);
     }
-
-
-    /**
-     * The set of roles associated with this user.
-     */
-    protected String[] roles = new String[0];
 
     public String[] getRoles() {
         return (this.roles);

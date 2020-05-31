@@ -85,6 +85,23 @@ public class JAASCallbackHandler implements CallbackHandler {
 
 
     /**
+     * The password to be authenticated with.
+     */
+    protected String password = null;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The associated <code>JAASRealm</code> instance.
+     */
+    protected JAASRealm realm = null;
+    /**
+     * The username to be authenticated with.
+     */
+    protected String username = null;
+
+
+    /**
      * Construct a callback handler configured with the specified values.
      *
      * @param realm    Our associated JAASRealm instance
@@ -102,29 +119,7 @@ public class JAASCallbackHandler implements CallbackHandler {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The password to be authenticated with.
-     */
-    protected String password = null;
-
-
-    /**
-     * The associated <code>JAASRealm</code> instance.
-     */
-    protected JAASRealm realm = null;
-
-
-    /**
-     * The username to be authenticated with.
-     */
-    protected String username = null;
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Retrieve the information requested in the provided Callbacks.  This

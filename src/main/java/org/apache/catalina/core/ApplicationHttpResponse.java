@@ -97,6 +97,26 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
 
     /**
+     * Descriptive information about this implementation.
+     */
+    protected static final String info =
+            "org.apache.catalina.core.ApplicationHttpResponse/1.0";
+    /**
+     * The string manager for this package.
+     */
+    protected static StringManager sm =
+            StringManager.getManager(Constants.Package);
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * Is this wrapped response the subject of an <code>include()</code>
+     * call?
+     */
+    protected boolean included = false;
+
+
+    /**
      * Construct a new wrapped response around the specified servlet response.
      *
      * @param response The servlet response being wrapped
@@ -124,32 +144,7 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Is this wrapped response the subject of an <code>include()</code>
-     * call?
-     */
-    protected boolean included = false;
-
-
-    /**
-     * Descriptive information about this implementation.
-     */
-    protected static final String info =
-            "org.apache.catalina.core.ApplicationHttpResponse/1.0";
-
-
-    /**
-     * The string manager for this package.
-     */
-    protected static StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
     // ------------------------------------------------ ServletResponse Methods
-
 
     /**
      * Disallow <code>reset()</code> calls on a included response.

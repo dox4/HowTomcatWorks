@@ -87,6 +87,42 @@ public final class SecurityConstraint {
 
 
     /**
+     * Was the "all roles" wildcard included in the authorization constraints
+     * for this security constraint?
+     */
+    private boolean allRoles = false;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * Was an authorization constraint included in this security constraint?
+     * This is necessary to distinguish the case where an auth-constraint with
+     * no roles (signifying no direct access at all) was requested, versus
+     * a lack of auth-constraint which implies no access control checking.
+     */
+    private boolean authConstraint = false;
+    /**
+     * The set of roles permitted to access resources protected by this
+     * security constraint.
+     */
+    private String[] authRoles = new String[0];
+    /**
+     * The set of web resource collections protected by this security
+     * constraint.
+     */
+    private SecurityCollection[] collections = new SecurityCollection[0];
+    /**
+     * The display name of this security constraint.
+     */
+    private String displayName = null;
+    /**
+     * The user data constraint for this security constraint.  Must be NONE,
+     * INTEGRAL, or CONFIDENTIAL.
+     */
+    private String userConstraint = "NONE";
+
+
+    /**
      * Construct a new security constraint instance with default values.
      */
     public SecurityConstraint() {
@@ -96,54 +132,7 @@ public final class SecurityConstraint {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Was the "all roles" wildcard included in the authorization constraints
-     * for this security constraint?
-     */
-    private boolean allRoles = false;
-
-
-    /**
-     * Was an authorization constraint included in this security constraint?
-     * This is necessary to distinguish the case where an auth-constraint with
-     * no roles (signifying no direct access at all) was requested, versus
-     * a lack of auth-constraint which implies no access control checking.
-     */
-    private boolean authConstraint = false;
-
-
-    /**
-     * The set of roles permitted to access resources protected by this
-     * security constraint.
-     */
-    private String[] authRoles = new String[0];
-
-
-    /**
-     * The set of web resource collections protected by this security
-     * constraint.
-     */
-    private SecurityCollection[] collections = new SecurityCollection[0];
-
-
-    /**
-     * The display name of this security constraint.
-     */
-    private String displayName = null;
-
-
-    /**
-     * The user data constraint for this security constraint.  Must be NONE,
-     * INTEGRAL, or CONFIDENTIAL.
-     */
-    private String userConstraint = "NONE";
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Was the "all roles" wildcard included in this authentication

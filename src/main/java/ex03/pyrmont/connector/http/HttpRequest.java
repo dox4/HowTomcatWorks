@@ -250,12 +250,12 @@ public class HttpRequest implements HttpServletRequest {
         return contentLength;
     }
 
-    public long getContentLengthLong() {
-        return 0;
-    }
-
     public void setContentLength(int length) {
         this.contentLength = length;
+    }
+
+    public long getContentLengthLong() {
+        return 0;
     }
 
     public String getContentType() {

@@ -88,26 +88,21 @@ public class StandardHostMapper
 
 
     /**
+     * The string manager for this package.
+     */
+    private static final StringManager sm =
+            StringManager.getManager(Constants.Package);
+    /**
      * The Container with which this Mapper is associated.
      */
     private StandardHost host = null;
-
-
     /**
      * The protocol with which this Mapper is associated.
      */
     private String protocol = null;
 
 
-    /**
-     * The string manager for this package.
-     */
-    private static final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the Container with which this Mapper is associated.

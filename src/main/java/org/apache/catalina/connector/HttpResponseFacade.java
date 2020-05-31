@@ -175,17 +175,6 @@ public final class HttpResponseFacade
 
     }
 
-
-    public void setStatus(int sc) {
-
-        if (isCommitted())
-            return;
-
-        ((HttpServletResponse) response).setStatus(sc);
-
-    }
-
-
     public void setStatus(int sc, String sm) {
 
         if (isCommitted())
@@ -198,6 +187,15 @@ public final class HttpResponseFacade
     @Override
     public int getStatus() {
         return 0;
+    }
+
+    public void setStatus(int sc) {
+
+        if (isCommitted())
+            return;
+
+        ((HttpServletResponse) response).setStatus(sc);
+
     }
 
     @Override

@@ -108,53 +108,9 @@ public class DefaultServlet
 
 
     /**
-     * The debugging detail level for this servlet.
-     */
-    protected int debug = 0;
-
-
-    /**
-     * The input buffer size to use when serving resources.
-     */
-    protected int input = 2048;
-
-
-    /**
-     * Should we generate directory listings when no welcome file is present?
-     */
-    protected boolean listings = true;
-
-
-    /**
-     * Read only flag. By default, it's set to true.
-     */
-    protected boolean readOnly = true;
-
-
-    /**
-     * The output buffer size to use when serving resources.
-     */
-    protected int output = 2048;
-
-
-    /**
-     * The set of welcome files for this web application
-     */
-    protected String[] welcomes = new String[0];
-
-
-    /**
-     * MD5 message digest provider.
-     */
-    protected static MessageDigest md5Helper;
-
-
-    /**
      * The MD5 helper object for this class.
      */
     protected static final MD5Encoder md5Encoder = new MD5Encoder();
-
-
     /**
      * The set of SimpleDateFormat formats to use in getDateHeader().
      */
@@ -163,15 +119,32 @@ public class DefaultServlet
             new SimpleDateFormat("EEEEEE, dd-MMM-yy HH:mm:ss zzz", Locale.US),
             new SimpleDateFormat("EEE MMMM d HH:mm:ss yyyy", Locale.US)
     };
-
-
     protected final static TimeZone gmtZone = TimeZone.getTimeZone("GMT");
-
+    /**
+     * MIME multipart separation string
+     */
+    protected static final String mimeSeparation = "CATALINA_MIME_BOUNDARY";
+    /**
+     * JNDI resources name.
+     */
+    protected static final String RESOURCES_JNDI_NAME = "java:/comp/Resources";
+    /**
+     * Size of file transfer buffer in bytes.
+     */
+    private static final int BUFFER_SIZE = 4096;
+    /**
+     * MD5 message digest provider.
+     */
+    protected static MessageDigest md5Helper;
     /**
      * Array containing the safe characters set.
      */
     protected static URLEncoder urlEncoder;
-
+    /**
+     * The string manager for this package.
+     */
+    protected static StringManager sm =
+            StringManager.getManager(Constants.Package);
 
     /**
      * GMT timezone - all HTTP dates are on GMT
@@ -190,34 +163,33 @@ public class DefaultServlet
         urlEncoder.addSafeCharacter('/');
     }
 
-
     /**
-     * MIME multipart separation string
+     * The debugging detail level for this servlet.
      */
-    protected static final String mimeSeparation = "CATALINA_MIME_BOUNDARY";
-
-
+    protected int debug = 0;
     /**
-     * JNDI resources name.
+     * The input buffer size to use when serving resources.
      */
-    protected static final String RESOURCES_JNDI_NAME = "java:/comp/Resources";
-
-
+    protected int input = 2048;
     /**
-     * The string manager for this package.
+     * Should we generate directory listings when no welcome file is present?
      */
-    protected static StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
+    protected boolean listings = true;
     /**
-     * Size of file transfer buffer in bytes.
+     * Read only flag. By default, it's set to true.
      */
-    private static final int BUFFER_SIZE = 4096;
+    protected boolean readOnly = true;
+    /**
+     * The output buffer size to use when serving resources.
+     */
+    protected int output = 2048;
+    /**
+     * The set of welcome files for this web application
+     */
+    protected String[] welcomes = new String[0];
 
 
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Finalize this servlet.
@@ -510,8 +482,8 @@ public class DefaultServlet
     /**
      * Process a POST request for the specified resource.
      *
-     * @param request  The servlet request we are processing
-     * @param response The servlet response we are creating
+     * @param req  The servlet request we are processing
+     * @param resp The servlet response we are creating
      * @throws IOException      if an input/output error occurs
      * @throws ServletException if a servlet-specified error occurs
      */
@@ -659,8 +631,8 @@ public class DefaultServlet
     /**
      * Process a POST request for the specified resource.
      *
-     * @param request  The servlet request we are processing
-     * @param response The servlet response we are creating
+     * @param req  The servlet request we are processing
+     * @param resp servlet response we are creating
      * @throws IOException      if an input/output error occurs
      * @throws ServletException if a servlet-specified error occurs
      */
@@ -737,8 +709,6 @@ public class DefaultServlet
      * Get the ETag associated with a file.
      *
      * @param resourceInfo File object
-     * @param strong       True if we want a strong ETag, in which case a checksum
-     *                     of the file has to be calculated
      */
     protected String getETag(ResourceInfo resourceInfo) {
         if (resourceInfo.strongETag != null) {
@@ -1686,7 +1656,6 @@ public class DefaultServlet
      * output stream, and ensure that both streams are closed before returning
      * (even in the face of an exception).
      *
-     * @param istream The input stream to read from
      * @param ostream The output stream to write to
      * @throws IOException if an input/output error occurs
      */
@@ -1721,8 +1690,7 @@ public class DefaultServlet
      * output stream, and ensure that both streams are closed before returning
      * (even in the face of an exception).
      *
-     * @param istream The input stream to read from
-     * @param writer  The writer to write to
+     * @param writer The writer to write to
      * @throws IOException if an input/output error occurs
      */
     private void copy(ResourceInfo resourceInfo, PrintWriter writer)
@@ -2162,16 +2130,6 @@ public class DefaultServlet
     protected class ResourceInfo {
 
 
-        /**
-         * Constructor.
-         *
-         * @param pathname Path name of the file
-         */
-        public ResourceInfo(String path, DirContext resources) {
-            set(path, resources);
-        }
-
-
         public Object object;
         public DirContext directory;
         public Resource file;
@@ -2188,6 +2146,14 @@ public class DefaultServlet
         public DirContext resources;
         protected InputStream is;
 
+        /**
+         * Constructor.
+         *
+         * @param path Path name of the file
+         */
+        public ResourceInfo(String path, DirContext resources) {
+            set(path, resources);
+        }
 
         public void recycle() {
             object = null;
@@ -2275,15 +2241,6 @@ public class DefaultServlet
             return path;
         }
 
-
-        /**
-         * Set IS.
-         */
-        public void setStream(InputStream is) {
-            this.is = is;
-        }
-
-
         /**
          * Get IS from resource.
          */
@@ -2295,6 +2252,13 @@ public class DefaultServlet
                 return (file.streamContent());
             else
                 return null;
+        }
+
+        /**
+         * Set IS.
+         */
+        public void setStream(InputStream is) {
+            this.is = is;
         }
 
 

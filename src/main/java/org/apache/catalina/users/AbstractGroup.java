@@ -153,6 +153,7 @@ public abstract class AbstractGroup implements Group {
 
     /**
      * Return the set of {@link Role}s assigned specifically to this group.
+     *
      * @return
      */
     @Override

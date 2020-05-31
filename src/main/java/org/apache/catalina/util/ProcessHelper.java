@@ -99,45 +99,37 @@ import java.util.Vector;
 public class ProcessHelper {
 
     /**
+     * the debugging detail level for this instance.
+     */
+    private final int debug = 0;
+    /**
      * script/command to be executed
      */
     private String command = null;
-
     /**
      * environment used when invoking the cgi script
      */
     private Hashtable env = null;
-
     /**
      * working directory used when invoking the cgi script
      */
     private File wd = null;
-
     /**
      * query parameters to be passed to the invoked script
      */
     private Hashtable params = null;
-
     /**
      * stdin to be passed to cgi script
      */
     private InputStream stdin = null;
-
     /**
      * response object used to set headers & get output stream
      */
     private HttpServletResponse response = null;
-
     /**
      * boolean tracking whether this object has enough info to run()
      */
     private boolean readyToRun = false;
-
-    /**
-     * the debugging detail level for this instance.
-     */
-    private final int debug = 0;
-
     /**
      * the time in ms to wait for the client to send us CGI input data
      */
@@ -155,8 +147,6 @@ public class ProcessHelper {
      * @param env     Hashtable with the desired script environment
      * @param wd      File with the script's desired working directory
      * @param params  Hashtable with the script's query parameters
-     * @param res     HttpServletResponse object for setting headers
-     *                based on CGI script output
      */
     public ProcessHelper(String command, Hashtable env, File wd,
                          Hashtable params) {

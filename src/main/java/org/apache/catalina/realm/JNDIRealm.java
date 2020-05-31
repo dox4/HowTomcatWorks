@@ -178,50 +178,36 @@ public class JNDIRealm extends RealmBase {
 
 
     /**
+     * Descriptive information about this Realm implementation.
+     */
+    protected static final String info =
+            "org.apache.catalina.realm.JNDIRealm/1.0";
+    /**
+     * Descriptive information about this Realm implementation.
+     */
+    protected static final String name = "JNDIRealm";
+    /**
      * The connection username for the server we will contact.
      */
     protected String connectionName = null;
-
-
     /**
      * The connection password for the server we will contact.
      */
     protected String connectionPassword = null;
-
-
     /**
      * The connection URL for the server we will contact.
      */
     protected String connectionURL = null;
-
-
     /**
      * The directory context linking us to our directory server.
      */
     protected DirContext context = null;
-
-
     /**
      * The JNDI context factory used to acquire our InitialContext.  By
      * default, assumes use of an LDAP server using the standard JNDI LDAP
      * provider.
      */
     protected String contextFactory = "com.sun.jndi.ldap.LdapCtxFactory";
-
-
-    /**
-     * Descriptive information about this Realm implementation.
-     */
-    protected static final String info =
-            "org.apache.catalina.realm.JNDIRealm/1.0";
-
-
-    /**
-     * Descriptive information about this Realm implementation.
-     */
-    protected static final String name = "JNDIRealm";
-
-
     /**
      * The base element for user searches.
      */
@@ -958,7 +944,7 @@ public class JNDIRealm extends RealmBase {
      * retrieved from the directory.
      *
      * @param context     The directory context
-     * @param user        The User to be authenticated
+     * @param info        The User to be authenticated
      * @param credentials Authentication credentials
      * @throws NamingException if a directory server error occurs
      */

@@ -107,6 +107,15 @@ public class WebdavServlet
     // -------------------------------------------------------------- Constants
 
 
+    /**
+     * Default namespace.
+     */
+    protected static final String DEFAULT_NAMESPACE = "DAV:";
+    /**
+     * Simple date format for the creation date ISO representation (partial).
+     */
+    protected static final SimpleDateFormat creationDateFormat =
+            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     private static final String METHOD_HEAD = "HEAD";
     private static final String METHOD_PROPFIND = "PROPFIND";
     private static final String METHOD_PROPPATCH = "PROPPATCH";
@@ -115,68 +124,38 @@ public class WebdavServlet
     private static final String METHOD_MOVE = "MOVE";
     private static final String METHOD_LOCK = "LOCK";
     private static final String METHOD_UNLOCK = "UNLOCK";
-
-
     /**
      * Default depth is infite.
      */
     private static final int INFINITY = 3; // To limit tree browsing a bit
-
-
     /**
      * PROPFIND - Specify a property mask.
      */
     private static final int FIND_BY_PROPERTY = 0;
-
-
     /**
      * PROPFIND - Display all properties.
      */
     private static final int FIND_ALL_PROP = 1;
-
-
     /**
      * PROPFIND - Return property names.
      */
     private static final int FIND_PROPERTY_NAMES = 2;
-
-
     /**
      * Create a new lock.
      */
     private static final int LOCK_CREATION = 0;
-
-
     /**
      * Refresh lock.
      */
     private static final int LOCK_REFRESH = 1;
-
-
     /**
      * Default lock timeout value.
      */
     private static final int DEFAULT_TIMEOUT = 3600;
-
-
     /**
      * Maximum lock timeout.
      */
     private static final int MAX_TIMEOUT = 604800;
-
-
-    /**
-     * Default namespace.
-     */
-    protected static final String DEFAULT_NAMESPACE = "DAV:";
-
-
-    /**
-     * Simple date format for the creation date ISO representation (partial).
-     */
-    protected static final SimpleDateFormat creationDateFormat =
-            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
 
     static {
         creationDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -734,8 +713,8 @@ public class WebdavServlet
     /**
      * Process a POST request for the specified resource.
      *
-     * @param request  The servlet request we are processing
-     * @param response The servlet response we are creating
+     * @param req  The servlet request we are processing
+     * @param resp The servlet response we are creating
      * @throws IOException      if an input/output error occurs
      * @throws ServletException if a servlet-specified error occurs
      */
@@ -2227,7 +2206,7 @@ public class WebdavServlet
     /**
      * Propfind helper method. Dispays the properties of a lock-null resource.
      *
-     * @param resources        Resources object associated with this context
+     * @param req              Resources object associated with this context
      * @param generatedXML     XML response to the Propfind request
      * @param path             Path of the current resource
      * @param type             Propfind type
@@ -2561,20 +2540,10 @@ public class WebdavServlet
         // -------------------------------------------------------- Constructor
 
 
-        /**
-         * Constructor.
-         *
-         * @param pathname Path name of the file
-         */
-        public LockInfo() {
-
-        }
+        String path = "/";
 
 
         // ------------------------------------------------- Instance Variables
-
-
-        String path = "/";
         String type = "write";
         String scope = "exclusive";
         int depth = 0;
@@ -2583,9 +2552,15 @@ public class WebdavServlet
         long expiresAt = 0;
         Date creationDate = new Date();
 
+        /**
+         * Constructor.
+         */
+        public LockInfo() {
+
+        }
+
 
         // ----------------------------------------------------- Public Methods
-
 
         /**
          * Get a String representation of this lock token.
@@ -2727,43 +2702,27 @@ class WebdavStatus {
 
 
     /**
-     * This Hashtable contains the mapping of HTTP and WebDAV
-     * status codes to descriptive text.  This is a static
-     * variable.
-     */
-    private static final Hashtable mapStatusCodes = new Hashtable();
-
-
-    // ------------------------------------------------------ HTTP Status Codes
-
-
-    /**
      * Status code (200) indicating the request succeeded normally.
      */
     public static final int SC_OK = HttpServletResponse.SC_OK;
 
 
+    // ------------------------------------------------------ HTTP Status Codes
     /**
      * Status code (201) indicating the request succeeded and created
      * a new resource on the server.
      */
     public static final int SC_CREATED = HttpServletResponse.SC_CREATED;
-
-
     /**
      * Status code (202) indicating that a request was accepted for
      * processing, but was not completed.
      */
     public static final int SC_ACCEPTED = HttpServletResponse.SC_ACCEPTED;
-
-
     /**
      * Status code (204) indicating that the request succeeded but that
      * there was no new information to return.
      */
     public static final int SC_NO_CONTENT = HttpServletResponse.SC_NO_CONTENT;
-
-
     /**
      * Status code (301) indicating that the resource has permanently
      * moved to a new location, and that future references should use a
@@ -2771,8 +2730,6 @@ class WebdavStatus {
      */
     public static final int SC_MOVED_PERMANENTLY =
             HttpServletResponse.SC_MOVED_PERMANENTLY;
-
-
     /**
      * Status code (302) indicating that the resource has temporarily
      * moved to another location, but that future references should
@@ -2780,62 +2737,46 @@ class WebdavStatus {
      */
     public static final int SC_MOVED_TEMPORARILY =
             HttpServletResponse.SC_MOVED_TEMPORARILY;
-
-
     /**
      * Status code (304) indicating that a conditional GET operation
      * found that the resource was available and not modified.
      */
     public static final int SC_NOT_MODIFIED =
             HttpServletResponse.SC_NOT_MODIFIED;
-
-
     /**
      * Status code (400) indicating the request sent by the client was
      * syntactically incorrect.
      */
     public static final int SC_BAD_REQUEST =
             HttpServletResponse.SC_BAD_REQUEST;
-
-
     /**
      * Status code (401) indicating that the request requires HTTP
      * authentication.
      */
     public static final int SC_UNAUTHORIZED =
             HttpServletResponse.SC_UNAUTHORIZED;
-
-
     /**
      * Status code (403) indicating the server understood the request
      * but refused to fulfill it.
      */
     public static final int SC_FORBIDDEN = HttpServletResponse.SC_FORBIDDEN;
-
-
     /**
      * Status code (404) indicating that the requested resource is not
      * available.
      */
     public static final int SC_NOT_FOUND = HttpServletResponse.SC_NOT_FOUND;
-
-
     /**
      * Status code (500) indicating an error inside the HTTP service
      * which prevented it from fulfilling the request.
      */
     public static final int SC_INTERNAL_SERVER_ERROR =
             HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-
-
     /**
      * Status code (501) indicating the HTTP service does not support
      * the functionality needed to fulfill the request.
      */
     public static final int SC_NOT_IMPLEMENTED =
             HttpServletResponse.SC_NOT_IMPLEMENTED;
-
-
     /**
      * Status code (502) indicating that the HTTP server received an
      * invalid response from a server it consulted when acting as a
@@ -2843,16 +2784,12 @@ class WebdavStatus {
      */
     public static final int SC_BAD_GATEWAY =
             HttpServletResponse.SC_BAD_GATEWAY;
-
-
     /**
      * Status code (503) indicating that the HTTP service is
      * temporarily overloaded, and unable to handle the request.
      */
     public static final int SC_SERVICE_UNAVAILABLE =
             HttpServletResponse.SC_SERVICE_UNAVAILABLE;
-
-
     /**
      * Status code (100) indicating the client may continue with
      * its request.  This interim response is used to inform the
@@ -2860,39 +2797,29 @@ class WebdavStatus {
      * received and has not yet been rejected by the server.
      */
     public static final int SC_CONTINUE = 100;
-
-
     /**
      * Status code (405) indicating the method specified is not
      * allowed for the resource.
      */
     public static final int SC_METHOD_NOT_ALLOWED = 405;
-
-
     /**
      * Status code (409) indicating that the request could not be
      * completed due to a conflict with the current state of the
      * resource.
      */
     public static final int SC_CONFLICT = 409;
-
-
     /**
      * Status code (412) indicating the precondition given in one
      * or more of the request-header fields evaluated to false
      * when it was tested on the server.
      */
     public static final int SC_PRECONDITION_FAILED = 412;
-
-
     /**
      * Status code (413) indicating the server is refusing to
      * process a request because the request entity is larger
      * than the server is willing or able to process.
      */
     public static final int SC_REQUEST_TOO_LONG = 413;
-
-
     /**
      * Status code (415) indicating the server is refusing to service
      * the request because the entity of the request is in a format
@@ -2900,29 +2827,21 @@ class WebdavStatus {
      * method.
      */
     public static final int SC_UNSUPPORTED_MEDIA_TYPE = 415;
-
-
-    // -------------------------------------------- Extended WebDav status code
-
-
     /**
      * Status code (207) indicating that the response requires
      * providing status for multiple independent operations.
      */
     public static final int SC_MULTI_STATUS = 207;
-    // This one colides with HTTP 1.1
-    // "207 Parital Update OK"
 
 
+    // -------------------------------------------- Extended WebDav status code
     /**
      * Status code (418) indicating the entity body submitted with
      * the PATCH method was not understood by the resource.
      */
     public static final int SC_UNPROCESSABLE_ENTITY = 418;
     // This one colides with HTTP 1.1
-    // "418 Reauthentication Required"
-
-
+    // "207 Parital Update OK"
     /**
      * Status code (419) indicating that the resource does not have
      * sufficient space to record the state of the resource after the
@@ -2930,9 +2849,7 @@ class WebdavStatus {
      */
     public static final int SC_INSUFFICIENT_SPACE_ON_RESOURCE = 419;
     // This one colides with HTTP 1.1
-    // "419 Proxy Reauthentication Required"
-
-
+    // "418 Reauthentication Required"
     /**
      * Status code (420) indicating the method was not executed on
      * a particular resource within its scope because some part of
@@ -2940,8 +2857,8 @@ class WebdavStatus {
      * aborted.
      */
     public static final int SC_METHOD_FAILURE = 420;
-
-
+    // This one colides with HTTP 1.1
+    // "419 Proxy Reauthentication Required"
     /**
      * Status code (423) indicating the destination resource of a
      * method is locked, and either the request did not contain a
@@ -2949,10 +2866,15 @@ class WebdavStatus {
      * a lock held by another principal.
      */
     public static final int SC_LOCKED = 423;
+    /**
+     * This Hashtable contains the mapping of HTTP and WebDAV
+     * status codes to descriptive text.  This is a static
+     * variable.
+     */
+    private static final Hashtable mapStatusCodes = new Hashtable();
 
 
     // ------------------------------------------------------------ Initializer
-
 
     static {
         // HTTP 1.0 tatus Code

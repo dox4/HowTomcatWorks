@@ -94,6 +94,21 @@ class ApplicationResponse extends ServletResponseWrapper {
 
 
     /**
+     * The string manager for this package.
+     */
+    protected static StringManager sm =
+            StringManager.getManager(Constants.Package);
+    /**
+     * Is this wrapped response the subject of an <code>include()</code>
+     * call?
+     */
+    protected boolean included = false;
+
+
+    // ----------------------------------------------------- Instance Variables
+
+
+    /**
      * Construct a new wrapped response around the specified servlet response.
      *
      * @param response The servlet response being wrapped
@@ -120,25 +135,7 @@ class ApplicationResponse extends ServletResponseWrapper {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Is this wrapped response the subject of an <code>include()</code>
-     * call?
-     */
-    protected boolean included = false;
-
-
-    /**
-     * The string manager for this package.
-     */
-    protected static StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
     // ------------------------------------------------ ServletResponse Methods
-
 
     /**
      * Disallow <code>reset()</code> calls on a included response.

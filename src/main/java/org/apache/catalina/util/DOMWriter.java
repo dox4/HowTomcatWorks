@@ -80,12 +80,6 @@ public class DOMWriter {
     // Data
     //
 
-    /**
-     * Default Encoding
-     */
-    private static String
-            PRINTWRITER_ENCODING = "UTF8";
-
     private static final String[] MIME2JAVA_ENCODINGS =
             {"Default", "UTF-8", "US-ASCII", "ISO-8859-1", "ISO-8859-2", "ISO-8859-3", "ISO-8859-4",
                     "ISO-8859-5", "ISO-8859-6", "ISO-8859-7", "ISO-8859-8", "ISO-8859-9", "ISO-2022-JP",
@@ -95,8 +89,11 @@ public class DOMWriter {
                     "EBCDIC-CP-HE", "EBCDIC-CP-CH", "EBCDIC-CP-ROECE", "EBCDIC-CP-YU",
                     "EBCDIC-CP-IS", "EBCDIC-CP-AR2", "UTF-16"
             };
-
-
+    /**
+     * Default Encoding
+     */
+    private static String
+            PRINTWRITER_ENCODING = "UTF8";
     /**
      * Print writer.
      */
@@ -152,6 +149,19 @@ public class DOMWriter {
         return (false);
     }// isValidJavaEncoding
 
+    private static void printValidJavaEncoding() {
+        System.err.println("    ENCODINGS:");
+        System.err.print("   ");
+        for (int i = 0;
+             i < MIME2JAVA_ENCODINGS.length; i++) {
+            System.err.print(MIME2JAVA_ENCODINGS[i] + " ");
+            if ((i % 7) == 0) {
+                System.err.println();
+                System.err.print("   ");
+            }
+        }
+
+    } // printJavaEncoding()
 
     /**
      * Prints the specified node, recursively.
@@ -299,7 +309,6 @@ public class DOMWriter {
 
     } // sortAttributes(NamedNodeMap):Attr[]
 
-
     /**
      * Normalizes the given string.
      */
@@ -345,19 +354,5 @@ public class DOMWriter {
         return (str.toString());
 
     } // normalize(String):String
-
-    private static void printValidJavaEncoding() {
-        System.err.println("    ENCODINGS:");
-        System.err.print("   ");
-        for (int i = 0;
-             i < MIME2JAVA_ENCODINGS.length; i++) {
-            System.err.print(MIME2JAVA_ENCODINGS[i] + " ");
-            if ((i % 7) == 0) {
-                System.err.println();
-                System.err.print("   ");
-            }
-        }
-
-    } // printJavaEncoding()
 
 }

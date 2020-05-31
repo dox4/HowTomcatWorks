@@ -152,6 +152,11 @@ public interface DefaultContext {
      */
     void setWrapperClass(String wrapperClass);
 
+    /**
+     * Get the resources DirContext object with which this Container is
+     * associated.
+     */
+    DirContext getResources();
 
     /**
      * Set the resources DirContext object with which this Container is
@@ -160,16 +165,6 @@ public interface DefaultContext {
      * @param resources The newly associated DirContext
      */
     void setResources(DirContext resources);
-
-
-    /**
-     * Get the resources DirContext object with which this Container is
-     * associated.
-     *
-     * @param resources The new associated DirContext
-     */
-    DirContext getResources();
-
 
     /**
      * Return the Loader with which this Container is associated.  If there is
@@ -338,7 +333,7 @@ public interface DefaultContext {
     /**
      * Add a resource link for this web application.
      *
-     * @param resource New resource link
+     * @param resourceLink New resource link
      */
     void addResourceLink(ContextResourceLink resourceLink);
 

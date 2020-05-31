@@ -104,54 +104,85 @@ public final class ContextConfig
 
 
     /**
+     * The string resources for this package.
+     */
+    private static final StringManager sm =
+            StringManager.getManager(Constants.Package);
+    /**
+     * The <code>Digester</code> we will use to process tag library
+     * descriptor files.
+     */
+    private static final Digester tldDigester = createTldDigester();
+    /**
+     * The <code>Digester</code> we will use to process web application
+     * deployment descriptor files.
+     */
+    private static final Digester webDigester = createWebDigester();
+    /**
      * The set of Authenticators that we know how to configure.  The key is
      * the name of the implemented authentication method, and the value is
      * the fully qualified Java class name of the corresponding Valve.
      */
     private static ResourceBundle authenticators = null;
-
-
     /**
      * The Context we are associated with.
      */
     private Context context = null;
-
-
     /**
      * The debugging detail level for this component.
      */
     private int debug = 0;
-
-
     /**
      * Track any fatal errors during startup configuration processing.
      */
     private boolean ok = false;
 
 
-    /**
-     * The string resources for this package.
-     */
-    private static final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
-    /**
-     * The <code>Digester</code> we will use to process tag library
-     * descriptor files.
-     */
-    private static final Digester tldDigester = createTldDigester();
-
-
-    /**
-     * The <code>Digester</code> we will use to process web application
-     * deployment descriptor files.
-     */
-    private static final Digester webDigester = createWebDigester();
-
-
     // ------------------------------------------------------------- Properties
 
+    /**
+     * Create (if necessary) and return a Digester configured to process a tag
+     * library descriptor, looking for additional listener classes to be
+     * registered.
+     */
+    private static Digester createTldDigester() {
+
+        URL url = null;
+        Digester tldDigester = new Digester();
+        tldDigester.setValidating(true);
+        url = ContextConfig.class.getResource(Constants.TldDtdResourcePath_11);
+        tldDigester.register(Constants.TldDtdPublicId_11,
+                url.toString());
+        url = ContextConfig.class.getResource(Constants.TldDtdResourcePath_12);
+        tldDigester.register(Constants.TldDtdPublicId_12,
+                url.toString());
+        tldDigester.addRuleSet(new TldRuleSet());
+        return (tldDigester);
+
+    }
+
+    /**
+     * Create (if necessary) and return a Digester configured to process the
+     * web application deployment descriptor (web.xml).
+     */
+    private static Digester createWebDigester() {
+
+        URL url = null;
+        Digester webDigester = new Digester();
+        webDigester.setValidating(true);
+        url = ContextConfig.class.getResource(Constants.WebDtdResourcePath_22);
+        webDigester.register(Constants.WebDtdPublicId_22,
+                url.toString());
+        url = ContextConfig.class.getResource(Constants.WebDtdResourcePath_23);
+        webDigester.register(Constants.WebDtdPublicId_23,
+                url.toString());
+        webDigester.addRuleSet(new WebRuleSet());
+        return (webDigester);
+
+    }
+
+
+    // --------------------------------------------------------- Public Methods
 
     /**
      * Return the debugging detail level for this component.
@@ -163,6 +194,8 @@ public final class ContextConfig
     }
 
 
+    // -------------------------------------------------------- Private Methods
+
     /**
      * Set the debugging detail level for this component.
      *
@@ -173,10 +206,6 @@ public final class ContextConfig
         this.debug = debug;
 
     }
-
-
-    // --------------------------------------------------------- Public Methods
-
 
     /**
      * Process the START event for an associated Context.
@@ -205,10 +234,6 @@ public final class ContextConfig
             stop();
 
     }
-
-
-    // -------------------------------------------------------- Private Methods
-
 
     /**
      * Process the application configuration file, if it exists.
@@ -262,7 +287,6 @@ public final class ContextConfig
         }
 
     }
-
 
     /**
      * Set up an Authenticator automatically if required, and one has not
@@ -354,7 +378,6 @@ public final class ContextConfig
 
     }
 
-
     /**
      * Create and deploy a Valve to expose the SSL certificates presented
      * by this client, if any.  If we cannot instantiate such a Valve
@@ -426,50 +449,6 @@ public final class ContextConfig
         }
 
     }
-
-
-    /**
-     * Create (if necessary) and return a Digester configured to process a tag
-     * library descriptor, looking for additional listener classes to be
-     * registered.
-     */
-    private static Digester createTldDigester() {
-
-        URL url = null;
-        Digester tldDigester = new Digester();
-        tldDigester.setValidating(true);
-        url = ContextConfig.class.getResource(Constants.TldDtdResourcePath_11);
-        tldDigester.register(Constants.TldDtdPublicId_11,
-                url.toString());
-        url = ContextConfig.class.getResource(Constants.TldDtdResourcePath_12);
-        tldDigester.register(Constants.TldDtdPublicId_12,
-                url.toString());
-        tldDigester.addRuleSet(new TldRuleSet());
-        return (tldDigester);
-
-    }
-
-
-    /**
-     * Create (if necessary) and return a Digester configured to process the
-     * web application deployment descriptor (web.xml).
-     */
-    private static Digester createWebDigester() {
-
-        URL url = null;
-        Digester webDigester = new Digester();
-        webDigester.setValidating(true);
-        url = ContextConfig.class.getResource(Constants.WebDtdResourcePath_22);
-        webDigester.register(Constants.WebDtdPublicId_22,
-                url.toString());
-        url = ContextConfig.class.getResource(Constants.WebDtdResourcePath_23);
-        webDigester.register(Constants.WebDtdPublicId_23,
-                url.toString());
-        webDigester.addRuleSet(new WebRuleSet());
-        return (webDigester);
-
-    }
-
 
     /**
      * Process the default configuration file, if it exists.

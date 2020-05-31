@@ -81,9 +81,33 @@ public final class ContextLocalEjb {
 
 
     /**
+     * The NamingResources with which we are associated (if any).
+     */
+    protected NamingResources resources = null;
+    /**
      * The description of this EJB.
      */
     private String description = null;
+    /**
+     * The name of the EJB home implementation class.
+     */
+    private String home = null;
+    /**
+     * The link to a J2EE EJB definition.
+     */
+    private String link = null;
+    /**
+     * The name of the EJB local implementation class.
+     */
+    private String local = null;
+    /**
+     * The name of this EJB.
+     */
+    private String name = null;
+    /**
+     * The name of the EJB bean implementation class.
+     */
+    private String type = null;
 
     public String getDescription() {
         return (this.description);
@@ -93,12 +117,6 @@ public final class ContextLocalEjb {
         this.description = description;
     }
 
-
-    /**
-     * The name of the EJB home implementation class.
-     */
-    private String home = null;
-
     public String getHome() {
         return (this.home);
     }
@@ -106,12 +124,6 @@ public final class ContextLocalEjb {
     public void setHome(String home) {
         this.home = home;
     }
-
-
-    /**
-     * The link to a J2EE EJB definition.
-     */
-    private String link = null;
 
     public String getLink() {
         return (this.link);
@@ -121,12 +133,6 @@ public final class ContextLocalEjb {
         this.link = link;
     }
 
-
-    /**
-     * The name of the EJB local implementation class.
-     */
-    private String local = null;
-
     public String getLocal() {
         return (this.local);
     }
@@ -134,12 +140,6 @@ public final class ContextLocalEjb {
     public void setLocal(String local) {
         this.local = local;
     }
-
-
-    /**
-     * The name of this EJB.
-     */
-    private String name = null;
 
     public String getName() {
         return (this.name);
@@ -149,23 +149,19 @@ public final class ContextLocalEjb {
         this.name = name;
     }
 
-
-    /**
-     * The name of the EJB bean implementation class.
-     */
-    private String type = null;
-
     public String getType() {
         return (this.type);
     }
+
+
+    // --------------------------------------------------------- Public Methods
 
     public void setType(String type) {
         this.type = type;
     }
 
 
-    // --------------------------------------------------------- Public Methods
-
+    // -------------------------------------------------------- Package Methods
 
     /**
      * Return a String representation of this object.
@@ -199,15 +195,6 @@ public final class ContextLocalEjb {
         return (sb.toString());
 
     }
-
-
-    // -------------------------------------------------------- Package Methods
-
-
-    /**
-     * The NamingResources with which we are associated (if any).
-     */
-    protected NamingResources resources = null;
 
     public NamingResources getNamingResources() {
         return (this.resources);

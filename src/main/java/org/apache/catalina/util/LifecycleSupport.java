@@ -85,6 +85,19 @@ public final class LifecycleSupport {
 
 
     /**
+     * The source component for lifecycle events that we will fire.
+     */
+    private final Lifecycle lifecycle;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The set of registered LifecycleListeners for event notifications.
+     */
+    private LifecycleListener[] listeners = new LifecycleListener[0];
+
+
+    /**
      * Construct a new LifecycleSupport object associated with the specified
      * Lifecycle component.
      *
@@ -99,23 +112,7 @@ public final class LifecycleSupport {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The source component for lifecycle events that we will fire.
-     */
-    private Lifecycle lifecycle;
-
-
-    /**
-     * The set of registered LifecycleListeners for event notifications.
-     */
-    private LifecycleListener[] listeners = new LifecycleListener[0];
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Add a lifecycle event listener to this component.

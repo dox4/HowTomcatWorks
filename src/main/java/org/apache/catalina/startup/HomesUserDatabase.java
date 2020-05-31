@@ -87,6 +87,19 @@ public final class HomesUserDatabase
 
 
     /**
+     * The set of home directories for all defined users, keyed by username.
+     */
+    private final Hashtable homes = new Hashtable();
+
+
+    // --------------------------------------------------- Instance Variables
+    /**
+     * The UserConfig listener with which we are associated.
+     */
+    private UserConfig userConfig = null;
+
+
+    /**
      * Initialize a new instance of this user database component.
      */
     public HomesUserDatabase() {
@@ -96,23 +109,7 @@ public final class HomesUserDatabase
     }
 
 
-    // --------------------------------------------------- Instance Variables
-
-
-    /**
-     * The set of home directories for all defined users, keyed by username.
-     */
-    private final Hashtable homes = new Hashtable();
-
-
-    /**
-     * The UserConfig listener with which we are associated.
-     */
-    private UserConfig userConfig = null;
-
-
     // ----------------------------------------------------------- Properties
-
 
     /**
      * Return the UserConfig listener with which we are associated.

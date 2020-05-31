@@ -96,15 +96,13 @@ public class NamingContextListener
 
 
     /**
-     * Create a new naming context listener.
+     * The string manager for this package.
      */
-    public NamingContextListener() {
-    }
+    protected static StringManager sm =
+            StringManager.getManager(Constants.Package);
 
 
     // ----------------------------------------------------- Instance Variables
-
-
     /**
      * Name of the associated naming context.
      */
@@ -154,14 +152,13 @@ public class NamingContextListener
 
 
     /**
-     * The string manager for this package.
+     * Create a new naming context listener.
      */
-    protected static StringManager sm =
-            StringManager.getManager(Constants.Package);
+    public NamingContextListener() {
+    }
 
 
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the "debug" property.

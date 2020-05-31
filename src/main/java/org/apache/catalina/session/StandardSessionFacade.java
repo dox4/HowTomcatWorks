@@ -86,12 +86,21 @@ public class StandardSessionFacade
 
 
     /**
+     * Wrapped session object.
+     */
+    private HttpSession session = null;
+
+
+    /**
      * Construct a new session facade.
      */
     public StandardSessionFacade(StandardSession session) {
         super();
         this.session = session;
     }
+
+
+    // ----------------------------------------------------- Instance Variables
 
 
     /**
@@ -103,17 +112,7 @@ public class StandardSessionFacade
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Wrapped session object.
-     */
-    private HttpSession session = null;
-
-
     // ---------------------------------------------------- HttpSession Methods
-
 
     public long getCreationTime() {
         return session.getCreationTime();
@@ -135,16 +134,13 @@ public class StandardSessionFacade
         return session.getServletContext();
     }
 
-
-    public void setMaxInactiveInterval(int interval) {
-        session.setMaxInactiveInterval(interval);
-    }
-
-
     public int getMaxInactiveInterval() {
         return session.getMaxInactiveInterval();
     }
 
+    public void setMaxInactiveInterval(int interval) {
+        session.setMaxInactiveInterval(interval);
+    }
 
     public HttpSessionContext getSessionContext() {
         return session.getSessionContext();

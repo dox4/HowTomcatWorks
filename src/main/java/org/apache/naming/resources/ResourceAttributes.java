@@ -191,6 +191,49 @@ public class ResourceAttributes implements Attributes {
 
 
     // ----------------------------------------------------------- Constructors
+    /**
+     * Collection flag.
+     */
+    protected boolean collection = false;
+    /**
+     * Content length.
+     */
+    protected long contentLength = -1;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * Creation time.
+     */
+    protected long creation = -1;
+    /**
+     * Creation date.
+     */
+    protected Date creationDate = null;
+    /**
+     * Last modified time.
+     */
+    protected long lastModified = -1;
+    /**
+     * Last modified date.
+     */
+    protected Date lastModifiedDate = null;
+    /**
+     * Name.
+     */
+    protected String name = null;
+    /**
+     * Weak ETag.
+     */
+    protected String weakETag = null;
+    /**
+     * Strong ETag.
+     */
+    protected String strongETag = null;
+    /**
+     * External attributes.
+     */
+    protected Attributes attributes = null;
 
 
     /**
@@ -208,71 +251,7 @@ public class ResourceAttributes implements Attributes {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Collection flag.
-     */
-    protected boolean collection = false;
-
-
-    /**
-     * Content length.
-     */
-    protected long contentLength = -1;
-
-
-    /**
-     * Creation time.
-     */
-    protected long creation = -1;
-
-
-    /**
-     * Creation date.
-     */
-    protected Date creationDate = null;
-
-
-    /**
-     * Last modified time.
-     */
-    protected long lastModified = -1;
-
-
-    /**
-     * Last modified date.
-     */
-    protected Date lastModifiedDate = null;
-
-
-    /**
-     * Name.
-     */
-    protected String name = null;
-
-
-    /**
-     * Weak ETag.
-     */
-    protected String weakETag = null;
-
-
-    /**
-     * Strong ETag.
-     */
-    protected String strongETag = null;
-
-
-    /**
-     * External attributes.
-     */
-    protected Attributes attributes = null;
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Is collection.
@@ -678,6 +657,14 @@ public class ResourceAttributes implements Attributes {
         return getETag(false);
     }
 
+    /**
+     * Set strong ETag.
+     */
+    public void setETag(String eTag) {
+        this.strongETag = eTag;
+        if (attributes != null)
+            attributes.put(ETAG, eTag);
+    }
 
     /**
      * Get ETag.
@@ -712,18 +699,7 @@ public class ResourceAttributes implements Attributes {
     }
 
 
-    /**
-     * Set strong ETag.
-     */
-    public void setETag(String eTag) {
-        this.strongETag = eTag;
-        if (attributes != null)
-            attributes.put(ETAG, eTag);
-    }
-
-
     // ----------------------------------------------------- Attributes Methods
-
 
     /**
      * Get attribute.

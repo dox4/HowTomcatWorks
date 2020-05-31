@@ -97,6 +97,50 @@ public class MemoryUserDatabase implements UserDatabase {
 
 
     /**
+     * The string manager for this package.
+     */
+    private static final StringManager sm =
+            StringManager.getManager(Constants.Package);
+    /**
+     * The set of {@link Group}s defined in this database, keyed by
+     * group name.
+     */
+    protected Map<String, Group> groups = new HashMap<>();
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The unique global identifier of this user database.
+     */
+    protected String id = null;
+    /**
+     * The relative (to <code>catalina.base</code>) or absolute pathname to
+     * the XML file in which we will save our persistent information.
+     */
+    protected String pathname = "conf/tomcat-users.xml";
+    /**
+     * The relative or absolute pathname to the file in which our old
+     * information is stored while renaming is in progress.
+     */
+    protected String pathnameOld = pathname + ".old";
+    /**
+     * The relative or absolute pathname ot the file in which we write
+     * our new information prior to renaming.
+     */
+    protected String pathnameNew = pathname + ".new";
+    /**
+     * The set of {@link Role}s defined in this database, keyed by
+     * role name.
+     */
+    protected Map<String, Role> roles = new HashMap<>();
+    /**
+     * The set of {@link User}s defined in this database, keyed by
+     * user name.
+     */
+    protected Map<String, User> users = new HashMap<>();
+
+
+    /**
      * Create a new instance with default values.
      */
     public MemoryUserDatabase() {
@@ -119,66 +163,7 @@ public class MemoryUserDatabase implements UserDatabase {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The set of {@link Group}s defined in this database, keyed by
-     * group name.
-     */
-    protected Map<String, Group> groups = new HashMap<>();
-
-
-    /**
-     * The unique global identifier of this user database.
-     */
-    protected String id = null;
-
-
-    /**
-     * The relative (to <code>catalina.base</code>) or absolute pathname to
-     * the XML file in which we will save our persistent information.
-     */
-    protected String pathname = "conf/tomcat-users.xml";
-
-
-    /**
-     * The relative or absolute pathname to the file in which our old
-     * information is stored while renaming is in progress.
-     */
-    protected String pathnameOld = pathname + ".old";
-
-
-    /**
-     * The relative or absolute pathname ot the file in which we write
-     * our new information prior to renaming.
-     */
-    protected String pathnameNew = pathname + ".new";
-
-
-    /**
-     * The set of {@link Role}s defined in this database, keyed by
-     * role name.
-     */
-    protected Map<String, Role> roles = new HashMap<>();
-
-
-    /**
-     * The string manager for this package.
-     */
-    private static final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
-    /**
-     * The set of {@link User}s defined in this database, keyed by
-     * user name.
-     */
-    protected Map<String, User> users = new HashMap<>();
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the set of {@link Group}s defined in this user database.
@@ -343,7 +328,7 @@ public class MemoryUserDatabase implements UserDatabase {
     public Group findGroup(String groupname) {
 
         synchronized (groups) {
-            return ((Group) groups.get(groupname));
+            return groups.get(groupname);
         }
 
     }
@@ -359,7 +344,7 @@ public class MemoryUserDatabase implements UserDatabase {
     public Role findRole(String rolename) {
 
         synchronized (roles) {
-            return ((Role) roles.get(rolename));
+            return roles.get(rolename);
         }
 
     }
@@ -375,7 +360,7 @@ public class MemoryUserDatabase implements UserDatabase {
     public User findUser(String username) {
 
         synchronized (users) {
-            return ((User) users.get(username));
+            return users.get(username);
         }
 
     }
@@ -638,6 +623,9 @@ public class MemoryUserDatabase implements UserDatabase {
  */
 class MemoryGroupCreationFactory implements ObjectCreationFactory {
 
+    private MemoryUserDatabase database = null;
+    private Digester digester = null;
+
     public MemoryGroupCreationFactory(MemoryUserDatabase database) {
         this.database = database;
     }
@@ -673,10 +661,6 @@ class MemoryGroupCreationFactory implements ObjectCreationFactory {
         return (group);
     }
 
-    private MemoryUserDatabase database = null;
-
-    private Digester digester = null;
-
     public Digester getDigester() {
         return (this.digester);
     }
@@ -693,6 +677,9 @@ class MemoryGroupCreationFactory implements ObjectCreationFactory {
  */
 class MemoryRoleCreationFactory implements ObjectCreationFactory {
 
+    private MemoryUserDatabase database = null;
+    private Digester digester = null;
+
     public MemoryRoleCreationFactory(MemoryUserDatabase database) {
         this.database = database;
     }
@@ -706,10 +693,6 @@ class MemoryRoleCreationFactory implements ObjectCreationFactory {
         Role role = database.createRole(rolename, description);
         return (role);
     }
-
-    private MemoryUserDatabase database = null;
-
-    private Digester digester = null;
 
     public Digester getDigester() {
         return (this.digester);
@@ -726,6 +709,9 @@ class MemoryRoleCreationFactory implements ObjectCreationFactory {
  * Digester object creation factory for user instances.
  */
 class MemoryUserCreationFactory implements ObjectCreationFactory {
+
+    private MemoryUserDatabase database = null;
+    private Digester digester = null;
 
     public MemoryUserCreationFactory(MemoryUserDatabase database) {
         this.database = database;
@@ -786,10 +772,6 @@ class MemoryUserCreationFactory implements ObjectCreationFactory {
         }
         return (user);
     }
-
-    private MemoryUserDatabase database = null;
-
-    private Digester digester = null;
 
     public Digester getDigester() {
         return (this.digester);

@@ -79,8 +79,21 @@ public class Resource {
     // ----------------------------------------------------------- Constructors
 
 
+    /**
+     * Binary content.
+     */
+    protected byte[] binaryContent = null;
+    /**
+     * Input stream.
+     */
+    protected InputStream inputStream = null;
+
+
     public Resource() {
     }
+
+
+    // ----------------------------------------------------- Instance Variables
 
 
     public Resource(InputStream inputStream) {
@@ -93,23 +106,7 @@ public class Resource {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Binary content.
-     */
-    protected byte[] binaryContent = null;
-
-
-    /**
-     * Input stream.
-     */
-    protected InputStream inputStream = null;
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Content accessor.

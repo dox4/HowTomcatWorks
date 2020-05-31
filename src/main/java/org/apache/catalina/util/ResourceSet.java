@@ -86,6 +86,17 @@ public final class ResourceSet extends HashSet {
 
 
     /**
+     * The string manager for this package.
+     */
+    private static final StringManager sm =
+            StringManager.getManager("org.apache.catalina.util");
+    /**
+     * The current lock state of this parameter map.
+     */
+    private boolean locked = false;
+
+
+    /**
      * Construct a new, empty set with the default initial capacity and
      * load factor.
      */
@@ -107,6 +118,9 @@ public final class ResourceSet extends HashSet {
         super(initialCapacity);
 
     }
+
+
+    // ------------------------------------------------------------- Properties
 
 
     /**
@@ -134,16 +148,6 @@ public final class ResourceSet extends HashSet {
 
     }
 
-
-    // ------------------------------------------------------------- Properties
-
-
-    /**
-     * The current lock state of this parameter map.
-     */
-    private boolean locked = false;
-
-
     /**
      * Return the locked state of this parameter map.
      */
@@ -152,7 +156,6 @@ public final class ResourceSet extends HashSet {
         return (this.locked);
 
     }
-
 
     /**
      * Set the locked state of this parameter map.
@@ -166,15 +169,7 @@ public final class ResourceSet extends HashSet {
     }
 
 
-    /**
-     * The string manager for this package.
-     */
-    private static final StringManager sm =
-            StringManager.getManager("org.apache.catalina.util");
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Add the specified element to this set if it is not already present.

@@ -96,18 +96,13 @@ final class ApplicationFilterChain implements FilterChain {
 
 
     /**
-     * Construct a new chain instance with no defined filters.
+     * The string manager for our package.
      */
-    public ApplicationFilterChain() {
-
-        super();
-
-    }
+    private static final StringManager sm =
+            StringManager.getManager(Constants.Package);
 
 
     // ----------------------------------------------------- Instance Variables
-
-
     /**
      * The set of filters that will be executed on this chain.
      */
@@ -126,15 +121,6 @@ final class ApplicationFilterChain implements FilterChain {
      * The servlet instance to be executed by this chain.
      */
     private Servlet servlet = null;
-
-
-    /**
-     * The string manager for our package.
-     */
-    private static final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
     /**
      * The InstanceSupport instance associated with our Wrapper (used to
      * send "before filter" and "after filter" events.
@@ -142,8 +128,17 @@ final class ApplicationFilterChain implements FilterChain {
     private InstanceSupport support = null;
 
 
-    // ---------------------------------------------------- FilterChain Methods
+    /**
+     * Construct a new chain instance with no defined filters.
+     */
+    public ApplicationFilterChain() {
 
+        super();
+
+    }
+
+
+    // ---------------------------------------------------- FilterChain Methods
 
     /**
      * Invoke the next filter in this chain, passing the specified request
@@ -295,7 +290,7 @@ final class ApplicationFilterChain implements FilterChain {
     /**
      * Set the servlet that will be executed at the end of this chain.
      *
-     * @param wrapper The Wrapper for the servlet to be executed
+     * @param servlet The Wrapper for the servlet to be executed
      */
     void setServlet(Servlet servlet) {
 

@@ -102,221 +102,170 @@ public class StandardContext
 
 
     /**
-     * Create a new StandardContext component with the default basic Valve.
-     */
-    public StandardContext() {
-
-        super();
-        pipeline.setBasic(new StandardContextValve());
-        namingResources.setContainer(this);
-
-    }
-
-
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The set of application listener class names configured for this
-     * application, in the order they were encountered in the web.xml file.
-     */
-    private String[] applicationListeners = new String[0];
-
-
-    /**
-     * The set of instantiated application listener objects, in a one-to-one
-     * correspondence to the class names in <code>applicationListeners</code>.
-     */
-    private Object[] applicationListenersObjects = new Object[0];
-
-
-    /**
-     * The set of application parameters defined for this application.
-     */
-    private ApplicationParameter[] applicationParameters =
-            new ApplicationParameter[0];
-
-
-    /**
-     * The application available flag for this Context.
-     */
-    private boolean available = false;
-
-
-    /**
-     * The Locale to character set mapper for this application.
-     */
-    private CharsetMapper charsetMapper = null;
-
-
-    /**
-     * The Java class name of the CharsetMapper class to be created.
-     */
-    private String charsetMapperClass =
-            "org.apache.catalina.util.CharsetMapper";
-
-
-    /**
-     * The "correctly configured" flag for this Context.
-     */
-    private boolean configured = false;
-
-
-    /**
-     * The security constraints for this web application.
-     */
-    private SecurityConstraint[] constraints = new SecurityConstraint[0];
-
-
-    /**
-     * The ServletContext implementation associated with this Context.
-     */
-    private ApplicationContext context = null;
-
-
-    /**
-     * Should we attempt to use cookies for session id communication?
-     */
-    private boolean cookies = true;
-
-
-    /**
-     * Should we allow the <code>ServletContext.getContext()</code> method
-     * to access the context of other web applications in this server?
-     */
-    private boolean crossContext = false;
-
-
-    /**
-     * The display name of this web application.
-     */
-    private String displayName = null;
-
-
-    /**
-     * The distributable flag for this web application.
-     */
-    private boolean distributable = false;
-
-
-    /**
-     * The document root for this web application.
-     */
-    private String docBase = null;
-
-
-    /**
-     * The exception pages for this web application, keyed by fully qualified
-     * class name of the Java exception.
-     */
-    private final HashMap exceptionPages = new HashMap();
-
-
-    /**
-     * The set of filter configurations (and associated filter instances) we
-     * have initialized, keyed by filter name.
-     */
-    private final HashMap filterConfigs = new HashMap();
-
-
-    /**
-     * The set of filter definitions for this application, keyed by
-     * filter name.
-     */
-    private final HashMap filterDefs = new HashMap();
-
-
-    /**
-     * The set of filter mappings for this application, in the order
-     * they were defined in the deployment descriptor.
-     */
-    private FilterMap[] filterMaps = new FilterMap[0];
-
-
-    /**
      * The descriptive information string for this implementation.
      */
     private static final String info =
             "org.apache.catalina.core.StandardContext/1.0";
 
 
+    // ----------------------------------------------------- Instance Variables
     /**
-     * The set of classnames of InstanceListeners that will be added
-     * to each newly created Wrapper by <code>createWrapper()</code>.
+     * The exception pages for this web application, keyed by fully qualified
+     * class name of the Java exception.
      */
-    private String[] instanceListeners = new String[0];
-
-
+    private final HashMap exceptionPages = new HashMap();
     /**
-     * The login configuration descriptor for this web application.
+     * The set of filter configurations (and associated filter instances) we
+     * have initialized, keyed by filter name.
      */
-    private LoginConfig loginConfig = null;
-
-
+    private final HashMap filterConfigs = new HashMap();
     /**
-     * The naming context listener for this web application.
+     * The set of filter definitions for this application, keyed by
+     * filter name.
      */
-    private NamingContextListener namingContextListener = null;
-
-
-    /**
-     * The naming resources for this web application.
-     */
-    private NamingResources namingResources = new NamingResources();
-
-
-    /**
-     * The Java class name of the default Mapper class for this Container.
-     */
-    private String mapperClass =
-            "org.apache.catalina.core.StandardContextMapper";
-
-
+    private final HashMap filterDefs = new HashMap();
     /**
      * The MIME mappings for this web application, keyed by extension.
      */
     private final HashMap mimeMappings = new HashMap();
-
-
     /**
      * The context initialization parameters for this web application,
      * keyed by name.
      */
     private final HashMap parameters = new HashMap();
-
-
+    /**
+     * The security role mappings for this application, keyed by role
+     * name (as used within the application).
+     */
+    private final HashMap roleMappings = new HashMap();
+    /**
+     * The servlet mappings for this web application, keyed by
+     * matching pattern.
+     */
+    private final HashMap servletMappings = new HashMap();
+    /**
+     * The status code error pages for this web application, keyed by
+     * HTTP status code (as an Integer).
+     */
+    private final HashMap statusPages = new HashMap();
+    /**
+     * The JSP tag libraries for this web application, keyed by URI
+     */
+    private final HashMap taglibs = new HashMap();
+    /**
+     * Caching allowed flag.
+     */
+    protected boolean cachingAllowed = true;
+    /**
+     * The set of application listener class names configured for this
+     * application, in the order they were encountered in the web.xml file.
+     */
+    private String[] applicationListeners = new String[0];
+    /**
+     * The set of instantiated application listener objects, in a one-to-one
+     * correspondence to the class names in <code>applicationListeners</code>.
+     */
+    private Object[] applicationListenersObjects = new Object[0];
+    /**
+     * The set of application parameters defined for this application.
+     */
+    private ApplicationParameter[] applicationParameters =
+            new ApplicationParameter[0];
+    /**
+     * The application available flag for this Context.
+     */
+    private boolean available = false;
+    /**
+     * The Locale to character set mapper for this application.
+     */
+    private CharsetMapper charsetMapper = null;
+    /**
+     * The Java class name of the CharsetMapper class to be created.
+     */
+    private String charsetMapperClass =
+            "org.apache.catalina.util.CharsetMapper";
+    /**
+     * The "correctly configured" flag for this Context.
+     */
+    private boolean configured = false;
+    /**
+     * The security constraints for this web application.
+     */
+    private SecurityConstraint[] constraints = new SecurityConstraint[0];
+    /**
+     * The ServletContext implementation associated with this Context.
+     */
+    private ApplicationContext context = null;
+    /**
+     * Should we attempt to use cookies for session id communication?
+     */
+    private boolean cookies = true;
+    /**
+     * Should we allow the <code>ServletContext.getContext()</code> method
+     * to access the context of other web applications in this server?
+     */
+    private boolean crossContext = false;
+    /**
+     * The display name of this web application.
+     */
+    private String displayName = null;
+    /**
+     * The distributable flag for this web application.
+     */
+    private boolean distributable = false;
+    /**
+     * The document root for this web application.
+     */
+    private String docBase = null;
+    /**
+     * The set of filter mappings for this application, in the order
+     * they were defined in the deployment descriptor.
+     */
+    private FilterMap[] filterMaps = new FilterMap[0];
+    /**
+     * The set of classnames of InstanceListeners that will be added
+     * to each newly created Wrapper by <code>createWrapper()</code>.
+     */
+    private String[] instanceListeners = new String[0];
+    /**
+     * The login configuration descriptor for this web application.
+     */
+    private LoginConfig loginConfig = null;
+    /**
+     * The naming context listener for this web application.
+     */
+    private NamingContextListener namingContextListener = null;
+    /**
+     * The naming resources for this web application.
+     */
+    private NamingResources namingResources = new NamingResources();
+    /**
+     * The Java class name of the default Mapper class for this Container.
+     */
+    private String mapperClass =
+            "org.apache.catalina.core.StandardContextMapper";
     /**
      * The request processing pause flag (while reloading occurs)
      */
     private boolean paused = false;
-
-
     /**
      * The public identifier of the DTD for the web application deployment
      * descriptor version we are currently parsing.  This is used to support
      * relaxed validation rules when processing version 2.2 web.xml files.
      */
     private String publicId = null;
-
-
     /**
      * The reloadable flag for this web application.
      */
     private boolean reloadable = false;
-
-
     /**
      * The DefaultContext override flag for this web application.
      */
     private boolean override = false;
-
-
     /**
      * The privileged flag for this web application.
      */
     private boolean privileged = false;
-
-
     /**
      * Should the next call to <code>addWelcomeFile()</code> cause replacement
      * of any existing welcome files?  This will be set before processing the
@@ -325,54 +274,19 @@ public class StandardContext
      * in the global descriptor.
      */
     private boolean replaceWelcomeFiles = false;
-
-
-    /**
-     * The security role mappings for this application, keyed by role
-     * name (as used within the application).
-     */
-    private final HashMap roleMappings = new HashMap();
-
-
     /**
      * The security roles for this application, keyed by role name.
      */
     private String[] securityRoles = new String[0];
-
-
-    /**
-     * The servlet mappings for this web application, keyed by
-     * matching pattern.
-     */
-    private final HashMap servletMappings = new HashMap();
-
-
     /**
      * The session timeout (in minutes) for this web application.
      */
     private int sessionTimeout = 30;
-
-
-    /**
-     * The status code error pages for this web application, keyed by
-     * HTTP status code (as an Integer).
-     */
-    private final HashMap statusPages = new HashMap();
-
-
     /**
      * Set flag to true to cause the system.out and system.err to be redirected
      * to the logger when executing a servlet.
      */
     private boolean swallowOutput = false;
-
-
-    /**
-     * The JSP tag libraries for this web application, keyed by URI
-     */
-    private final HashMap taglibs = new HashMap();
-
-
     /**
      * The welcome files for this application.
      */
@@ -425,13 +339,18 @@ public class StandardContext
 
 
     /**
-     * Caching allowed flag.
+     * Create a new StandardContext component with the default basic Valve.
      */
-    protected boolean cachingAllowed = true;
+    public StandardContext() {
+
+        super();
+        pipeline.setBasic(new StandardContextValve());
+        namingResources.setContainer(this);
+
+    }
 
 
     // ----------------------------------------------------- Context Properties
-
 
     /**
      * Is caching allowed ?
@@ -920,46 +839,6 @@ public class StandardContext
 
     }
 
-
-    /**
-     * Return the DefaultContext override flag for this web application.
-     */
-    @Override
-    public boolean getOverride() {
-
-        return (this.override);
-
-    }
-
-
-    /**
-     * Return the privileged flag for this web application.
-     */
-    @Override
-    public boolean getPrivileged() {
-
-        return (this.privileged);
-
-    }
-
-
-    /**
-     * Set the privileged flag for this web application.
-     *
-     * @param privileged The new privileged flag
-     */
-    @Override
-    public void setPrivileged(boolean privileged) {
-
-        boolean oldPrivileged = this.privileged;
-        this.privileged = privileged;
-        support.firePropertyChange("privileged",
-                new Boolean(oldPrivileged),
-                new Boolean(this.privileged));
-
-    }
-
-
     /**
      * Set the reloadable flag for this web application.
      *
@@ -976,6 +855,15 @@ public class StandardContext
 
     }
 
+    /**
+     * Return the DefaultContext override flag for this web application.
+     */
+    @Override
+    public boolean getOverride() {
+
+        return (this.override);
+
+    }
 
     /**
      * Set the DefaultContext override flag for this web application.
@@ -993,6 +881,31 @@ public class StandardContext
 
     }
 
+    /**
+     * Return the privileged flag for this web application.
+     */
+    @Override
+    public boolean getPrivileged() {
+
+        return (this.privileged);
+
+    }
+
+    /**
+     * Set the privileged flag for this web application.
+     *
+     * @param privileged The new privileged flag
+     */
+    @Override
+    public void setPrivileged(boolean privileged) {
+
+        boolean oldPrivileged = this.privileged;
+        this.privileged = privileged;
+        support.firePropertyChange("privileged",
+                new Boolean(oldPrivileged),
+                new Boolean(this.privileged));
+
+    }
 
     /**
      * Return the "replace welcome files" property.
@@ -3938,6 +3851,16 @@ public class StandardContext
 
     }
 
+    /**
+     * Set the request processing paused flag for this Context.
+     *
+     * @param paused The new request processing paused flag
+     */
+    private void setPaused(boolean paused) {
+
+        this.paused = paused;
+
+    }
 
     /**
      * Post a copy of our web application resources as a servlet context
@@ -3950,7 +3873,6 @@ public class StandardContext
 
     }
 
-
     /**
      * Post a copy of our current list of welcome files as a servlet context
      * attribute, so that the default servlet can find them.
@@ -3961,7 +3883,6 @@ public class StandardContext
                 welcomeFiles);
 
     }
-
 
     /**
      * Set the appropriate context attribute for our work directory.
@@ -4028,19 +3949,6 @@ public class StandardContext
                     (Globals.WORK_DIR_ATTR);
 
     }
-
-
-    /**
-     * Set the request processing paused flag for this Context.
-     *
-     * @param paused The new request processing paused flag
-     */
-    private void setPaused(boolean paused) {
-
-        this.paused = paused;
-
-    }
-
 
     /**
      * Validate the syntax of a proposed <code>&lt;url-pattern&gt;</code>

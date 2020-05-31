@@ -88,6 +88,23 @@ public final class PasswdUserDatabase
 
 
     /**
+     * The pathname of the Unix password file.
+     */
+    private static final String PASSWORD_FILE = "/etc/passwd";
+
+
+    // --------------------------------------------------- Instance Variables
+    /**
+     * The set of home directories for all defined users, keyed by username.
+     */
+    private final Hashtable homes = new Hashtable();
+    /**
+     * The UserConfig listener with which we are associated.
+     */
+    private UserConfig userConfig = null;
+
+
+    /**
      * Initialize a new instance of this user database component.
      */
     public PasswdUserDatabase() {
@@ -97,29 +114,7 @@ public final class PasswdUserDatabase
     }
 
 
-    // --------------------------------------------------- Instance Variables
-
-
-    /**
-     * The pathname of the Unix password file.
-     */
-    private static final String PASSWORD_FILE = "/etc/passwd";
-
-
-    /**
-     * The set of home directories for all defined users, keyed by username.
-     */
-    private final Hashtable homes = new Hashtable();
-
-
-    /**
-     * The UserConfig listener with which we are associated.
-     */
-    private UserConfig userConfig = null;
-
-
     // ----------------------------------------------------------- Properties
-
 
     /**
      * Return the UserConfig listener with which we are associated.

@@ -177,6 +177,70 @@ public final class StandardServer
 
 
     // ------------------------------------------------------------ Constructor
+    /**
+     * Descriptive information about this Server implementation.
+     */
+    private static final String info =
+            "org.apache.catalina.core.StandardServer/1.0";
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The string manager for this package.
+     */
+    private static final StringManager sm =
+            StringManager.getManager(Constants.Package);
+    /**
+     * The lifecycle event support for this component.
+     */
+    private final LifecycleSupport lifecycle = new LifecycleSupport(this);
+    /**
+     * The property change support for this component.
+     */
+    protected PropertyChangeSupport support = new PropertyChangeSupport(this);
+    /**
+     * Debugging detail level.
+     */
+    private int debug = 0;
+    /**
+     * Global naming resources context.
+     */
+    private javax.naming.Context globalNamingContext = null;
+    /**
+     * Global naming resources.
+     */
+    private NamingResources globalNamingResources;
+    /**
+     * The naming context listener for this web application.
+     */
+    private NamingContextListener namingContextListener = null;
+    /**
+     * The port number on which we wait for shutdown commands.
+     */
+    private int port = 8005;
+    /**
+     * A random number generator that is <strong>only</strong> used if
+     * the shutdown command string is longer than 1024 characters.
+     */
+    private Random random = null;
+    /**
+     * The set of Services associated with this Server.
+     */
+    private Service[] services = new Service[0];
+    /**
+     * The shutdown command string we are looking for.
+     */
+    private String shutdown = "SHUTDOWN";
+    /**
+     * Has this component been started?
+     */
+    private boolean started = false;
+
+
+    /**
+     * Has this component been initialized?
+     */
+    private boolean initialized = false;
 
 
     /**
@@ -201,98 +265,7 @@ public final class StandardServer
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Debugging detail level.
-     */
-    private int debug = 0;
-
-
-    /**
-     * Global naming resources context.
-     */
-    private javax.naming.Context globalNamingContext = null;
-
-
-    /**
-     * Global naming resources.
-     */
-    private NamingResources globalNamingResources;
-
-
-    /**
-     * Descriptive information about this Server implementation.
-     */
-    private static final String info =
-            "org.apache.catalina.core.StandardServer/1.0";
-
-
-    /**
-     * The lifecycle event support for this component.
-     */
-    private final LifecycleSupport lifecycle = new LifecycleSupport(this);
-
-
-    /**
-     * The naming context listener for this web application.
-     */
-    private NamingContextListener namingContextListener = null;
-
-
-    /**
-     * The port number on which we wait for shutdown commands.
-     */
-    private int port = 8005;
-
-
-    /**
-     * A random number generator that is <strong>only</strong> used if
-     * the shutdown command string is longer than 1024 characters.
-     */
-    private Random random = null;
-
-
-    /**
-     * The set of Services associated with this Server.
-     */
-    private Service[] services = new Service[0];
-
-
-    /**
-     * The shutdown command string we are looking for.
-     */
-    private String shutdown = "SHUTDOWN";
-
-
-    /**
-     * The string manager for this package.
-     */
-    private static final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
-    /**
-     * Has this component been started?
-     */
-    private boolean started = false;
-
-
-    /**
-     * Has this component been initialized?
-     */
-    private boolean initialized = false;
-
-
-    /**
-     * The property change support for this component.
-     */
-    protected PropertyChangeSupport support = new PropertyChangeSupport(this);
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the debugging detail level.
@@ -1906,8 +1879,8 @@ public final class StandardServer
     /**
      * Store the specified Service properties.
      *
-     * @param writer PrintWriter to which we are storing
-     * @param indent Number of spaces to indent this element
+     * @param writer  PrintWriter to which we are storing
+     * @param indent  Number of spaces to indent this element
      * @param service Object to be stored
      * @throws Exception if an exception occurs while storing
      */

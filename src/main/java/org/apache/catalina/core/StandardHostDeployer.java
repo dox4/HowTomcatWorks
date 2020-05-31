@@ -90,29 +90,22 @@ public class StandardHostDeployer implements Deployer {
 
 
     /**
-     * Create a new StandardHostDeployer associated with the specified
-     * StandardHost.
-     *
-     * @param host The StandardHost we are associated with
+     * The string manager for this package.
      */
-    public StandardHostDeployer(StandardHost host) {
-
-        super();
-        this.host = host;
-
-    }
+    protected static StringManager sm =
+            StringManager.getManager(Constants.Package);
 
 
     // ----------------------------------------------------- Instance Variables
-
-
+    /**
+     * The <code>StandardHost</code> instance we are associated with.
+     */
+    protected StandardHost host = null;
     /**
      * The <code>Context</code> that was added via a call to
      * <code>addChild()</code> while parsing the configuration descriptor.
      */
     private Context context = null;
-
-
     /**
      * The <code>Digester</code> instance to use for deploying web applications
      * to this <code>Host</code>.  <strong>WARNING</strong> - Usage of this
@@ -120,21 +113,11 @@ public class StandardHostDeployer implements Deployer {
      * access by multiple threads.
      */
     private Digester digester = null;
-
-
     /**
      * The <code>ContextRuleSet</code> associated with our
      * <code>digester</code> instance.
      */
     private ContextRuleSet contextRuleSet = null;
-
-
-    /**
-     * The <code>StandardHost</code> instance we are associated with.
-     */
-    protected StandardHost host = null;
-
-
     /**
      * The <code>NamingRuleSet</code> associated with our
      * <code>digester</code> instance.
@@ -151,14 +134,20 @@ public class StandardHostDeployer implements Deployer {
 
 
     /**
-     * The string manager for this package.
+     * Create a new StandardHostDeployer associated with the specified
+     * StandardHost.
+     *
+     * @param host The StandardHost we are associated with
      */
-    protected static StringManager sm =
-            StringManager.getManager(Constants.Package);
+    public StandardHostDeployer(StandardHost host) {
+
+        super();
+        this.host = host;
+
+    }
 
 
     // -------------------------------------------------------- Depoyer Methods
-
 
     /**
      * Return the name of the Container with which this Deployer is associated.

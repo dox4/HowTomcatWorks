@@ -25,6 +25,15 @@ public class ResponseWriter extends PrintWriter {
 
 
     /**
+     * The response stream to which we are attached.
+     */
+    protected ResponseStream stream = null;
+
+
+    // ----------------------------------------------------- Instance Variables
+
+
+    /**
      * Construct a new ResponseWriter, wrapping the specified writer and
      * attached to the specified response.
      *
@@ -40,17 +49,7 @@ public class ResponseWriter extends PrintWriter {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The response stream to which we are attached.
-     */
-    protected ResponseStream stream = null;
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Flush this stream, and cause the response to be committed.

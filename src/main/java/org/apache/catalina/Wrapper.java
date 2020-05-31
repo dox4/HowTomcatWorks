@@ -208,8 +208,8 @@ public interface Wrapper extends Container {
      * Add a new security role reference record to the set of records for
      * this servlet.
      *
-     * @param name        Role name used within this servlet
-     * @param link        Role name used within the web application
+     * @param name Role name used within this servlet
+     * @param link Role name used within the web application
      */
     void addSecurityReference(String name, String link);
 

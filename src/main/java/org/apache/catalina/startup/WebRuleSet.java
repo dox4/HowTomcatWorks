@@ -441,12 +441,12 @@ final class SetDistributableRule extends Rule {
 
 final class SetPublicIdRule extends Rule {
 
+    private String method = null;
+
     public SetPublicIdRule(Digester digester, String method) {
         super(digester);
         this.method = method;
     }
-
-    private String method = null;
 
     public void begin(Attributes attributes) throws Exception {
 

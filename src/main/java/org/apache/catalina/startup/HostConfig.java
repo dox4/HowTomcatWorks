@@ -99,80 +99,61 @@ public class HostConfig
 
 
     /**
+     * The string resources for this package.
+     */
+    protected static final StringManager sm =
+            StringManager.getManager(Constants.Package);
+    /**
+     * The number of seconds between checks for web app deployment.
+     */
+    private final int checkInterval = 15;
+    /**
+     * Last modified dates of the web.xml files of the contexts, keyed by
+     * context name.
+     */
+    private final HashMap webXmlLastModified = new HashMap();
+    /**
      * The Java class name of the Context configuration class we should use.
      */
     protected String configClass = "org.apache.catalina.startup.ContextConfig";
-
-
     /**
      * The Java class name of the Context implementation we should use.
      */
     protected String contextClass = "org.apache.catalina.core.StandardContext";
-
-
     /**
      * The debugging detail level for this component.
      */
     protected int debug = 0;
-
-
     /**
      * The names of applications that we have auto-deployed (to avoid
      * double deployment attempts).
      */
     protected ArrayList deployed = new ArrayList();
-
-
     /**
      * The Host we are associated with.
      */
     protected Host host = null;
-
-
-    /**
-     * The string resources for this package.
-     */
-    protected static final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
-    /**
-     * The number of seconds between checks for web app deployment.
-     */
-    private final int checkInterval = 15;
-
-
     /**
      * Should we deploy XML Context config files?
      */
     private boolean deployXML = false;
-
-
     /**
      * Should we monitor the <code>appBase</code> directory for new
      * applications and automatically deploy them?
      */
     private boolean liveDeploy = false;
-
-
     /**
      * The background thread.
      */
     private Thread thread = null;
-
-
     /**
      * The background thread completion semaphore.
      */
     private boolean threadDone = false;
-
-
     /**
      * Name to register for the background thread.
      */
     private String threadName = "HostConfig";
-
-
     /**
      * Should we unpack WAR files when auto-deploying applications in the
      * <code>appBase</code> directory?
@@ -180,15 +161,7 @@ public class HostConfig
     private boolean unpackWARs = false;
 
 
-    /**
-     * Last modified dates of the web.xml files of the contexts, keyed by
-     * context name.
-     */
-    private final HashMap webXmlLastModified = new HashMap();
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the Context configuration class name.

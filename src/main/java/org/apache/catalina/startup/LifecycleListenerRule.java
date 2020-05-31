@@ -83,6 +83,20 @@ public class LifecycleListenerRule extends Rule {
 
 
     /**
+     * The attribute name of an attribute that can override the
+     * implementation class name.
+     */
+    private final String attributeName;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The name of the <code>LifecycleListener</code> implementation class.
+     */
+    private final String listenerClass;
+
+
+    /**
      * Construct a new instance of this Rule.
      *
      * @param digester      Digester we are associated with
@@ -101,24 +115,7 @@ public class LifecycleListenerRule extends Rule {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The attribute name of an attribute that can override the
-     * implementation class name.
-     */
-    private final String attributeName;
-
-
-    /**
-     * The name of the <code>LifecycleListener</code> implementation class.
-     */
-    private final String listenerClass;
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Handle the beginning of an XML element.

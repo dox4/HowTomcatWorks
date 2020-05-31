@@ -105,140 +105,46 @@ public class ApplicationContext
         implements ServletContext {
 
 
-    protected class PrivilegedGetRequestDispatcher
-            implements PrivilegedAction {
-
-        private final String contextPath;
-        private final String relativeURI;
-        private final String queryString;
-
-        PrivilegedGetRequestDispatcher(String contextPath, String relativeURI,
-                                       String queryString) {
-            this.contextPath = contextPath;
-            this.relativeURI = relativeURI;
-            this.queryString = queryString;
-        }
-
-        public Object run() {
-            HttpRequest request = new MappingRequest
-                    (context.getPath(), contextPath + relativeURI, queryString);
-            /*
-            HttpRequestBase request = new HttpRequestBase();
-            request.setContext(context);
-            request.setContextPath(context.getPath());
-            request.setRequestURI(contextPath + relativeURI);
-            request.setQueryString(queryString);
-            */
-            Wrapper wrapper = (Wrapper) context.map(request, true);
-            if (wrapper == null)
-                return (null);
-
-            // Construct a RequestDispatcher to process this request
-            HttpServletRequest hrequest =
-                    (HttpServletRequest) request.getRequest();
-            return new ApplicationDispatcher
-                    (wrapper,
-                            hrequest.getServletPath(),
-                            hrequest.getPathInfo(),
-                            hrequest.getQueryString(),
-                            null);
-        }
-
-    }
-
-
-    protected class PrivilegedGetResource
-            implements PrivilegedExceptionAction {
-
-        private final String path;
-        private final String host;
-        private final DirContext resources;
-
-        PrivilegedGetResource(String host, String path, DirContext resources) {
-            this.host = host;
-            this.path = path;
-            this.resources = resources;
-        }
-
-        public Object run() throws Exception {
-            return new URL("jndi", null, 0, getJNDIUri(host, path),
-                    new DirContextURLStreamHandler(resources));
-        }
-    }
-
-
-    protected class PrivilegedGetResourcePaths
-            implements PrivilegedAction {
-
-        private final String path;
-        private final DirContext resources;
-
-        PrivilegedGetResourcePaths(DirContext resources, String path) {
-            this.resources = resources;
-            this.path = path;
-        }
-
-        public Object run() {
-            return (getResourcePathsInternal(resources, path));
-        }
-
-    }
-
-
-    protected class PrivilegedLogMessage
-            implements PrivilegedAction {
-
-        private final String message;
-
-        PrivilegedLogMessage(String message) {
-            this.message = message;
-        }
-
-        public Object run() {
-            internalLog(message);
-            return null;
-        }
-
-    }
-
-    protected class PrivilegedLogException
-            implements PrivilegedAction {
-
-        private final String message;
-        private final Exception exception;
-
-        PrivilegedLogException(Exception exception, String message) {
-            this.message = message;
-            this.exception = exception;
-        }
-
-        public Object run() {
-            internalLog(exception, message);
-            return null;
-        }
-
-    }
-
-    protected class PrivilegedLogThrowable
-            implements PrivilegedAction {
-
-        private final String message;
-        private final Throwable throwable;
-
-        PrivilegedLogThrowable(String message, Throwable throwable) {
-            this.message = message;
-            this.throwable = throwable;
-        }
-
-        public Object run() {
-            internalLog(message, throwable);
-            return null;
-        }
-
-    }
+    /**
+     * Empty collection to serve as the basis for empty enumerations.
+     * <strong>DO NOT ADD ANY ELEMENTS TO THIS COLLECTION!</strong>
+     */
+    private static final ArrayList empty = new ArrayList();
+    /**
+     * The string manager for this package.
+     */
+    private static final StringManager sm =
+            StringManager.getManager(Constants.Package);
+    /**
+     * The context attributes for this context.
+     */
+    private final HashMap attributes = new HashMap();
+    /**
+     * List of read only attributes for this context.
+     */
+    private final HashMap readOnlyAttributes = new HashMap();
+    /**
+     * The facade around this object.
+     */
+    private final ServletContext facade = new ApplicationContextFacade(this);
+    /**
+     * The Context instance with which we are associated.
+     */
+    private StandardContext context = null;
 
 
     // ----------------------------------------------------------- Constructors
+    /**
+     * The merged context initialization parameters for this Context.
+     */
+    private HashMap parameters = null;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * Base path.
+     */
+    private String basePath = null;
 
 
     /**
@@ -253,62 +159,61 @@ public class ApplicationContext
         this.basePath = basePath;
     }
 
+    /**
+     * List resource paths (recursively), and store all of them in the given
+     * Set.
+     */
+    private static void listPaths(Set set, DirContext resources, String path)
+            throws NamingException {
 
-    // ----------------------------------------------------- Instance Variables
+        Enumeration childPaths = resources.listBindings(path);
+        while (childPaths.hasMoreElements()) {
+            Binding binding = (Binding) childPaths.nextElement();
+            String name = binding.getName();
+            String childPath = path + "/" + name;
+            set.add(childPath);
+            Object object = binding.getObject();
+            if (object instanceof DirContext) {
+                listPaths(set, resources, childPath);
+            }
+        }
 
+    }
 
     /**
-     * The context attributes for this context.
+     * List resource paths (recursively), and store all of them in the given
+     * Set.
      */
-    private final HashMap attributes = new HashMap();
+    private static void listCollectionPaths
+    (Set set, DirContext resources, String path)
+            throws NamingException {
 
+        Enumeration childPaths = resources.listBindings(path);
+        while (childPaths.hasMoreElements()) {
+            Binding binding = (Binding) childPaths.nextElement();
+            String name = binding.getName();
+            StringBuffer childPath = new StringBuffer(path);
+            if (!"/".equals(path) && !path.endsWith("/"))
+                childPath.append("/");
+            childPath.append(name);
+            Object object = binding.getObject();
+            if (object instanceof DirContext) {
+                childPath.append("/");
+            }
+            set.add(childPath.toString());
+        }
+
+    }
 
     /**
-     * List of read only attributes for this context.
+     * Get full path, based on the host name and the context path.
      */
-    private final HashMap readOnlyAttributes = new HashMap();
-
-
-    /**
-     * The Context instance with which we are associated.
-     */
-    private StandardContext context = null;
-
-
-    /**
-     * Empty collection to serve as the basis for empty enumerations.
-     * <strong>DO NOT ADD ANY ELEMENTS TO THIS COLLECTION!</strong>
-     */
-    private static final ArrayList empty = new ArrayList();
-
-
-    /**
-     * The facade around this object.
-     */
-    private final ServletContext facade = new ApplicationContextFacade(this);
-
-
-    /**
-     * The merged context initialization parameters for this Context.
-     */
-    private HashMap parameters = null;
-
-
-    /**
-     * The string manager for this package.
-     */
-    private static final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
-    /**
-     * Base path.
-     */
-    private String basePath = null;
-
-
-    // --------------------------------------------------------- Public Methods
-
+    public static String getJNDIUri(String hostName, String path) {
+        if (!path.startsWith("/"))
+            return "/" + hostName + "/" + path;
+        else
+            return "/" + hostName + path;
+    }
 
     /**
      * Clear all application-created attributes.
@@ -335,7 +240,6 @@ public class ApplicationContext
 
     }
 
-
     /**
      * Return the resources object that is mapped to a specified path.
      * The path must begin with a "/" and is interpreted as relative to the
@@ -345,7 +249,6 @@ public class ApplicationContext
         return context.getResources();
 
     }
-
 
     /**
      * Set an attribute as read only.
@@ -360,8 +263,7 @@ public class ApplicationContext
     }
 
 
-    // ------------------------------------------------- ServletContext Methods
-
+    // --------------------------------------------------------- Public Methods
 
     /**
      * Return the value of the specified context attribute, if any;
@@ -377,7 +279,6 @@ public class ApplicationContext
 
     }
 
-
     /**
      * Return an enumeration of the names of the context attributes
      * associated with this context.
@@ -390,11 +291,13 @@ public class ApplicationContext
 
     }
 
-
     @Override
     public String getContextPath() {
         return null;
     }
+
+
+    // ------------------------------------------------- ServletContext Methods
 
     /**
      * Return a <code>ServletContext</code> object that corresponds to a
@@ -436,7 +339,6 @@ public class ApplicationContext
 
     }
 
-
     /**
      * Return the value of the specified initialization parameter, or
      * <code>null</code> if this parameter does not exist.
@@ -451,7 +353,6 @@ public class ApplicationContext
         }
 
     }
-
 
     /**
      * Return the names of the context's initialization parameters, or an
@@ -471,7 +372,6 @@ public class ApplicationContext
         return false;
     }
 
-
     /**
      * Return the major version of the Java Servlet API that we implement.
      */
@@ -480,7 +380,6 @@ public class ApplicationContext
         return (Constants.MAJOR_VERSION);
 
     }
-
 
     /**
      * Return the minor version of the Java Servlet API that we implement.
@@ -501,7 +400,6 @@ public class ApplicationContext
         return 0;
     }
 
-
     /**
      * Return the MIME type of the specified file, or <code>null</code> if
      * the MIME type cannot be determined.
@@ -521,7 +419,6 @@ public class ApplicationContext
         return (context.findMimeMapping(extension));
 
     }
-
 
     /**
      * Return a <code>RequestDispatcher</code> object that acts as a
@@ -545,7 +442,6 @@ public class ApplicationContext
 
     }
 
-
     /**
      * Return the real path for a given virtual path, if possible; otherwise
      * return <code>null</code>.
@@ -561,7 +457,6 @@ public class ApplicationContext
         return (file.getAbsolutePath());
 
     }
-
 
     /**
      * Return a <code>RequestDispatcher</code> instance that acts as a
@@ -624,7 +519,6 @@ public class ApplicationContext
 
     }
 
-
     /**
      * Return the URL to the resource that is mapped to a specified path.
      * The path must begin with a "/" and is interpreted as relative to the
@@ -668,7 +562,6 @@ public class ApplicationContext
 
     }
 
-
     /**
      * Return the requested resource as an <code>InputStream</code>.  The
      * path must be specified according to the rules described under
@@ -691,7 +584,6 @@ public class ApplicationContext
         return (null);
 
     }
-
 
     /**
      * Return a Set containing the resource paths of resources member of the
@@ -716,7 +608,6 @@ public class ApplicationContext
 
     }
 
-
     /**
      * Internal implementation of getResourcesPath() logic.
      *
@@ -736,7 +627,6 @@ public class ApplicationContext
 
     }
 
-
     /**
      * Return the name and version of the servlet container.
      */
@@ -746,7 +636,6 @@ public class ApplicationContext
 
     }
 
-
     /**
      * @deprecated As of Java Servlet API 2.1, with no direct replacement.
      */
@@ -755,7 +644,6 @@ public class ApplicationContext
         return (null);
 
     }
-
 
     /**
      * Return the display name of this web application.
@@ -921,7 +809,6 @@ public class ApplicationContext
 
     }
 
-
     /**
      * @deprecated As of Java Servlet API 2.1, with no direct replacement.
      */
@@ -931,7 +818,6 @@ public class ApplicationContext
 
     }
 
-
     /**
      * @deprecated As of Java Servlet API 2.1, with no direct replacement.
      */
@@ -940,7 +826,6 @@ public class ApplicationContext
         return (new Enumerator(empty));
 
     }
-
 
     /**
      * Writes the specified message to a servlet log file.
@@ -964,7 +849,6 @@ public class ApplicationContext
             logger.log(message);
 
     }
-
 
     /**
      * Writes the specified exception and message to a servlet log file.
@@ -991,7 +875,6 @@ public class ApplicationContext
 
     }
 
-
     /**
      * Writes the specified message and exception to a servlet log file.
      *
@@ -1015,7 +898,6 @@ public class ApplicationContext
             logger.log(message, throwable);
 
     }
-
 
     /**
      * Remove the context attribute with the specified name, if any.
@@ -1068,7 +950,6 @@ public class ApplicationContext
         }
 
     }
-
 
     /**
      * Bind the specified value with the specified context attribute name,
@@ -1151,10 +1032,6 @@ public class ApplicationContext
 
     }
 
-
-    // -------------------------------------------------------- Package Methods
-
-
     /**
      * Return the facade associated with this ApplicationContext.
      */
@@ -1163,10 +1040,6 @@ public class ApplicationContext
         return (this.facade);
 
     }
-
-
-    // -------------------------------------------------------- Private Methods
-
 
     /**
      * Return a context-relative path, beginning with a "/", that represents
@@ -1202,7 +1075,6 @@ public class ApplicationContext
 
     }
 
-
     /**
      * Merge the context initialization parameters specified in the application
      * deployment descriptor with the application parameters described in the
@@ -1232,62 +1104,138 @@ public class ApplicationContext
     }
 
 
-    /**
-     * List resource paths (recursively), and store all of them in the given
-     * Set.
-     */
-    private static void listPaths(Set set, DirContext resources, String path)
-            throws NamingException {
+    // -------------------------------------------------------- Package Methods
 
-        Enumeration childPaths = resources.listBindings(path);
-        while (childPaths.hasMoreElements()) {
-            Binding binding = (Binding) childPaths.nextElement();
-            String name = binding.getName();
-            String childPath = path + "/" + name;
-            set.add(childPath);
-            Object object = binding.getObject();
-            if (object instanceof DirContext) {
-                listPaths(set, resources, childPath);
-            }
+    protected class PrivilegedGetRequestDispatcher
+            implements PrivilegedAction {
+
+        private final String contextPath;
+        private final String relativeURI;
+        private final String queryString;
+
+        PrivilegedGetRequestDispatcher(String contextPath, String relativeURI,
+                                       String queryString) {
+            this.contextPath = contextPath;
+            this.relativeURI = relativeURI;
+            this.queryString = queryString;
+        }
+
+        public Object run() {
+            HttpRequest request = new MappingRequest
+                    (context.getPath(), contextPath + relativeURI, queryString);
+            /*
+            HttpRequestBase request = new HttpRequestBase();
+            request.setContext(context);
+            request.setContextPath(context.getPath());
+            request.setRequestURI(contextPath + relativeURI);
+            request.setQueryString(queryString);
+            */
+            Wrapper wrapper = (Wrapper) context.map(request, true);
+            if (wrapper == null)
+                return (null);
+
+            // Construct a RequestDispatcher to process this request
+            HttpServletRequest hrequest =
+                    (HttpServletRequest) request.getRequest();
+            return new ApplicationDispatcher
+                    (wrapper,
+                            hrequest.getServletPath(),
+                            hrequest.getPathInfo(),
+                            hrequest.getQueryString(),
+                            null);
         }
 
     }
 
 
-    /**
-     * List resource paths (recursively), and store all of them in the given
-     * Set.
-     */
-    private static void listCollectionPaths
-    (Set set, DirContext resources, String path)
-            throws NamingException {
+    // -------------------------------------------------------- Private Methods
 
-        Enumeration childPaths = resources.listBindings(path);
-        while (childPaths.hasMoreElements()) {
-            Binding binding = (Binding) childPaths.nextElement();
-            String name = binding.getName();
-            StringBuffer childPath = new StringBuffer(path);
-            if (!"/".equals(path) && !path.endsWith("/"))
-                childPath.append("/");
-            childPath.append(name);
-            Object object = binding.getObject();
-            if (object instanceof DirContext) {
-                childPath.append("/");
-            }
-            set.add(childPath.toString());
+    protected class PrivilegedGetResource
+            implements PrivilegedExceptionAction {
+
+        private final String path;
+        private final String host;
+        private final DirContext resources;
+
+        PrivilegedGetResource(String host, String path, DirContext resources) {
+            this.host = host;
+            this.path = path;
+            this.resources = resources;
+        }
+
+        public Object run() throws Exception {
+            return new URL("jndi", null, 0, getJNDIUri(host, path),
+                    new DirContextURLStreamHandler(resources));
+        }
+    }
+
+    protected class PrivilegedGetResourcePaths
+            implements PrivilegedAction {
+
+        private final String path;
+        private final DirContext resources;
+
+        PrivilegedGetResourcePaths(DirContext resources, String path) {
+            this.resources = resources;
+            this.path = path;
+        }
+
+        public Object run() {
+            return (getResourcePathsInternal(resources, path));
         }
 
     }
 
+    protected class PrivilegedLogMessage
+            implements PrivilegedAction {
 
-    /**
-     * Get full path, based on the host name and the context path.
-     */
-    public static String getJNDIUri(String hostName, String path) {
-        if (!path.startsWith("/"))
-            return "/" + hostName + "/" + path;
-        else
-            return "/" + hostName + path;
+        private final String message;
+
+        PrivilegedLogMessage(String message) {
+            this.message = message;
+        }
+
+        public Object run() {
+            internalLog(message);
+            return null;
+        }
+
+    }
+
+    protected class PrivilegedLogException
+            implements PrivilegedAction {
+
+        private final String message;
+        private final Exception exception;
+
+        PrivilegedLogException(Exception exception, String message) {
+            this.message = message;
+            this.exception = exception;
+        }
+
+        public Object run() {
+            internalLog(exception, message);
+            return null;
+        }
+
+    }
+
+    protected class PrivilegedLogThrowable
+            implements PrivilegedAction {
+
+        private final String message;
+        private final Throwable throwable;
+
+        PrivilegedLogThrowable(String message, Throwable throwable) {
+            this.message = message;
+            this.throwable = throwable;
+        }
+
+        public Object run() {
+            internalLog(message, throwable);
+            return null;
+        }
+
     }
 
 

@@ -116,72 +116,10 @@ public class WebappLoader
 
 
     /**
-     * Construct a new WebappLoader with no defined parent class loader
-     * (so that the actual parent will be the system class loader).
+     * The string manager for this package.
      */
-    public WebappLoader() {
-
-        this(null);
-
-    }
-
-
-    /**
-     * Construct a new WebappLoader with the specified class loader
-     * to be defined as the parent of the ClassLoader we ultimately create.
-     *
-     * @param parent The parent class loader
-     */
-    public WebappLoader(ClassLoader parent) {
-
-
-        super();
-        this.parentClassLoader = parent;
-
-    }
-
-
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The number of seconds between checks for modified classes, if
-     * automatic reloading is enabled.
-     */
-    private int checkInterval = 15;
-
-
-    /**
-     * The class loader being managed by this Loader component.
-     */
-    private WebappClassLoader classLoader = null;
-
-
-    /**
-     * The Container with which this Loader has been associated.
-     */
-    private Container container = null;
-
-
-    /**
-     * The debugging detail level for this component.
-     */
-    private int debug = 0;
-
-
-    /**
-     * The DefaultContext with which this Loader is associated.
-     */
-    protected DefaultContext defaultContext = null;
-
-
-    /**
-     * The "follow standard delegation model" flag that will be used to
-     * configure our ClassLoader.
-     */
-    private boolean delegate = false;
-
-
+    protected static final StringManager sm =
+            StringManager.getManager(Constants.Package);
     /**
      * The descriptive information about this Loader implementation.
      */
@@ -189,12 +127,41 @@ public class WebappLoader
             "org.apache.catalina.loader.WebappLoader/1.0";
 
 
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The DefaultContext with which this Loader is associated.
+     */
+    protected DefaultContext defaultContext = null;
     /**
      * The lifecycle event support for this component.
      */
     protected LifecycleSupport lifecycle = new LifecycleSupport(this);
-
-
+    /**
+     * The property change support for this component.
+     */
+    protected PropertyChangeSupport support = new PropertyChangeSupport(this);
+    /**
+     * The number of seconds between checks for modified classes, if
+     * automatic reloading is enabled.
+     */
+    private int checkInterval = 15;
+    /**
+     * The class loader being managed by this Loader component.
+     */
+    private WebappClassLoader classLoader = null;
+    /**
+     * The Container with which this Loader has been associated.
+     */
+    private Container container = null;
+    /**
+     * The debugging detail level for this component.
+     */
+    private int debug = 0;
+    /**
+     * The "follow standard delegation model" flag that will be used to
+     * configure our ClassLoader.
+     */
+    private boolean delegate = false;
     /**
      * The Java class name of the ClassLoader implementation to be used.
      * This class should extend WebappClassLoader, otherwise, a different
@@ -220,47 +187,51 @@ public class WebappLoader
      * The set of repositories associated with this class loader.
      */
     private String[] repositories = new String[0];
-
-
-    /**
-     * The string manager for this package.
-     */
-    protected static final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
     /**
      * Has this component been started?
      */
     private boolean started = false;
-
-
-    /**
-     * The property change support for this component.
-     */
-    protected PropertyChangeSupport support = new PropertyChangeSupport(this);
-
-
     /**
      * The background thread.
      */
     private Thread thread = null;
-
-
     /**
      * The background thread completion semaphore.
      */
     private boolean threadDone = false;
-
-
     /**
      * Name to register for the background thread.
      */
     private String threadName = "WebappLoader";
 
 
-    // ------------------------------------------------------------- Properties
+    /**
+     * Construct a new WebappLoader with no defined parent class loader
+     * (so that the actual parent will be the system class loader).
+     */
+    public WebappLoader() {
 
+        this(null);
+
+    }
+
+
+    /**
+     * Construct a new WebappLoader with the specified class loader
+     * to be defined as the parent of the ClassLoader we ultimately create.
+     *
+     * @param parent The parent class loader
+     */
+    public WebappLoader(ClassLoader parent) {
+
+
+        super();
+        this.parentClassLoader = parent;
+
+    }
+
+
+    // ------------------------------------------------------------- Properties
 
     /**
      * Return the check interval for this Loader.

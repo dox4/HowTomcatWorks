@@ -86,7 +86,16 @@ public class NamingEntry {
 
 
     // ----------------------------------------------------------- Constructors
+    /**
+     * The type instance variable is used to avoid unsing RTTI when doing
+     * lookups.
+     */
+    public int type;
 
+
+    // ----------------------------------------------------- Instance Variables
+    public String name;
+    public Object value;
 
     public NamingEntry(String name, Object value, int type) {
         this.name = name;
@@ -95,20 +104,7 @@ public class NamingEntry {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The type instance variable is used to avoid unsing RTTI when doing
-     * lookups.
-     */
-    public int type;
-    public String name;
-    public Object value;
-
-
     // --------------------------------------------------------- Object Methods
-
 
     public boolean equals(Object obj) {
         if ((obj != null) && (obj instanceof NamingEntry)) {

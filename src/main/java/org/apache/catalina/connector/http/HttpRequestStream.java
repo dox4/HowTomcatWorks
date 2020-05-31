@@ -15,6 +15,35 @@ public class HttpRequestStream extends RequestStream {
 
 
     /**
+     * Use chunking ?
+     */
+    protected boolean chunk = false;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * True if the final chunk was found.
+     */
+    protected boolean endChunk = false;
+    /**
+     * Chunk buffer.
+     */
+    protected byte[] chunkBuffer = null;
+    /**
+     * Chunk length.
+     */
+    protected int chunkLength = 0;
+    /**
+     * Chunk buffer position.
+     */
+    protected int chunkPos = 0;
+    /**
+     * HTTP/1.1 flag.
+     */
+    protected boolean http11 = false;
+
+
+    /**
      * Construct a servlet input stream associated with the specified Request.
      *
      * @param request  The associated request
@@ -38,47 +67,7 @@ public class HttpRequestStream extends RequestStream {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Use chunking ?
-     */
-    protected boolean chunk = false;
-
-
-    /**
-     * True if the final chunk was found.
-     */
-    protected boolean endChunk = false;
-
-
-    /**
-     * Chunk buffer.
-     */
-    protected byte[] chunkBuffer = null;
-
-
-    /**
-     * Chunk length.
-     */
-    protected int chunkLength = 0;
-
-
-    /**
-     * Chunk buffer position.
-     */
-    protected int chunkPos = 0;
-
-
-    /**
-     * HTTP/1.1 flag.
-     */
-    protected boolean http11 = false;
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Close this input stream.  No physical level I-O is performed, but
@@ -266,7 +255,6 @@ public class HttpRequestStream extends RequestStream {
      * until it reads a certain number of bytes or reaches a newline character,
      * which it reads into the array as well.
      *
-     * @param input Input stream on which the bytes are read
      * @return The line that was read, or <code>null</code> if end-of-file
      * was encountered
      * @throws IOException if an input or output exception has occurred

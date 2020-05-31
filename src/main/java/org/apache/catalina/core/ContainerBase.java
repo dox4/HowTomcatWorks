@@ -149,31 +149,13 @@ public abstract class ContainerBase
 
 
     /**
-     * Perform addChild with the permissions of this class.
-     * addChild can be called with the XML parser on the stack,
-     * this allows the XML parser to have fewer privileges than
-     * Tomcat.
+     * The string manager for this package.
      */
-    protected class PrivilegedAddChild
-            implements PrivilegedAction {
-
-        private final Container child;
-
-        PrivilegedAddChild(Container child) {
-            this.child = child;
-        }
-
-        public Object run() {
-            addChildInternal(child);
-            return null;
-        }
-
-    }
+    protected static StringManager sm =
+            StringManager.getManager(Constants.Package);
 
 
     // ----------------------------------------------------- Instance Variables
-
-
     /**
      * The child Containers belonging to this Container, keyed by name.
      */
@@ -274,29 +256,14 @@ public abstract class ContainerBase
      * The resources DirContext object with which this Container is associated.
      */
     protected DirContext resources = null;
-
-
-    /**
-     * The string manager for this package.
-     */
-    protected static StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
     /**
      * Has this component been started?
      */
     protected boolean started = false;
-
-
     /**
      * The property change support for this component.
      */
     protected PropertyChangeSupport support = new PropertyChangeSupport(this);
-
-
-    // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the debugging detail level for this component.
@@ -307,6 +274,8 @@ public abstract class ContainerBase
 
     }
 
+
+    // ------------------------------------------------------------- Properties
 
     /**
      * Set the debugging detail level for this component.
@@ -322,14 +291,12 @@ public abstract class ContainerBase
 
     }
 
-
     /**
      * Return descriptive information about this Container implementation and
      * the corresponding version number, in the format
      * <code>&lt;description&gt;/&lt;version&gt;</code>.
      */
     public abstract String getInfo();
-
 
     /**
      * Return the Loader with which this Container is associated.  If there is
@@ -346,7 +313,6 @@ public abstract class ContainerBase
         return (null);
 
     }
-
 
     /**
      * Set the Loader with which this Container is associated.
@@ -389,7 +355,6 @@ public abstract class ContainerBase
 
     }
 
-
     /**
      * Return the Logger with which this Container is associated.  If there is
      * no associated Logger, return the Logger associated with our parent
@@ -405,7 +370,6 @@ public abstract class ContainerBase
         return (null);
 
     }
-
 
     /**
      * Set the Logger with which this Container is associated.
@@ -448,7 +412,6 @@ public abstract class ContainerBase
 
     }
 
-
     /**
      * Return the Manager with which this Container is associated.  If there is
      * no associated Manager, return the Manager associated with our parent
@@ -464,7 +427,6 @@ public abstract class ContainerBase
         return (null);
 
     }
-
 
     /**
      * Set the Manager with which this Container is associated.
@@ -523,7 +485,6 @@ public abstract class ContainerBase
         return (null);
     }
 
-
     /**
      * Set the Cluster with which this Container is associated.
      *
@@ -564,7 +525,6 @@ public abstract class ContainerBase
         support.firePropertyChange("cluster", oldCluster, this.cluster);
     }
 
-
     /**
      * Return a name string (suitable for use by humans) that describes this
      * Container.  Within the set of child containers belonging to a particular
@@ -575,7 +535,6 @@ public abstract class ContainerBase
         return (name);
 
     }
-
 
     /**
      * Set a name string (suitable for use by humans) that describes this
@@ -596,7 +555,6 @@ public abstract class ContainerBase
 
     }
 
-
     /**
      * Return the Container for which this Container is a child, if there is
      * one.  If there is no defined parent, return <code>null</code>.
@@ -607,7 +565,6 @@ public abstract class ContainerBase
         return (parent);
 
     }
-
 
     /**
      * Set the parent Container to which this Container is being added as a
@@ -628,7 +585,6 @@ public abstract class ContainerBase
 
     }
 
-
     /**
      * Return the parent class loader (if any) for this web application.
      * This call is meaningful only <strong>after</strong> a Loader has
@@ -644,7 +600,6 @@ public abstract class ContainerBase
         return (ClassLoader.getSystemClassLoader());
 
     }
-
 
     /**
      * Set the parent class loader (if any) for this web application.
@@ -664,7 +619,6 @@ public abstract class ContainerBase
 
     }
 
-
     /**
      * Return the Pipeline object that manages the Valves associated with
      * this Container.
@@ -674,7 +628,6 @@ public abstract class ContainerBase
         return (this.pipeline);
 
     }
-
 
     /**
      * Return the Realm with which this Container is associated.  If there is
@@ -691,7 +644,6 @@ public abstract class ContainerBase
         return (null);
 
     }
-
 
     /**
      * Set the Realm with which this Container is associated.
@@ -734,7 +686,6 @@ public abstract class ContainerBase
 
     }
 
-
     /**
      * Return the resources DirContext object with which this Container is
      * associated.  If there is no associated resources object, return the
@@ -751,7 +702,6 @@ public abstract class ContainerBase
         return (null);
 
     }
-
 
     /**
      * Set the resources DirContext object with which this Container is
@@ -775,10 +725,6 @@ public abstract class ContainerBase
         support.firePropertyChange("resources", oldResources, this.resources);
 
     }
-
-
-    // ------------------------------------------------------ Container Methods
-
 
     /**
      * Add a new child Container to those associated with this Container,
@@ -807,6 +753,9 @@ public abstract class ContainerBase
         }
     }
 
+
+    // ------------------------------------------------------ Container Methods
+
     private void addChildInternal(Container child) {
 
         synchronized (children) {
@@ -830,7 +779,6 @@ public abstract class ContainerBase
 
     }
 
-
     /**
      * Add a container event listener to this component.
      *
@@ -844,7 +792,6 @@ public abstract class ContainerBase
         }
 
     }
-
 
     /**
      * Add the specified Mapper associated with this Container.
@@ -881,7 +828,6 @@ public abstract class ContainerBase
 
     }
 
-
     /**
      * Add a property change listener to this component.
      *
@@ -892,7 +838,6 @@ public abstract class ContainerBase
         support.addPropertyChangeListener(listener);
 
     }
-
 
     /**
      * Return the child Container, associated with this Container, with
@@ -911,7 +856,6 @@ public abstract class ContainerBase
 
     }
 
-
     /**
      * Return the set of children Containers associated with this Container.
      * If this Container has no children, a zero-length array is returned.
@@ -925,7 +869,6 @@ public abstract class ContainerBase
         }
 
     }
-
 
     /**
      * Return the set of container listeners associated with this Container.
@@ -942,7 +885,6 @@ public abstract class ContainerBase
         }
 
     }
-
 
     /**
      * Return the Mapper associated with the specified protocol, if there
@@ -963,7 +905,6 @@ public abstract class ContainerBase
 
     }
 
-
     /**
      * Return the set of Mappers associated with this Container.  If this
      * Container has no Mappers, a zero-length array is returned.
@@ -977,7 +918,6 @@ public abstract class ContainerBase
         }
 
     }
-
 
     /**
      * Process the specified Request, to produce the corresponding Response,
@@ -999,7 +939,6 @@ public abstract class ContainerBase
         pipeline.invoke(request, response);
     }
 
-
     /**
      * Return the child Container that should be used to process this Request,
      * based upon its characteristics.  If no such child Container can be
@@ -1020,7 +959,6 @@ public abstract class ContainerBase
         return (mapper.map(request, update));
 
     }
-
 
     /**
      * Remove an existing child Container from association with this parent
@@ -1048,7 +986,6 @@ public abstract class ContainerBase
 
     }
 
-
     /**
      * Remove a container event listener from this component.
      *
@@ -1062,7 +999,6 @@ public abstract class ContainerBase
         }
 
     }
-
 
     /**
      * Remove a Mapper associated with this Container, if any.
@@ -1097,7 +1033,6 @@ public abstract class ContainerBase
 
     }
 
-
     /**
      * Remove a property change listener from this component.
      *
@@ -1108,10 +1043,6 @@ public abstract class ContainerBase
         support.removePropertyChangeListener(listener);
 
     }
-
-
-    // ------------------------------------------------------ Lifecycle Methods
-
 
     /**
      * Add a lifecycle event listener to this component.
@@ -1125,6 +1056,8 @@ public abstract class ContainerBase
     }
 
 
+    // ------------------------------------------------------ Lifecycle Methods
+
     /**
      * Get the lifecycle listeners associated with this lifecycle. If this
      * Lifecycle has no listeners registered, a zero-length array is returned.
@@ -1134,7 +1067,6 @@ public abstract class ContainerBase
         return lifecycle.findLifecycleListeners();
 
     }
-
 
     /**
      * Remove a lifecycle event listener from this component.
@@ -1146,7 +1078,6 @@ public abstract class ContainerBase
         lifecycle.removeLifecycleListener(listener);
 
     }
-
 
     /**
      * Prepare for active use of the public methods of this Component.
@@ -1206,7 +1137,6 @@ public abstract class ContainerBase
         lifecycle.fireLifecycleEvent(AFTER_START_EVENT, null);
 
     }
-
 
     /**
      * Gracefully shut down active use of the public methods of this Component.
@@ -1272,10 +1202,6 @@ public abstract class ContainerBase
 
     }
 
-
-    // ------------------------------------------------------- Pipeline Methods
-
-
     /**
      * Add a new Valve to the end of the pipeline associated with this
      * Container.  Prior to adding the Valve, the Valve's
@@ -1302,6 +1228,8 @@ public abstract class ContainerBase
     }
 
 
+    // ------------------------------------------------------- Pipeline Methods
+
     /**
      * <p>Return the Valve instance that has been distinguished as the basic
      * Valve for this Pipeline (if any).
@@ -1313,6 +1241,24 @@ public abstract class ContainerBase
 
     }
 
+    /**
+     * <p>Set the Valve instance that has been distinguished as the basic
+     * Valve for this Pipeline (if any).  Prioer to setting the basic Valve,
+     * the Valve's <code>setContainer()</code> will be called, if it
+     * implements <code>Contained</code>, with the owning Container as an
+     * argument.  The method may throw an <code>IllegalArgumentException</code>
+     * if this Valve chooses not to be associated with this Container, or
+     * <code>IllegalStateException</code> if it is already associated with
+     * a different Container.</p>
+     *
+     * @param valve Valve to be distinguished as the basic Valve
+     */
+    @Override
+    public void setBasic(Valve valve) {
+
+        pipeline.setBasic(valve);
+
+    }
 
     /**
      * Return the set of Valves in the pipeline associated with this
@@ -1340,30 +1286,6 @@ public abstract class ContainerBase
         fireContainerEvent(REMOVE_VALVE_EVENT, valve);
 
     }
-
-
-    /**
-     * <p>Set the Valve instance that has been distinguished as the basic
-     * Valve for this Pipeline (if any).  Prioer to setting the basic Valve,
-     * the Valve's <code>setContainer()</code> will be called, if it
-     * implements <code>Contained</code>, with the owning Container as an
-     * argument.  The method may throw an <code>IllegalArgumentException</code>
-     * if this Valve chooses not to be associated with this Container, or
-     * <code>IllegalStateException</code> if it is already associated with
-     * a different Container.</p>
-     *
-     * @param valve Valve to be distinguished as the basic Valve
-     */
-    @Override
-    public void setBasic(Valve valve) {
-
-        pipeline.setBasic(valve);
-
-    }
-
-
-    // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Add a default Mapper implementation if none have been configured
@@ -1393,6 +1315,8 @@ public abstract class ContainerBase
     }
 
 
+    // ------------------------------------------------------ Protected Methods
+
     /**
      * Notify all container event listeners that a particular event has
      * occurred for this Container.  The default implementation performs
@@ -1415,7 +1339,6 @@ public abstract class ContainerBase
 
     }
 
-
     /**
      * Log the specified message to our current Logger (if any).
      *
@@ -1430,7 +1353,6 @@ public abstract class ContainerBase
             System.out.println(logName() + ": " + message);
 
     }
-
 
     /**
      * Log the specified message and exception to our current Logger
@@ -1451,7 +1373,6 @@ public abstract class ContainerBase
 
     }
 
-
     /**
      * Return the abbreviated name of this container for logging messsages
      */
@@ -1462,6 +1383,28 @@ public abstract class ContainerBase
         if (period >= 0)
             className = className.substring(period + 1);
         return (className + "[" + getName() + "]");
+
+    }
+
+    /**
+     * Perform addChild with the permissions of this class.
+     * addChild can be called with the XML parser on the stack,
+     * this allows the XML parser to have fewer privileges than
+     * Tomcat.
+     */
+    protected class PrivilegedAddChild
+            implements PrivilegedAction {
+
+        private final Container child;
+
+        PrivilegedAddChild(Container child) {
+            this.child = child;
+        }
+
+        public Object run() {
+            addChildInternal(child);
+            return null;
+        }
 
     }
 

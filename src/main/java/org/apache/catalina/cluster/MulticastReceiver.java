@@ -87,45 +87,37 @@ public final class MulticastReceiver
     // ----------------------------------------------------- Instance Variables
 
     /**
+     * The stack that keeps incoming requests
+     */
+    private static final Vector stack = new Vector();
+    /**
      * The unique message ID
      */
     private static String senderId = null;
-
-    /**
-     * The MulticastSocket to use
-     */
-    private MulticastSocket multicastSocket = null;
-
-    /**
-     * Our Thread name
-     */
-    private String threadName = "MulticastReceiver";
-
     /**
      * The name of our component, used for logging.
      */
     private final String receiverName = "MulticastReceiver";
-
-    /**
-     * The stack that keeps incoming requests
-     */
-    private static final Vector stack = new Vector();
-
-    /**
-     * Has this component been started?
-     */
-    private boolean started = false;
-
-    /**
-     * The background thread.
-     */
-    private Thread thread = null;
-
     /**
      * The background thread completion semaphore.
      */
     protected boolean threadDone = false;
-
+    /**
+     * The MulticastSocket to use
+     */
+    private MulticastSocket multicastSocket = null;
+    /**
+     * Our Thread name
+     */
+    private String threadName = "MulticastReceiver";
+    /**
+     * Has this component been started?
+     */
+    private boolean started = false;
+    /**
+     * The background thread.
+     */
+    private Thread thread = null;
     /**
      * The interval for the background thread to sleep
      */
@@ -156,6 +148,15 @@ public final class MulticastReceiver
     }
 
     /**
+     * Get the time in seconds this Cluster sleeps
+     *
+     * @return The time in seconds this Cluster sleeps
+     */
+    public int getCheckInterval() {
+        return (this.checkInterval);
+    }
+
+    /**
      * Set the time in seconds for this component to
      * Sleep before it checks for new received data in the Cluster
      *
@@ -163,15 +164,6 @@ public final class MulticastReceiver
      */
     public void setCheckInterval(int checkInterval) {
         this.checkInterval = checkInterval;
-    }
-
-    /**
-     * Get the time in seconds this Cluster sleeps
-     *
-     * @return The time in seconds this Cluster sleeps
-     */
-    public int getCheckInterval() {
-        return (this.checkInterval);
     }
 
     /**

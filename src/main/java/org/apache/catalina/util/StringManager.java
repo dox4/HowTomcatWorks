@@ -87,6 +87,7 @@ import java.util.ResourceBundle;
 
 public class StringManager {
 
+    private static final Hashtable managers = new Hashtable();
     /**
      * The ResourceBundle for this StringManager.
      */
@@ -105,6 +106,23 @@ public class StringManager {
     private StringManager(String packageName) {
         String bundleName = packageName + ".LocalStrings";
         bundle = ResourceBundle.getBundle(bundleName);
+    }
+
+    /**
+     * Get the StringManager for a particular package. If a manager for
+     * a package already exists, it will be reused, else a new
+     * StringManager will be created and returned.
+     *
+     * @param packageName
+     */
+
+    public synchronized static StringManager getManager(String packageName) {
+        StringManager mgr = (StringManager) managers.get(packageName);
+        if (mgr == null) {
+            mgr = new StringManager(packageName);
+            managers.put(packageName, mgr);
+        }
+        return mgr;
     }
 
     /**
@@ -197,6 +215,9 @@ public class StringManager {
         Object[] args = new Object[]{arg1, arg2};
         return getString(key, args);
     }
+    // --------------------------------------------------------------
+    // STATIC SUPPORT METHODS
+    // --------------------------------------------------------------
 
     /**
      * Get a string from the underlying resource bundle and format it
@@ -231,27 +252,5 @@ public class StringManager {
                             Object arg3, Object arg4) {
         Object[] args = new Object[]{arg1, arg2, arg3, arg4};
         return getString(key, args);
-    }
-    // --------------------------------------------------------------
-    // STATIC SUPPORT METHODS
-    // --------------------------------------------------------------
-
-    private static final Hashtable managers = new Hashtable();
-
-    /**
-     * Get the StringManager for a particular package. If a manager for
-     * a package already exists, it will be reused, else a new
-     * StringManager will be created and returned.
-     *
-     * @param packageName
-     */
-
-    public synchronized static StringManager getManager(String packageName) {
-        StringManager mgr = (StringManager) managers.get(packageName);
-        if (mgr == null) {
-            mgr = new StringManager(packageName);
-            managers.put(packageName, mgr);
-        }
-        return mgr;
     }
 }

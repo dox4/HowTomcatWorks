@@ -121,17 +121,13 @@ public final class Tool {
 
 
     /**
-     * Set <code>ant.home</code> system property?
-     */
-    private static boolean ant = false;
-
-
-    /**
      * The pathname of our installation base directory.
      */
     private static final String catalinaHome = System.getProperty("catalina.home");
-
-
+    /**
+     * Set <code>ant.home</code> system property?
+     */
+    private static boolean ant = false;
     /**
      * Include common classes in the repositories?
      */

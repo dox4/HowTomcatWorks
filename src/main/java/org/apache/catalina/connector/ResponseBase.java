@@ -37,109 +37,75 @@ public abstract class ResponseBase
 
 
     /**
-     * Has this response been committed by the application yet?
-     */
-    protected boolean appCommitted = false;
-
-
-    /**
-     * The buffer through which all of our output bytes are passed.
-     */
-    protected byte[] buffer = new byte[1024];
-
-
-    /**
-     * The number of data bytes currently in the buffer.
-     */
-    protected int bufferCount = 0;
-
-
-    /**
-     * Has this response been committed yet?
-     */
-    protected boolean committed = false;
-
-
-    /**
-     * The Connector through which this Response is returned.
-     */
-    protected Connector connector = null;
-
-
-    /**
-     * The actual number of bytes written to this Response.
-     */
-    protected int contentCount = 0;
-
-
-    /**
-     * The content length associated with this Response.
-     */
-    protected int contentLength = -1;
-
-
-    /**
-     * The content type associated with this Response.
-     */
-    protected String contentType = null;
-
-
-    /**
-     * The Context within which this Response is being produced.
-     */
-    protected Context context = null;
-
-
-    /**
-     * The character encoding associated with this Response.
-     */
-    protected String encoding = null;
-
-
-    /**
-     * The facade associated with this response.
-     */
-    protected ResponseFacade facade = new ResponseFacade(this);
-
-
-    /**
-     * Are we currently processing inside a RequestDispatcher.include()?
-     */
-    protected boolean included = false;
-
-
-    /**
      * Descriptive information about this Response implementation.
      */
     protected static final String info =
             "org.apache.catalina.connector.ResponseBase/1.0";
-
-
-    /**
-     * The Locale associated with this Response.
-     */
-    protected Locale locale = Locale.getDefault();
-
-
-    /**
-     * The output stream associated with this Response.
-     */
-    protected OutputStream output = null;
-
-
-    /**
-     * The Request with which this Response is associated.
-     */
-    protected Request request = null;
-
-
     /**
      * The string manager for this package.
      */
     protected static StringManager sm =
             StringManager.getManager(Constants.Package);
-
-
+    /**
+     * Has this response been committed by the application yet?
+     */
+    protected boolean appCommitted = false;
+    /**
+     * The buffer through which all of our output bytes are passed.
+     */
+    protected byte[] buffer = new byte[1024];
+    /**
+     * The number of data bytes currently in the buffer.
+     */
+    protected int bufferCount = 0;
+    /**
+     * Has this response been committed yet?
+     */
+    protected boolean committed = false;
+    /**
+     * The Connector through which this Response is returned.
+     */
+    protected Connector connector = null;
+    /**
+     * The actual number of bytes written to this Response.
+     */
+    protected int contentCount = 0;
+    /**
+     * The content length associated with this Response.
+     */
+    protected int contentLength = -1;
+    /**
+     * The content type associated with this Response.
+     */
+    protected String contentType = null;
+    /**
+     * The Context within which this Response is being produced.
+     */
+    protected Context context = null;
+    /**
+     * The character encoding associated with this Response.
+     */
+    protected String encoding = null;
+    /**
+     * The facade associated with this response.
+     */
+    protected ResponseFacade facade = new ResponseFacade(this);
+    /**
+     * Are we currently processing inside a RequestDispatcher.include()?
+     */
+    protected boolean included = false;
+    /**
+     * The Locale associated with this Response.
+     */
+    protected Locale locale = Locale.getDefault();
+    /**
+     * The output stream associated with this Response.
+     */
+    protected OutputStream output = null;
+    /**
+     * The Request with which this Response is associated.
+     */
+    protected Request request = null;
     /**
      * The ServletOutputStream that has been returned by
      * <code>getOutputStream()</code>, if any.
@@ -168,17 +134,6 @@ public abstract class ResponseBase
 
     // ------------------------------------------------------------- Properties
 
-
-    /**
-     * Set the application commit flag.
-     */
-    public void setAppCommitted(boolean appCommitted) {
-
-        this.appCommitted = appCommitted;
-
-    }
-
-
     /**
      * Application commit flag accessor.
      */
@@ -188,6 +143,14 @@ public abstract class ResponseBase
 
     }
 
+    /**
+     * Set the application commit flag.
+     */
+    public void setAppCommitted(boolean appCommitted) {
+
+        this.appCommitted = appCommitted;
+
+    }
 
     /**
      * Return the Connector through which this Response will be transmitted.
@@ -333,6 +296,14 @@ public abstract class ResponseBase
 
     }
 
+    /**
+     * Suspended flag accessor.
+     */
+    public boolean isSuspended() {
+
+        return (this.suspended);
+
+    }
 
     /**
      * Set the suspended flag.
@@ -344,17 +315,6 @@ public abstract class ResponseBase
             ((ResponseStream) stream).setSuspended(suspended);
 
     }
-
-
-    /**
-     * Suspended flag accessor.
-     */
-    public boolean isSuspended() {
-
-        return (this.suspended);
-
-    }
-
 
     /**
      * Set the error flag.
@@ -437,6 +397,22 @@ public abstract class ResponseBase
 
     }
 
+    /**
+     * Set the content length (in bytes) for this Response.
+     *
+     * @param length The new content length
+     */
+    public void setContentLength(int length) {
+
+        if (isCommitted())
+            return;
+
+        if (included)
+            return;     // Ignore any call from an included servlet
+
+        this.contentLength = length;
+
+    }
 
     /**
      * Return the content type that was set or calculated for this response,
@@ -448,6 +424,33 @@ public abstract class ResponseBase
 
     }
 
+    /**
+     * Set the content type for this Response.
+     *
+     * @param type The new content type
+     */
+    public void setContentType(String type) {
+
+        if (isCommitted())
+            return;
+
+        if (included)
+            return;     // Ignore any call from an included servlet
+
+        this.contentType = type;
+        if (type.indexOf(';') >= 0) {
+            encoding = RequestUtil.parseCharacterEncoding(type);
+            if (encoding == null)
+                encoding = "ISO-8859-1";
+        } else {
+            if (encoding != null)
+                this.contentType = type + ";charset=" + encoding;
+        }
+
+    }
+
+
+    // -------------------------------------------------------- Package Methods
 
     /**
      * Return a PrintWriter that can be used to render error messages,
@@ -481,7 +484,6 @@ public abstract class ResponseBase
 
     }
 
-
     /**
      * Release all object references, and initialize instance variables, in
      * preparation for reuse of this object.
@@ -509,10 +511,6 @@ public abstract class ResponseBase
 
     }
 
-
-    // -------------------------------------------------------- Package Methods
-
-
     /**
      * Write the specified byte to our output stream, flushing if necessary.
      *
@@ -533,6 +531,8 @@ public abstract class ResponseBase
     }
 
 
+    // ------------------------------------------------ ServletResponse Methods
+
     /**
      * Write <code>b.length</code> bytes from the specified byte array
      * to our output stream.  Flush the output stream as necessary.
@@ -549,7 +549,6 @@ public abstract class ResponseBase
         write(b, 0, b.length);
 
     }
-
 
     /**
      * Write <code>len</code> bytes from the specified byte array, starting
@@ -591,10 +590,6 @@ public abstract class ResponseBase
 
     }
 
-
-    // ------------------------------------------------ ServletResponse Methods
-
-
     /**
      * Flush the buffer and commit this response.
      *
@@ -613,7 +608,6 @@ public abstract class ResponseBase
 
     }
 
-
     /**
      * Return the actual buffer size used for this Response.
      */
@@ -623,6 +617,24 @@ public abstract class ResponseBase
 
     }
 
+    /**
+     * Set the buffer size to be used for this Response.
+     *
+     * @param size The new buffer size
+     * @throws IllegalStateException if this method is called after
+     *                               output has been committed for this response
+     */
+    public void setBufferSize(int size) {
+
+        if (committed || (bufferCount > 0))
+            throw new IllegalStateException
+                    (sm.getString("responseBase.setBufferSize.ise"));
+
+        if (buffer.length >= size)
+            return;
+        buffer = new byte[size];
+
+    }
 
     /**
      * Return the character encoding used for this Response.
@@ -635,7 +647,6 @@ public abstract class ResponseBase
             return (encoding);
 
     }
-
 
     /**
      * Return the servlet output stream associated with this Response.
@@ -657,7 +668,6 @@ public abstract class ResponseBase
 
     }
 
-
     /**
      * Return the Locale assigned to this response.
      */
@@ -666,149 +676,6 @@ public abstract class ResponseBase
         return (locale);
 
     }
-
-
-    /**
-     * Return the writer associated with this Response.
-     *
-     * @throws IllegalStateException if <code>getOutputStream</code> has
-     *                               already been called for this response
-     * @throws IOException           if an input/output error occurs
-     */
-    public PrintWriter getWriter() throws IOException {
-
-        if (writer != null)
-            return (writer);
-
-        if (stream != null)
-            throw new IllegalStateException
-                    (sm.getString("responseBase.getWriter.ise"));
-
-        ResponseStream newStream = (ResponseStream) createOutputStream();
-        newStream.setCommit(false);
-        OutputStreamWriter osr =
-                new OutputStreamWriter(newStream, getCharacterEncoding());
-        writer = new ResponseWriter(osr, newStream);
-        stream = newStream;
-        return (writer);
-
-    }
-
-
-    /**
-     * Has the output of this response already been committed?
-     */
-    public boolean isCommitted() {
-
-        return (committed);
-
-    }
-
-
-    /**
-     * Clear any content written to the buffer.
-     *
-     * @throws IllegalStateException if this response has already
-     *                               been committed
-     */
-    public void reset() {
-
-        if (committed)
-            throw new IllegalStateException
-                    (sm.getString("responseBase.reset.ise"));
-
-        if (included)
-            return;     // Ignore any call from an included servlet
-
-        if (stream != null)
-            ((ResponseStream) stream).reset();
-        bufferCount = 0;
-        contentLength = -1;
-        contentType = null;
-
-    }
-
-
-    /**
-     * Reset the data buffer but not any status or header information.
-     *
-     * @throws IllegalStateException if the response has already
-     *                               been committed
-     */
-    public void resetBuffer() {
-
-        if (committed)
-            throw new IllegalStateException
-                    (sm.getString("responseBase.resetBuffer.ise"));
-
-        bufferCount = 0;
-
-    }
-
-
-    /**
-     * Set the buffer size to be used for this Response.
-     *
-     * @param size The new buffer size
-     * @throws IllegalStateException if this method is called after
-     *                               output has been committed for this response
-     */
-    public void setBufferSize(int size) {
-
-        if (committed || (bufferCount > 0))
-            throw new IllegalStateException
-                    (sm.getString("responseBase.setBufferSize.ise"));
-
-        if (buffer.length >= size)
-            return;
-        buffer = new byte[size];
-
-    }
-
-
-    /**
-     * Set the content length (in bytes) for this Response.
-     *
-     * @param length The new content length
-     */
-    public void setContentLength(int length) {
-
-        if (isCommitted())
-            return;
-
-        if (included)
-            return;     // Ignore any call from an included servlet
-
-        this.contentLength = length;
-
-    }
-
-
-    /**
-     * Set the content type for this Response.
-     *
-     * @param type The new content type
-     */
-    public void setContentType(String type) {
-
-        if (isCommitted())
-            return;
-
-        if (included)
-            return;     // Ignore any call from an included servlet
-
-        this.contentType = type;
-        if (type.indexOf(';') >= 0) {
-            encoding = RequestUtil.parseCharacterEncoding(type);
-            if (encoding == null)
-                encoding = "ISO-8859-1";
-        } else {
-            if (encoding != null)
-                this.contentType = type + ";charset=" + encoding;
-        }
-
-    }
-
 
     /**
      * Set the Locale that is appropriate for this response, including
@@ -839,6 +706,80 @@ public abstract class ResponseBase
                 }
             }
         }
+
+    }
+
+    /**
+     * Return the writer associated with this Response.
+     *
+     * @throws IllegalStateException if <code>getOutputStream</code> has
+     *                               already been called for this response
+     * @throws IOException           if an input/output error occurs
+     */
+    public PrintWriter getWriter() throws IOException {
+
+        if (writer != null)
+            return (writer);
+
+        if (stream != null)
+            throw new IllegalStateException
+                    (sm.getString("responseBase.getWriter.ise"));
+
+        ResponseStream newStream = (ResponseStream) createOutputStream();
+        newStream.setCommit(false);
+        OutputStreamWriter osr =
+                new OutputStreamWriter(newStream, getCharacterEncoding());
+        writer = new ResponseWriter(osr, newStream);
+        stream = newStream;
+        return (writer);
+
+    }
+
+    /**
+     * Has the output of this response already been committed?
+     */
+    public boolean isCommitted() {
+
+        return (committed);
+
+    }
+
+    /**
+     * Clear any content written to the buffer.
+     *
+     * @throws IllegalStateException if this response has already
+     *                               been committed
+     */
+    public void reset() {
+
+        if (committed)
+            throw new IllegalStateException
+                    (sm.getString("responseBase.reset.ise"));
+
+        if (included)
+            return;     // Ignore any call from an included servlet
+
+        if (stream != null)
+            ((ResponseStream) stream).reset();
+        bufferCount = 0;
+        contentLength = -1;
+        contentType = null;
+
+    }
+
+    /**
+     * Reset the data buffer but not any status or header information.
+     *
+     * @throws IllegalStateException if the response has already
+     *                               been committed
+     */
+    public void resetBuffer() {
+
+        if (committed)
+            throw new IllegalStateException
+                    (sm.getString("responseBase.resetBuffer.ise"));
+
+        bufferCount = 0;
 
     }
 

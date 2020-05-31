@@ -110,64 +110,6 @@ final class HttpProcessor
 
 
     // ----------------------------------------------------------- Constructors
-
-
-    /**
-     * Construct a new HttpProcessor associated with the specified connector.
-     *
-     * @param connector HttpConnector that owns this processor
-     * @param id        Identifier of this HttpProcessor (unique per connector)
-     */
-    public HttpProcessor(HttpConnector connector, int id) {
-
-        super();
-        this.connector = connector;
-        this.debug = connector.getDebug();
-        this.id = id;
-        this.proxyName = connector.getProxyName();
-        this.proxyPort = connector.getProxyPort();
-        this.request = (HttpRequestImpl) connector.createRequest();
-        this.response = (HttpResponseImpl) connector.createResponse();
-        this.serverPort = connector.getPort();
-        this.threadName =
-                "HttpProcessor[" + connector.getPort() + "][" + id + "]";
-
-    }
-
-
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Is there a new socket available?
-     */
-    private boolean available = false;
-
-
-    /**
-     * The HttpConnector with which this processor is associated.
-     */
-    private HttpConnector connector = null;
-
-
-    /**
-     * The debugging detail level for this component.
-     */
-    private int debug = 0;
-
-
-    /**
-     * The identifier of this processor, unique per connector.
-     */
-    private int id = 0;
-
-
-    /**
-     * The lifecycle event support for this component.
-     */
-    private final LifecycleSupport lifecycle = new LifecycleSupport(this);
-
-
     /**
      * The match string for identifying a session ID parameter.
      */
@@ -175,43 +117,56 @@ final class HttpProcessor
             ";" + Globals.SESSION_PARAMETER_NAME + "=";
 
 
+    // ----------------------------------------------------- Instance Variables
     /**
-     * The proxy server name for our Connector.
+     * The lifecycle event support for this component.
      */
-    private String proxyName = null;
-
-
+    private final LifecycleSupport lifecycle = new LifecycleSupport(this);
     /**
-     * The proxy server port for our Connector.
+     * The thread synchronization object.
      */
-    private int proxyPort = 0;
-
-
-    /**
-     * The HTTP request object we will pass to our associated container.
-     */
-    private HttpRequestImpl request = null;
-
-
-    /**
-     * The HTTP response object we will pass to our associated container.
-     */
-    private HttpResponseImpl response = null;
-
-
-    /**
-     * The actual server port for our Connector.
-     */
-    private int serverPort = 0;
-
-
+    private final Object threadSync = new Object();
     /**
      * The string manager for this package.
      */
     protected StringManager sm =
             StringManager.getManager(Constants.Package);
-
-
+    /**
+     * Is there a new socket available?
+     */
+    private boolean available = false;
+    /**
+     * The HttpConnector with which this processor is associated.
+     */
+    private HttpConnector connector = null;
+    /**
+     * The debugging detail level for this component.
+     */
+    private int debug = 0;
+    /**
+     * The identifier of this processor, unique per connector.
+     */
+    private int id = 0;
+    /**
+     * The proxy server name for our Connector.
+     */
+    private String proxyName = null;
+    /**
+     * The proxy server port for our Connector.
+     */
+    private int proxyPort = 0;
+    /**
+     * The HTTP request object we will pass to our associated container.
+     */
+    private HttpRequestImpl request = null;
+    /**
+     * The HTTP response object we will pass to our associated container.
+     */
+    private HttpResponseImpl response = null;
+    /**
+     * The actual server port for our Connector.
+     */
+    private int serverPort = 0;
     /**
      * The socket we are currently processing a request for.  This object
      * is used for inter-thread communication only.
@@ -244,13 +199,29 @@ final class HttpProcessor
 
 
     /**
-     * The thread synchronization object.
+     * Construct a new HttpProcessor associated with the specified connector.
+     *
+     * @param connector HttpConnector that owns this processor
+     * @param id        Identifier of this HttpProcessor (unique per connector)
      */
-    private final Object threadSync = new Object();
+    public HttpProcessor(HttpConnector connector, int id) {
+
+        super();
+        this.connector = connector;
+        this.debug = connector.getDebug();
+        this.id = id;
+        this.proxyName = connector.getProxyName();
+        this.proxyPort = connector.getProxyPort();
+        this.request = (HttpRequestImpl) connector.createRequest();
+        this.response = (HttpResponseImpl) connector.createResponse();
+        this.serverPort = connector.getPort();
+        this.threadName =
+                "HttpProcessor[" + connector.getPort() + "][" + id + "]";
+
+    }
 
 
     // -------------------------------------------------------- Package Methods
-
 
     /**
      * Process an incoming TCP/IP connection on the specified socket.  Any

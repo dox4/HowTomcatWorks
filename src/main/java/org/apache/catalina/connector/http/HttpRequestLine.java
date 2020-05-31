@@ -24,7 +24,15 @@ final class HttpRequestLine {
 
 
     // ----------------------------------------------------------- Constructors
+    public char[] method;
+    public int methodEnd;
 
+
+    // ----------------------------------------------------- Instance Variables
+    public char[] uri;
+    public int uriEnd;
+    public char[] protocol;
+    public int protocolEnd;
 
     public HttpRequestLine() {
 
@@ -32,7 +40,6 @@ final class HttpRequestLine {
                 new char[INITIAL_PROTOCOL_SIZE], 0);
 
     }
-
 
     public HttpRequestLine(char[] method, int methodEnd,
                            char[] uri, int uriEnd,
@@ -48,22 +55,10 @@ final class HttpRequestLine {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    public char[] method;
-    public int methodEnd;
-    public char[] uri;
-    public int uriEnd;
-    public char[] protocol;
-    public int protocolEnd;
-
-
     // ------------------------------------------------------------- Properties
 
 
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Release all object references, and initialize instance variables, in

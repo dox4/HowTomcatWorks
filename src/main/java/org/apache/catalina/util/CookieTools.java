@@ -77,6 +77,11 @@ import java.util.Date;
  */
 public class CookieTools {
 
+    //
+    // from RFC 2068, token special case characters
+    //
+    private static final String tspecials = "()<>@,;:\\\"/[]?={} \t";
+
     /**
      * Return the header name to set the cookie, based on cookie
      * version
@@ -181,11 +186,6 @@ public class CookieTools {
             buf.append('"');
         }
     }
-
-    //
-    // from RFC 2068, token special case characters
-    //
-    private static final String tspecials = "()<>@,;:\\\"/[]?={} \t";
 
     /*
      * Return true iff the string counts as an HTTP/1.1 "token".

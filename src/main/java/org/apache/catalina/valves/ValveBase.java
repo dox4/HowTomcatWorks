@@ -91,34 +91,27 @@ public abstract class ValveBase
 
 
     /**
-     * The Container whose pipeline this Valve is a component of.
+     * The string manager for this package.
      */
-    protected Container container = null;
-
-
-    /**
-     * The debugging detail level for this component.
-     */
-    protected int debug = 0;
-
-
+    protected final static StringManager sm =
+            StringManager.getManager(Constants.Package);
     /**
      * Descriptive information about this Valve implementation.  This value
      * should be overridden by subclasses.
      */
     protected static String info =
             "org.apache.catalina.core.ValveBase/1.0";
-
-
     /**
-     * The string manager for this package.
+     * The Container whose pipeline this Valve is a component of.
      */
-    protected final static StringManager sm =
-            StringManager.getManager(Constants.Package);
+    protected Container container = null;
+    /**
+     * The debugging detail level for this component.
+     */
+    protected int debug = 0;
 
 
     //-------------------------------------------------------------- Properties
-
 
     /**
      * Return the Container with which this Valve is associated, if any.

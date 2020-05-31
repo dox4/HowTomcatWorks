@@ -114,12 +114,6 @@ public final class CertificatesValve
 
 
     /**
-     * Are certificates required for authentication by this web application?
-     */
-    protected boolean certificates = false;
-
-
-    /**
      * A mapping table to determine the number of effective bits in the key
      * when using a cipher suite containing the specified cipher name.  The
      * underlying data came from the TLS Specification (RFC 2246), Appendix C.
@@ -134,34 +128,28 @@ public final class CertificatesValve
             new CipherData("_WITH_DES_CBC_", 56),
             new CipherData("_WITH_3DES_EDE_CBC_", 168)
     };
-
-
-    /**
-     * The debugging detail level for this component.
-     */
-    protected int debug = 0;
-
-
     /**
      * The descriptive information related to this implementation.
      */
     protected static final String info =
             "org.apache.catalina.valves.CertificatesValve/1.0";
-
-
-    /**
-     * The lifecycle event support for this component.
-     */
-    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
-
-
     /**
      * The StringManager for this package.
      */
     protected static StringManager sm =
             StringManager.getManager(Constants.Package);
-
-
+    /**
+     * Are certificates required for authentication by this web application?
+     */
+    protected boolean certificates = false;
+    /**
+     * The debugging detail level for this component.
+     */
+    protected int debug = 0;
+    /**
+     * The lifecycle event support for this component.
+     */
+    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
     /**
      * Has this component been started yet?
      */

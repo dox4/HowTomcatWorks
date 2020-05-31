@@ -98,37 +98,87 @@ final class ApplicationDispatcher
         implements RequestDispatcher {
 
 
-    protected class PrivilegedForward implements PrivilegedExceptionAction {
-        private final ServletRequest request;
-        private final ServletResponse response;
-
-        PrivilegedForward(ServletRequest request, ServletResponse response) {
-            this.request = request;
-            this.response = response;
-        }
-
-        public Object run() throws ServletException, IOException {
-            doForward(request, response);
-            return null;
-        }
-    }
-
-    protected class PrivilegedInclude implements PrivilegedExceptionAction {
-        private final ServletRequest request;
-        private final ServletResponse response;
-
-        PrivilegedInclude(ServletRequest request, ServletResponse response) {
-            this.request = request;
-            this.response = response;
-        }
-
-        public Object run() throws ServletException, IOException {
-            doInclude(request, response);
-            return null;
-        }
-    }
+    /**
+     * Descriptive information about this implementation.
+     */
+    private static final String info =
+            "org.apache.catalina.core.ApplicationDispatcher/1.0";
+    /**
+     * The StringManager for this package.
+     */
+    private static final StringManager sm =
+            StringManager.getManager(Constants.Package);
 
     // ----------------------------------------------------------- Constructors
+    /**
+     * The debugging detail level for this component.
+     */
+    private final int debug = 0;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The request specified by the dispatching application.
+     */
+    private ServletRequest appRequest = null;
+
+
+    /**
+     * The response specified by the dispatching application.
+     */
+    private ServletResponse appResponse = null;
+
+
+    /**
+     * The Context this RequestDispatcher is associated with.
+     */
+    private Context context = null;
+    /**
+     * Are we performing an include() instead of a forward()?
+     */
+    private boolean including = false;
+    /**
+     * The servlet name for a named dispatcher.
+     */
+    private String name = null;
+    /**
+     * The outermost request that will be passed on to the invoked servlet.
+     */
+    private ServletRequest outerRequest = null;
+    /**
+     * The outermost response that will be passed on to the invoked servlet.
+     */
+    private ServletResponse outerResponse = null;
+    /**
+     * The extra path information for this RequestDispatcher.
+     */
+    private String pathInfo = null;
+    /**
+     * The query string parameters for this RequestDispatcher.
+     */
+    private String queryString = null;
+    /**
+     * The servlet path for this RequestDispatcher.
+     */
+    private String servletPath = null;
+    /**
+     * The InstanceSupport instance associated with our Wrapper (used to
+     * send "before dispatch" and "after dispatch" events.
+     */
+    private InstanceSupport support = null;
+    /**
+     * The Wrapper associated with the resource that will be forwarded to
+     * or included.
+     */
+    private Wrapper wrapper = null;
+    /**
+     * The request wrapper we have created and installed (if any).
+     */
+    private ServletRequest wrapRequest = null;
+    /**
+     * The response wrapper we have created and installed (if any).
+     */
+    private ServletResponse wrapResponse = null;
 
 
     /**
@@ -181,119 +231,6 @@ final class ApplicationDispatcher
 
     }
 
-
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The request specified by the dispatching application.
-     */
-    private ServletRequest appRequest = null;
-
-
-    /**
-     * The response specified by the dispatching application.
-     */
-    private ServletResponse appResponse = null;
-
-
-    /**
-     * The Context this RequestDispatcher is associated with.
-     */
-    private Context context = null;
-
-
-    /**
-     * The debugging detail level for this component.
-     */
-    private final int debug = 0;
-
-
-    /**
-     * Are we performing an include() instead of a forward()?
-     */
-    private boolean including = false;
-
-
-    /**
-     * Descriptive information about this implementation.
-     */
-    private static final String info =
-            "org.apache.catalina.core.ApplicationDispatcher/1.0";
-
-
-    /**
-     * The servlet name for a named dispatcher.
-     */
-    private String name = null;
-
-
-    /**
-     * The outermost request that will be passed on to the invoked servlet.
-     */
-    private ServletRequest outerRequest = null;
-
-
-    /**
-     * The outermost response that will be passed on to the invoked servlet.
-     */
-    private ServletResponse outerResponse = null;
-
-
-    /**
-     * The extra path information for this RequestDispatcher.
-     */
-    private String pathInfo = null;
-
-
-    /**
-     * The query string parameters for this RequestDispatcher.
-     */
-    private String queryString = null;
-
-
-    /**
-     * The servlet path for this RequestDispatcher.
-     */
-    private String servletPath = null;
-
-
-    /**
-     * The StringManager for this package.
-     */
-    private static final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
-    /**
-     * The InstanceSupport instance associated with our Wrapper (used to
-     * send "before dispatch" and "after dispatch" events.
-     */
-    private InstanceSupport support = null;
-
-
-    /**
-     * The Wrapper associated with the resource that will be forwarded to
-     * or included.
-     */
-    private Wrapper wrapper = null;
-
-
-    /**
-     * The request wrapper we have created and installed (if any).
-     */
-    private ServletRequest wrapRequest = null;
-
-
-    /**
-     * The response wrapper we have created and installed (if any).
-     */
-    private ServletResponse wrapResponse = null;
-
-
-    // ------------------------------------------------------------- Properties
-
-
     /**
      * Return the descriptive information about this implementation.
      */
@@ -302,10 +239,6 @@ final class ApplicationDispatcher
         return (info);
 
     }
-
-
-    // --------------------------------------------------------- Public Methods
-
 
     /**
      * Forward this request and response to another resource for processing.
@@ -333,6 +266,9 @@ final class ApplicationDispatcher
             doForward(request, response);
         }
     }
+
+
+    // ------------------------------------------------------------- Properties
 
     private void doForward(ServletRequest request, ServletResponse response)
             throws ServletException, IOException {
@@ -441,6 +377,8 @@ final class ApplicationDispatcher
     }
 
 
+    // --------------------------------------------------------- Public Methods
+
     /**
      * Include the response from another resource in the current response.
      * Any runtime exception, IOException, or ServletException thrown by the
@@ -548,10 +486,6 @@ final class ApplicationDispatcher
         }
 
     }
-
-
-    // -------------------------------------------------------- Private Methods
-
 
     /**
      * Ask the resource represented by this RequestDispatcher to process
@@ -722,7 +656,6 @@ final class ApplicationDispatcher
 
     }
 
-
     /**
      * Log a message on the Logger associated with our Context (if any)
      *
@@ -740,6 +673,8 @@ final class ApplicationDispatcher
 
     }
 
+
+    // -------------------------------------------------------- Private Methods
 
     /**
      * Log a message on the Logger associated with our Container (if any)
@@ -761,7 +696,6 @@ final class ApplicationDispatcher
 
     }
 
-
     /**
      * Set up to handle the specified request and response
      *
@@ -780,7 +714,6 @@ final class ApplicationDispatcher
         this.including = including;
 
     }
-
 
     /**
      * Unwrap the request if we have wrapped it.
@@ -818,7 +751,6 @@ final class ApplicationDispatcher
 
     }
 
-
     /**
      * Unwrap the response if we have wrapped it.
      */
@@ -854,7 +786,6 @@ final class ApplicationDispatcher
         }
 
     }
-
 
     /**
      * Create and return a request wrapper that has been inserted in the
@@ -898,7 +829,6 @@ final class ApplicationDispatcher
 
     }
 
-
     /**
      * Create and return a response wrapper that has been inserted in the
      * appropriate spot in the response chain.
@@ -938,6 +868,36 @@ final class ApplicationDispatcher
         wrapResponse = wrapper;
         return (wrapper);
 
+    }
+
+    protected class PrivilegedForward implements PrivilegedExceptionAction {
+        private final ServletRequest request;
+        private final ServletResponse response;
+
+        PrivilegedForward(ServletRequest request, ServletResponse response) {
+            this.request = request;
+            this.response = response;
+        }
+
+        public Object run() throws ServletException, IOException {
+            doForward(request, response);
+            return null;
+        }
+    }
+
+    protected class PrivilegedInclude implements PrivilegedExceptionAction {
+        private final ServletRequest request;
+        private final ServletResponse response;
+
+        PrivilegedInclude(ServletRequest request, ServletResponse response) {
+            this.request = request;
+            this.response = response;
+        }
+
+        public Object run() throws ServletException, IOException {
+            doInclude(request, response);
+            return null;
+        }
     }
 
 

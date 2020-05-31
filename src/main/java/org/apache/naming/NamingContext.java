@@ -65,6 +65,7 @@
 package org.apache.naming;
 
 import javax.naming.*;
+import javax.naming.directory.InvalidAttributesException;
 import javax.naming.spi.NamingManager;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -89,6 +90,25 @@ public class NamingContext implements Context {
 
 
     // ----------------------------------------------------------- Constructors
+    /**
+     * Environment.
+     */
+    protected Hashtable env;
+    /**
+     * The string manager for this package.
+     */
+    protected StringManager sm = StringManager.getManager(Constants.Package);
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * Bindings in this Context.
+     */
+    protected Hashtable bindings;
+    /**
+     * Name of the associated Catalina Context.
+     */
+    protected String name;
 
 
     /**
@@ -121,38 +141,10 @@ public class NamingContext implements Context {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Environment.
-     */
-    protected Hashtable env;
-
-
-    /**
-     * The string manager for this package.
-     */
-    protected StringManager sm = StringManager.getManager(Constants.Package);
-
-
-    /**
-     * Bindings in this Context.
-     */
-    protected Hashtable bindings;
-
-
-    /**
-     * Name of the associated Catalina Context.
-     */
-    protected String name;
-
-
     // --------------------------------------------------------- Public Methods
 
 
     // -------------------------------------------------------- Context Methods
-
 
     /**
      * Retrieves the named object. If name is empty, returns a new instance
@@ -845,7 +837,7 @@ public class NamingContext implements Context {
      * must already exist.
      *
      * @param name   the name to bind; may not be empty
-     * @param object the object to bind; possibly null
+     * @param obj the object to bind; possibly null
      * @param rebind if true, then perform a rebind (ie, overwrite)
      * @throws NameAlreadyBoundException  if name is already bound
      * @throws InvalidAttributesException if object did not supply all

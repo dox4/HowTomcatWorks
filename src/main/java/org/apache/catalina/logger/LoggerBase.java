@@ -93,24 +93,18 @@ public abstract class LoggerBase
 
 
     /**
-     * The Container with which this Logger has been associated.
-     */
-    protected Container container = null;
-
-
-    /**
-     * The debugging detail level for this component.
-     */
-    protected int debug = 0;
-
-
-    /**
      * The descriptive information about this implementation.
      */
     protected static final String info =
             "org.apache.catalina.logger.LoggerBase/1.0";
-
-
+    /**
+     * The Container with which this Logger has been associated.
+     */
+    protected Container container = null;
+    /**
+     * The debugging detail level for this component.
+     */
+    protected int debug = 0;
     /**
      * The property change support for this component.
      */
@@ -212,7 +206,7 @@ public abstract class LoggerBase
      * Set the verbosity level of this logger.  Messages logged with a
      * higher verbosity than this level will be silently ignored.
      *
-     * @param verbosityLevel The new verbosity level, as a string
+     * @param verbosity The new verbosity level, as a string
      */
     public void setVerbosityLevel(String verbosity) {
 
@@ -250,8 +244,8 @@ public abstract class LoggerBase
      * log.  The name and type of the servlet log is specific to the
      * servlet container.  This message will be logged unconditionally.
      *
-     * @param message A <code>String</code> specifying the message to be
-     *                written to the log file
+     * @param msg A <code>String</code> specifying the message to be
+     *            written to the log file
      */
     public abstract void log(String msg);
 

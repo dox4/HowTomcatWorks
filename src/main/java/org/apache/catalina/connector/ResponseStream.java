@@ -29,26 +29,13 @@ public class ResponseStream
 
 
     /**
-     * Construct a servlet output stream associated with the specified Request.
-     *
-     * @param response The associated response
+     * The localized strings for this package.
      */
-    public ResponseStream(Response response) {
-
-        super();
-        closed = false;
-        commit = false;
-        count = 0;
-        this.response = response;
-        this.stream = response.getStream();
-        this.suspended = response.isSuspended();
-
-    }
+    protected static StringManager sm =
+            StringManager.getManager(Constants.Package);
 
 
     // ----------------------------------------------------- Instance Variables
-
-
     /**
      * Has this stream been closed?
      */
@@ -78,29 +65,35 @@ public class ResponseStream
      * The Response with which this input stream is associated.
      */
     protected Response response = null;
-
-
-    /**
-     * The localized strings for this package.
-     */
-    protected static StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
     /**
      * The underlying output stream to which we should write data.
      */
     protected OutputStream stream = null;
-
-
     /**
      * Has this response output been suspended?
      */
     protected boolean suspended = false;
 
 
-    // ------------------------------------------------------------- Properties
+    /**
+     * Construct a servlet output stream associated with the specified Request.
+     *
+     * @param response The associated response
+     */
+    public ResponseStream(Response response) {
 
+        super();
+        closed = false;
+        commit = false;
+        count = 0;
+        this.response = response;
+        this.stream = response.getStream();
+        this.suspended = response.isSuspended();
+
+    }
+
+
+    // ------------------------------------------------------------- Properties
 
     /**
      * [Package Private] Return the "commit response on flush" flag.
@@ -123,6 +116,14 @@ public class ResponseStream
 
     }
 
+    /**
+     * Suspended flag accessor.
+     */
+    boolean isSuspended() {
+
+        return (this.suspended);
+
+    }
 
     /**
      * Set the suspended flag.
@@ -134,18 +135,7 @@ public class ResponseStream
     }
 
 
-    /**
-     * Suspended flag accessor.
-     */
-    boolean isSuspended() {
-
-        return (this.suspended);
-
-    }
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Close this output stream, causing any buffered data to be flushed and

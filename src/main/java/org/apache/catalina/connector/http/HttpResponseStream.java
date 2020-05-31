@@ -91,6 +91,21 @@ public final class HttpResponseStream extends ResponseStream {
 
 
     // ----------------------------------------------------------- Constructors
+    /**
+     * True if chunking is allowed.
+     */
+    private boolean useChunking;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * True if printing a chunk.
+     */
+    private boolean writingChunk;
+    /**
+     * True if no content should be written.
+     */
+    private boolean writeContent;
 
 
     /**
@@ -107,29 +122,7 @@ public final class HttpResponseStream extends ResponseStream {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * True if chunking is allowed.
-     */
-    private boolean useChunking;
-
-
-    /**
-     * True if printing a chunk.
-     */
-    private boolean writingChunk;
-
-
-    /**
-     * True if no content should be written.
-     */
-    private boolean writeContent;
-
-
     // -------------------------------------------- ServletOutputStream Methods
-
 
     /**
      * Write the specified byte to our output stream.

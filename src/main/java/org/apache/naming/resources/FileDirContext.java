@@ -68,14 +68,8 @@ import org.apache.naming.NamingContextBindingsEnumeration;
 import org.apache.naming.NamingContextEnumeration;
 import org.apache.naming.NamingEntry;
 
-import javax.naming.NameAlreadyBoundException;
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.OperationNotSupportedException;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
-import javax.naming.directory.SearchControls;
+import javax.naming.*;
+import javax.naming.directory.*;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Date;
@@ -102,6 +96,25 @@ public class FileDirContext extends BaseDirContext {
 
 
     // ----------------------------------------------------------- Constructors
+    /**
+     * The document base directory.
+     */
+    protected File base = null;
+    /**
+     * Absolute normalized filename of the base.
+     */
+    protected String absoluteBase = null;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * Case sensitivity.
+     */
+    protected boolean caseSensitive = true;
+    /**
+     * Allow linking.
+     */
+    protected boolean allowLinking = false;
 
 
     /**
@@ -120,35 +133,7 @@ public class FileDirContext extends BaseDirContext {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The document base directory.
-     */
-    protected File base = null;
-
-
-    /**
-     * Absolute normalized filename of the base.
-     */
-    protected String absoluteBase = null;
-
-
-    /**
-     * Case sensitivity.
-     */
-    protected boolean caseSensitive = true;
-
-
-    /**
-     * Allow linking.
-     */
-    protected boolean allowLinking = false;
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Set the document root.
@@ -183,6 +168,12 @@ public class FileDirContext extends BaseDirContext {
 
     }
 
+    /**
+     * Is case sensitive ?
+     */
+    public boolean isCaseSensitive() {
+        return caseSensitive;
+    }
 
     /**
      * Set case sensitivity.
@@ -191,14 +182,12 @@ public class FileDirContext extends BaseDirContext {
         this.caseSensitive = caseSensitive;
     }
 
-
     /**
-     * Is case sensitive ?
+     * Is linking allowed.
      */
-    public boolean isCaseSensitive() {
-        return caseSensitive;
+    public boolean getAllowLinking() {
+        return allowLinking;
     }
-
 
     /**
      * Set allow linking.
@@ -208,16 +197,7 @@ public class FileDirContext extends BaseDirContext {
     }
 
 
-    /**
-     * Is linking allowed.
-     */
-    public boolean getAllowLinking() {
-        return allowLinking;
-    }
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Release any resources allocated for this directory context.
@@ -962,28 +942,25 @@ public class FileDirContext extends BaseDirContext {
         // -------------------------------------------------------- Constructor
 
 
-        public FileResource(File file) {
-            this.file = file;
-        }
-
-
-        // --------------------------------------------------- Member Variables
-
-
         /**
          * Associated file object.
          */
         protected File file;
 
 
+        // --------------------------------------------------- Member Variables
         /**
          * File length.
          */
         protected long length = -1L;
 
 
-        // --------------------------------------------------- Resource Methods
+        public FileResource(File file) {
+            this.file = file;
+        }
 
+
+        // --------------------------------------------------- Resource Methods
 
         /**
          * Content accessor.
@@ -1016,21 +993,18 @@ public class FileDirContext extends BaseDirContext {
         // -------------------------------------------------------- Constructor
 
 
+        protected File file;
+
+        // --------------------------------------------------- Member Variables
+        protected boolean accessed = false;
+
+
         public FileResourceAttributes(File file) {
             this.file = file;
         }
 
-        // --------------------------------------------------- Member Variables
-
-
-        protected File file;
-
-
-        protected boolean accessed = false;
-
 
         // ----------------------------------------- ResourceAttributes Methods
-
 
         /**
          * Is collection.

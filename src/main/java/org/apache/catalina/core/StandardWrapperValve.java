@@ -29,33 +29,26 @@ final class StandardWrapperValve
 
 
     /**
+     * The descriptive information related to this implementation.
+     */
+    private static final String info =
+            "org.apache.catalina.core.StandardWrapperValve/1.0";
+    /**
+     * The string manager for this package.
+     */
+    private static final StringManager sm =
+            StringManager.getManager(Constants.Package);
+    /**
      * The debugging detail level for this component.
      */
     private final int debug = 0;
-
-
     /**
      * The filter definition for our container-provided filter.
      */
     private final FilterDef filterDef = null;
 
 
-    /**
-     * The descriptive information related to this implementation.
-     */
-    private static final String info =
-            "org.apache.catalina.core.StandardWrapperValve/1.0";
-
-
-    /**
-     * The string manager for this package.
-     */
-    private static final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return descriptive information about this Valve implementation.

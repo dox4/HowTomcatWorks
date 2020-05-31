@@ -94,6 +94,19 @@ public class StandardContextMBean extends BaseModelMBean {
 
 
     /**
+     * The configuration information registry for our managed beans.
+     */
+    protected Registry registry = MBeanUtils.createRegistry();
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The <code>ManagedBean</code> information describing this MBean.
+     */
+    protected ManagedBean managed =
+            registry.findManagedBean("StandardContext");
+
+    /**
      * Construct a <code>ModelMBean</code> with default
      * <code>ModelMBeanInfo</code> information.
      *
@@ -110,23 +123,7 @@ public class StandardContextMBean extends BaseModelMBean {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The configuration information registry for our managed beans.
-     */
-    protected Registry registry = MBeanUtils.createRegistry();
-
-    /**
-     * The <code>ManagedBean</code> information describing this MBean.
-     */
-    protected ManagedBean managed =
-            registry.findManagedBean("StandardContext");
-
-
     // ------------------------------------------------------------- Attributes
-
 
     /**
      * Return the naming resources associated with this web application.
@@ -305,7 +302,7 @@ public class StandardContextMBean extends BaseModelMBean {
     /**
      * Remove any environment entry with the specified name.
      *
-     * @param name Name of the environment entry to remove
+     * @param envName Name of the environment entry to remove
      */
     public void removeEnvironment(String envName) {
 
@@ -347,7 +344,7 @@ public class StandardContextMBean extends BaseModelMBean {
     /**
      * Remove any resource link with the specified name.
      *
-     * @param resourceName Name of the resource reference to remove
+     * @param resourceLinkName Name of the resource reference to remove
      */
     public void removeResourceLink(String resourceLinkName) {
 

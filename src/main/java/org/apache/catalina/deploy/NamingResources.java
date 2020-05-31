@@ -69,6 +69,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
 
 /**
@@ -86,15 +87,47 @@ public final class NamingResources {
 
 
     /**
-     * Create a new NamingResources instance.
+     * List of naming entries, keyed by name. The value is the entry type, as
+     * declared by the user.
      */
-    public NamingResources() {
-    }
+    private final Hashtable<String, String> entries = new Hashtable<>();
 
 
     // ----------------------------------------------------- Instance Variables
-
-
+    /**
+     * The EJB resource references for this web application, keyed by name.
+     */
+    private final Map<String, Object> ejbs = new HashMap<>();
+    /**
+     * The environment entries for this web application, keyed by name.
+     */
+    private final Map<String, ContextEnvironment> envs = new HashMap<>();
+    /**
+     * The local  EJB resource references for this web application, keyed by
+     * name.
+     */
+    private final Map<String, ContextLocalEjb> localEjbs = new HashMap<>();
+    /**
+     * The resource environment references for this web application,
+     * keyed by name.
+     */
+    private final Map<String, String> resourceEnvRefs = new HashMap<>();
+    /**
+     * The resource references for this web application, keyed by name.
+     */
+    private final Map<String, ContextResource> resources = new HashMap<>();
+    /**
+     * The resource links for this web application, keyed by name.
+     */
+    private final Map<String, ContextResourceLink> resourceLinks = new HashMap<>();
+    /**
+     * The resource parameters for this web application, keyed by name.
+     */
+    private final Map<String, ResourceParams> resourceParams = new HashMap<>();
+    /**
+     * The property change support for this component.
+     */
+    protected PropertyChangeSupport support = new PropertyChangeSupport(this);
     /**
      * Associated container object.
      */
@@ -102,64 +135,13 @@ public final class NamingResources {
 
 
     /**
-     * List of naming entries, keyed by name. The value is the entry type, as
-     * declared by the user.
+     * Create a new NamingResources instance.
      */
-    private final Hashtable entries = new Hashtable();
-
-
-    /**
-     * The EJB resource references for this web application, keyed by name.
-     */
-    private final HashMap ejbs = new HashMap();
-
-
-    /**
-     * The environment entries for this web application, keyed by name.
-     */
-    private final HashMap envs = new HashMap();
-
-
-    /**
-     * The local  EJB resource references for this web application, keyed by
-     * name.
-     */
-    private final HashMap localEjbs = new HashMap();
-
-
-    /**
-     * The resource environment references for this web application,
-     * keyed by name.
-     */
-    private final HashMap resourceEnvRefs = new HashMap();
-
-
-    /**
-     * The resource references for this web application, keyed by name.
-     */
-    private final HashMap resources = new HashMap();
-
-
-    /**
-     * The resource links for this web application, keyed by name.
-     */
-    private final HashMap resourceLinks = new HashMap();
-
-
-    /**
-     * The resource parameters for this web application, keyed by name.
-     */
-    private final HashMap resourceParams = new HashMap();
-
-
-    /**
-     * The property change support for this component.
-     */
-    protected PropertyChangeSupport support = new PropertyChangeSupport(this);
+    public NamingResources() {
+    }
 
 
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Get the container with which the naming resources are associated.
@@ -323,14 +305,14 @@ public final class NamingResources {
     /**
      * Add a resource link for this web application.
      *
-     * @param resource New resource link
+     * @param resourceLink New resource link
      */
     public void addResourceLink(ContextResourceLink resourceLink) {
 
         if (entries.containsKey(resourceLink.getName())) {
             return;
         } else {
-            Object value = resourceLink.getType();
+            String value = resourceLink.getType();
             if (value == null) {
                 value = "";
             }
@@ -369,7 +351,7 @@ public final class NamingResources {
 
         synchronized (ejbs) {
             ContextEjb[] results = new ContextEjb[ejbs.size()];
-            return ((ContextEjb[]) ejbs.values().toArray(results));
+            return ejbs.values().toArray(new ContextEjb[0]);
         }
 
     }
@@ -384,7 +366,7 @@ public final class NamingResources {
     public ContextEnvironment findEnvironment(String name) {
 
         synchronized (envs) {
-            return ((ContextEnvironment) envs.get(name));
+            return envs.get(name);
         }
 
     }
@@ -399,7 +381,7 @@ public final class NamingResources {
 
         synchronized (envs) {
             ContextEnvironment[] results = new ContextEnvironment[envs.size()];
-            return ((ContextEnvironment[]) envs.values().toArray(results));
+            return envs.values().toArray(results);
         }
 
     }
@@ -414,7 +396,7 @@ public final class NamingResources {
     public ContextLocalEjb findLocalEjb(String name) {
 
         synchronized (localEjbs) {
-            return ((ContextLocalEjb) localEjbs.get(name));
+            return localEjbs.get(name);
         }
 
     }
@@ -428,7 +410,7 @@ public final class NamingResources {
 
         synchronized (localEjbs) {
             ContextLocalEjb[] results = new ContextLocalEjb[localEjbs.size()];
-            return ((ContextLocalEjb[]) localEjbs.values().toArray(results));
+            return localEjbs.values().toArray(results);
         }
 
     }
@@ -443,7 +425,7 @@ public final class NamingResources {
     public ContextResource findResource(String name) {
 
         synchronized (resources) {
-            return ((ContextResource) resources.get(name));
+            return resources.get(name);
         }
 
     }
@@ -458,7 +440,7 @@ public final class NamingResources {
     public ContextResourceLink findResourceLink(String name) {
 
         synchronized (resourceLinks) {
-            return ((ContextResourceLink) resourceLinks.get(name));
+            return resourceLinks.get(name);
         }
 
     }
@@ -473,8 +455,8 @@ public final class NamingResources {
         synchronized (resourceLinks) {
             ContextResourceLink[] results =
                     new ContextResourceLink[resourceLinks.size()];
-            return ((ContextResourceLink[]) resourceLinks.values()
-                    .toArray(results));
+            return resourceLinks.values()
+                    .toArray(results);
         }
 
     }
@@ -488,7 +470,7 @@ public final class NamingResources {
 
         synchronized (resources) {
             ContextResource[] results = new ContextResource[resources.size()];
-            return ((ContextResource[]) resources.values().toArray(results));
+            return resources.values().toArray(results);
         }
 
     }
@@ -503,7 +485,7 @@ public final class NamingResources {
     public String findResourceEnvRef(String name) {
 
         synchronized (resourceEnvRefs) {
-            return ((String) resourceEnvRefs.get(name));
+            return resourceEnvRefs.get(name);
         }
 
     }
@@ -518,7 +500,7 @@ public final class NamingResources {
 
         synchronized (resourceEnvRefs) {
             String[] results = new String[resourceEnvRefs.size()];
-            return ((String[]) resourceEnvRefs.keySet().toArray(results));
+            return resourceEnvRefs.keySet().toArray(results);
         }
 
     }
@@ -533,7 +515,7 @@ public final class NamingResources {
     public ResourceParams findResourceParams(String name) {
 
         synchronized (resourceParams) {
-            return ((ResourceParams) resourceParams.get(name));
+            return resourceParams.get(name);
         }
 
     }
@@ -542,16 +524,14 @@ public final class NamingResources {
     /**
      * Return the resource parameters with the specified name, if any;
      * otherwise return <code>null</code>.
-     *
-     * @param name Name of the desired resource parameters
      */
     public ResourceParams[] findResourceParams() {
 
         synchronized (resourceParams) {
             ResourceParams[] results =
                     new ResourceParams[resourceParams.size()];
-            return ((ResourceParams[]) resourceParams.values()
-                    .toArray(results));
+            return resourceParams.values()
+                    .toArray(results);
         }
 
     }
@@ -576,7 +556,7 @@ public final class NamingResources {
 
         entries.remove(name);
 
-        ContextEjb ejb = null;
+        ContextEjb ejb;
         synchronized (ejbs) {
             ejb = (ContextEjb) ejbs.remove(name);
         }
@@ -597,9 +577,9 @@ public final class NamingResources {
 
         entries.remove(name);
 
-        ContextEnvironment environment = null;
+        ContextEnvironment environment;
         synchronized (envs) {
-            environment = (ContextEnvironment) envs.remove(name);
+            environment = envs.remove(name);
         }
         if (environment != null) {
             support.firePropertyChange("environment", environment, null);
@@ -618,7 +598,7 @@ public final class NamingResources {
 
         entries.remove(name);
 
-        ContextLocalEjb localEjb = null;
+        ContextLocalEjb localEjb;
         synchronized (localEjbs) {
             localEjb = (ContextLocalEjb) ejbs.remove(name);
         }
@@ -651,9 +631,9 @@ public final class NamingResources {
 
         entries.remove(name);
 
-        ContextResource resource = null;
+        ContextResource resource;
         synchronized (resources) {
-            resource = (ContextResource) resources.remove(name);
+            resource = resources.remove(name);
         }
         if (resource != null) {
             support.firePropertyChange("resource", resource, null);
@@ -672,9 +652,9 @@ public final class NamingResources {
 
         entries.remove(name);
 
-        String type = null;
+        String type;
         synchronized (resourceEnvRefs) {
-            type = (String) resourceEnvRefs.remove(name);
+            type = resourceEnvRefs.remove(name);
         }
         if (type != null) {
             support.firePropertyChange("resourceEnvRef",
@@ -693,9 +673,9 @@ public final class NamingResources {
 
         entries.remove(name);
 
-        ContextResourceLink resourceLink = null;
+        ContextResourceLink resourceLink;
         synchronized (resourceLinks) {
-            resourceLink = (ContextResourceLink) resourceLinks.remove(name);
+            resourceLink = resourceLinks.remove(name);
         }
         if (resourceLink != null) {
             support.firePropertyChange("resourceLink", resourceLink, null);
@@ -712,9 +692,9 @@ public final class NamingResources {
      */
     public void removeResourceParams(String name) {
 
-        ResourceParams resourceParameters = null;
+        ResourceParams resourceParameters;
         synchronized (resourceParams) {
-            resourceParameters = (ResourceParams) resourceParams.remove(name);
+            resourceParameters = resourceParams.remove(name);
         }
         if (resourceParameters != null) {
             support.firePropertyChange("resourceParams", resourceParameters,

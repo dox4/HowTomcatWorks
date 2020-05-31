@@ -7,8 +7,8 @@ import java.net.Socket;
 
 public class HttpConnector implements Runnable {
 
-    boolean stopped;
     private final String scheme = "http";
+    boolean stopped;
 
     public String getScheme() {
         return scheme;

@@ -294,6 +294,12 @@ public class CGIServlet extends HttpServlet {
      */
     private String cgiPathPrefix = null;
 
+    /**
+     * For future testing use only; does nothing right now
+     */
+    public static void main(String[] args) {
+        System.out.println("$Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/servlets/CGIServlet.java,v 1.9 2002/09/05 21:46:54 amyroh Exp $");
+    }
 
     /**
      * Sets instance variables.
@@ -346,7 +352,6 @@ public class CGIServlet extends HttpServlet {
         }
 
     }
-
 
     /**
      * Prints out important Servlet API and container information
@@ -550,7 +555,6 @@ public class CGIServlet extends HttpServlet {
 
     }
 
-
     /**
      * Provides CGI Gateway service -- delegates to <code>doGet</code>
      *
@@ -564,7 +568,6 @@ public class CGIServlet extends HttpServlet {
             throws IOException, ServletException {
         doGet(req, res);
     }
-
 
     /**
      * Provides CGI Gateway service
@@ -644,15 +647,6 @@ public class CGIServlet extends HttpServlet {
 
 
     } //doGet
-
-
-    /**
-     * For future testing use only; does nothing right now
-     */
-    public static void main(String[] args) {
-        System.out.println("$Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/servlets/CGIServlet.java,v 1.9 2002/09/05 21:46:54 amyroh Exp $");
-    }
-
 
     /**
      * Encapsulates the CGI environment and rules to derive
@@ -911,8 +905,8 @@ public class CGIServlet extends HttpServlet {
          * Constructs the CGI environment to be supplied to the invoked CGI
          * script; relies heavliy on Servlet API methods and findCGI
          *
-         * @param HttpServletRequest request associated with the CGI
-         *                           invokation
+         * @param req request associated with the CGI
+         *            invokation
          * @return true if environment was set OK, false if there
          * was a problem and no environment was set
          */
@@ -1208,7 +1202,7 @@ public class CGIServlet extends HttpServlet {
         /**
          * Converts null strings to blank strings ("")
          *
-         * @param string to be converted if necessary
+         * @param s to be converted if necessary
          * @return a non-null string, either the original or the empty string
          * ("") if the original was <code>null</code>
          */
@@ -1220,8 +1214,8 @@ public class CGIServlet extends HttpServlet {
         /**
          * Converts null strings to another string
          *
-         * @param string to be converted if necessary
-         * @param string to return instead of a null string
+         * @param couldBeNull to be converted if necessary
+         * @param subForNulls to return instead of a null string
          * @return a non-null string, either the original or the substitute
          * string if the original was <code>null</code>
          */
@@ -1234,8 +1228,8 @@ public class CGIServlet extends HttpServlet {
         /**
          * Converts blank strings to another string
          *
-         * @param string to be converted if necessary
-         * @param string to return instead of a blank string
+         * @param couldBeBlank to be converted if necessary
+         * @param subForBlanks to return instead of a blank string
          * @return a non-null string, either the original or the substitute
          * string if the original was <code>null</code> or empty ("")
          */
@@ -1326,8 +1320,6 @@ public class CGIServlet extends HttpServlet {
          * @param env     Hashtable with the desired script environment
          * @param wd      File with the script's desired working directory
          * @param params  Hashtable with the script's query parameters
-         * @param res     HttpServletResponse object for setting headers
-         *                based on CGI script output
          */
         protected CGIRunner(String command, Hashtable env, File wd,
                             Hashtable params) {

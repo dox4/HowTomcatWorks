@@ -91,7 +91,6 @@ import java.util.TimeZone;
  */
 public class Strftime {
     protected static Properties translate;
-    protected SimpleDateFormat simpleDateFormat;
 
     /**
      * Initialize our pattern translation
@@ -153,6 +152,8 @@ public class Strftime {
         translate.put("%", "%");
     }
 
+    protected SimpleDateFormat simpleDateFormat;
+
 
     /**
      * Create an instance of this date formatting class
@@ -168,7 +169,7 @@ public class Strftime {
      * Create an instance of this date formatting class
      *
      * @param origFormat the strftime-style formatting string
-     * @param the        locale to use for locale-specific conversions
+     * @param locale     the locale to use for locale-specific conversions
      */
     public Strftime(String origFormat, Locale locale) {
         String convertedFormat = convertDateFormat(origFormat);
@@ -197,7 +198,7 @@ public class Strftime {
     /**
      * Change the timezone used to format dates
      *
-     * @see TimeZone#setTimeZone
+     * @see TimeZone# setTimeZone
      */
     public void setTimeZone(TimeZone timeZone) {
         simpleDateFormat.setTimeZone(timeZone);
@@ -272,7 +273,6 @@ public class Strftime {
      * try to get the Java Date/Time formating associated with
      * the C standard provided
      *
-     * @param c The C equivalent to translate
      * @return The Java formatting rule to use
      */
     protected boolean translateCommand(StringBuffer buf, String pattern, int index, boolean oldInside) {

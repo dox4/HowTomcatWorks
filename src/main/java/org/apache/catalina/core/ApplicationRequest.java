@@ -43,6 +43,19 @@ class ApplicationRequest extends ServletRequestWrapper {
 
 
     // ----------------------------------------------------------- Constructors
+    /**
+     * The string manager for this package.
+     */
+    protected static StringManager sm =
+            StringManager.getManager(Constants.Package);
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The request attributes for this request.  This is initialized from the
+     * wrapped request, but updates are allowed.
+     */
+    protected HashMap attributes = new HashMap();
 
 
     /**
@@ -58,25 +71,7 @@ class ApplicationRequest extends ServletRequestWrapper {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The request attributes for this request.  This is initialized from the
-     * wrapped request, but updates are allowed.
-     */
-    protected HashMap attributes = new HashMap();
-
-
-    /**
-     * The string manager for this package.
-     */
-    protected static StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
     // ------------------------------------------------- ServletRequest Methods
-
 
     /**
      * Override the <code>getAttribute()</code> method of the wrapped request.

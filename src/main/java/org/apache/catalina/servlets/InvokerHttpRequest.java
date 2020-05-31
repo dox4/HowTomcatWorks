@@ -88,31 +88,18 @@ class InvokerHttpRequest extends HttpServletRequestWrapper {
 
 
     /**
-     * Construct a new wrapped request around the specified servlet request.
-     *
-     * @param request The servlet request being wrapped
-     */
-    public InvokerHttpRequest(HttpServletRequest request) {
-
-        super(request);
-        this.pathInfo = request.getPathInfo();
-        this.pathTranslated = request.getPathTranslated();
-        this.requestURI = request.getRequestURI();
-        this.servletPath = request.getServletPath();
-
-    }
-
-
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
      * Descriptive information about this implementation.
      */
     protected static final String info =
             "org.apache.catalina.servlets.InvokerHttpRequest/1.0";
 
 
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The string manager for this package.
+     */
+    protected static StringManager sm =
+            StringManager.getManager(Constants.Package);
     /**
      * The path information for this request.
      */
@@ -138,14 +125,22 @@ class InvokerHttpRequest extends HttpServletRequestWrapper {
 
 
     /**
-     * The string manager for this package.
+     * Construct a new wrapped request around the specified servlet request.
+     *
+     * @param request The servlet request being wrapped
      */
-    protected static StringManager sm =
-            StringManager.getManager(Constants.Package);
+    public InvokerHttpRequest(HttpServletRequest request) {
+
+        super(request);
+        this.pathInfo = request.getPathInfo();
+        this.pathTranslated = request.getPathTranslated();
+        this.requestURI = request.getRequestURI();
+        this.servletPath = request.getServletPath();
+
+    }
 
 
     // --------------------------------------------- HttpServletRequest Methods
-
 
     /**
      * Override the <code>getPathInfo()</code> method of the wrapped request.
@@ -155,52 +150,6 @@ class InvokerHttpRequest extends HttpServletRequestWrapper {
         return (this.pathInfo);
 
     }
-
-
-    /**
-     * Override the <code>getPathTranslated()</code> method of the
-     * wrapped request.
-     */
-    public String getPathTranslated() {
-
-        return (this.pathTranslated);
-
-    }
-
-
-    /**
-     * Override the <code>getRequestURI()</code> method of the wrapped request.
-     */
-    public String getRequestURI() {
-
-        return (this.requestURI);
-
-    }
-
-
-    /**
-     * Override the <code>getServletPath()</code> method of the wrapped
-     * request.
-     */
-    public String getServletPath() {
-
-        return (this.servletPath);
-
-    }
-
-
-    // -------------------------------------------------------- Package Methods
-
-
-    /**
-     * Return descriptive information about this implementation.
-     */
-    public String getInfo() {
-
-        return (info);
-
-    }
-
 
     /**
      * Set the path information for this request.
@@ -213,6 +162,15 @@ class InvokerHttpRequest extends HttpServletRequestWrapper {
 
     }
 
+    /**
+     * Override the <code>getPathTranslated()</code> method of the
+     * wrapped request.
+     */
+    public String getPathTranslated() {
+
+        return (this.pathTranslated);
+
+    }
 
     /**
      * Set the translated path info for this request.
@@ -226,6 +184,17 @@ class InvokerHttpRequest extends HttpServletRequestWrapper {
     }
 
 
+    // -------------------------------------------------------- Package Methods
+
+    /**
+     * Override the <code>getRequestURI()</code> method of the wrapped request.
+     */
+    public String getRequestURI() {
+
+        return (this.requestURI);
+
+    }
+
     /**
      * Set the request URI for this request.
      *
@@ -237,6 +206,15 @@ class InvokerHttpRequest extends HttpServletRequestWrapper {
 
     }
 
+    /**
+     * Override the <code>getServletPath()</code> method of the wrapped
+     * request.
+     */
+    public String getServletPath() {
+
+        return (this.servletPath);
+
+    }
 
     /**
      * Set the servlet path for this request.
@@ -246,6 +224,15 @@ class InvokerHttpRequest extends HttpServletRequestWrapper {
     void setServletPath(String servletPath) {
 
         this.servletPath = servletPath;
+
+    }
+
+    /**
+     * Return descriptive information about this implementation.
+     */
+    public String getInfo() {
+
+        return (info);
 
     }
 

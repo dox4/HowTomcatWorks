@@ -98,31 +98,36 @@ public final class MemoryRealm
 
 
     /**
-     * The Container with which this Realm is associated.
+     * Descriptive information about this Realm implementation.
      */
-    private final Container container = null;
 
-
+    protected static final String name = "MemoryRealm";
+    /**
+     * The string manager for this package.
+     */
+    private static final StringManager sm =
+            StringManager.getManager(Constants.Package);
     /**
      * The Digester we will use to process in-memory database files.
      */
     private static Digester digester = null;
-
-
     /**
      * Descriptive information about this Realm implementation.
      */
     protected final String info =
             "org.apache.catalina.realm.MemoryRealm/1.0";
-
-
     /**
-     * Descriptive information about this Realm implementation.
+     * The Container with which this Realm is associated.
      */
-
-    protected static final String name = "MemoryRealm";
-
-
+    private final Container container = null;
+    /**
+     * The set of valid Principals for this Realm, keyed by user name.
+     */
+    private final HashMap principals = new HashMap();
+    /**
+     * Has this component been started?
+     */
+    private final boolean started = false;
     /**
      * The pathname (absolute or relative to Catalina's current working
      * directory) of the XML file containing our database information.
@@ -130,27 +135,7 @@ public final class MemoryRealm
     private String pathname = "conf/tomcat-users.xml";
 
 
-    /**
-     * The set of valid Principals for this Realm, keyed by user name.
-     */
-    private final HashMap principals = new HashMap();
-
-
-    /**
-     * The string manager for this package.
-     */
-    private static final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
-    /**
-     * Has this component been started?
-     */
-    private final boolean started = false;
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return descriptive information about this Realm implementation and

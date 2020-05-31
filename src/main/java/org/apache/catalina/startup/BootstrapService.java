@@ -111,6 +111,86 @@ public final class BootstrapService
 
     // -------------------------------------------------------- Service Methods
 
+    /**
+     * Main method, used for testing only.
+     *
+     * @param args Command line arguments to be processed
+     */
+    public static void main(String[] args) {
+
+        // Set the debug flag appropriately
+        for (int i = 0; i < args.length; i++) {
+            if ("-debug".equals(args[i]))
+                debug = 1;
+        }
+
+        if (service == null) {
+            service = new BootstrapService();
+            try {
+                BootstrapServiceContext p0 = new BootstrapServiceContext();
+                p0.setArguments(args);
+                service.init(p0);
+            } catch (Throwable t) {
+                t.printStackTrace();
+                return;
+            }
+        }
+
+        try {
+            String command = args[0];
+            if (command.equals("start")) {
+                service.start();
+            } else if (command.equals("stop")) {
+                service.stop();
+            }
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Get the value of the catalina.home environment variable.
+     */
+    private static String getCatalinaHome() {
+        return System.getProperty("catalina.home",
+                System.getProperty("user.dir"));
+    }
+
+    /**
+     * Get the value of the catalina.base environment variable.
+     */
+    private static String getCatalinaBase() {
+        return System.getProperty("catalina.base", getCatalinaHome());
+    }
+
+    /**
+     * Log a debugging detail message.
+     *
+     * @param message The message to be logged
+     */
+    private static void log(String message) {
+
+        System.out.print("Bootstrap: ");
+        System.out.println(message);
+
+    }
+
+
+    // ----------------------------------------------------------- Main Program
+
+    /**
+     * Log a debugging detail message with an exception.
+     *
+     * @param message   The message to be logged
+     * @param exception The exception to be logged
+     */
+    private static void log(String message, Throwable exception) {
+
+        log(message);
+        exception.printStackTrace(System.out);
+
+    }
 
     /**
      * Load the Catalina Service.
@@ -227,7 +307,6 @@ public final class BootstrapService
 
     }
 
-
     /**
      * Start the Catalina Service.
      */
@@ -241,7 +320,6 @@ public final class BootstrapService
         log("Service started");
 
     }
-
 
     /**
      * Stop the Catalina Service.
@@ -257,7 +335,6 @@ public final class BootstrapService
 
     }
 
-
     /**
      * Destroy the Catalina Service.
      */
@@ -266,49 +343,6 @@ public final class BootstrapService
         // FIXME
 
     }
-
-
-    // ----------------------------------------------------------- Main Program
-
-
-    /**
-     * Main method, used for testing only.
-     *
-     * @param args Command line arguments to be processed
-     */
-    public static void main(String[] args) {
-
-        // Set the debug flag appropriately
-        for (int i = 0; i < args.length; i++) {
-            if ("-debug".equals(args[i]))
-                debug = 1;
-        }
-
-        if (service == null) {
-            service = new BootstrapService();
-            try {
-                BootstrapServiceContext p0 = new BootstrapServiceContext();
-                p0.setArguments(args);
-                service.init(p0);
-            } catch (Throwable t) {
-                t.printStackTrace();
-                return;
-            }
-        }
-
-        try {
-            String command = args[0];
-            if (command.equals("start")) {
-                service.start();
-            } else if (command.equals("stop")) {
-                service.stop();
-            }
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-
-    }
-
 
     /**
      * Set the <code>catalina.base</code> System property to the current
@@ -327,7 +361,6 @@ public final class BootstrapService
 
     }
 
-
     /**
      * Set the <code>catalina.home</code> System property to the current
      * working directory if it has not been set.
@@ -338,50 +371,6 @@ public final class BootstrapService
             return;
         System.setProperty("catalina.home",
                 System.getProperty("user.dir"));
-
-    }
-
-
-    /**
-     * Get the value of the catalina.home environment variable.
-     */
-    private static String getCatalinaHome() {
-        return System.getProperty("catalina.home",
-                System.getProperty("user.dir"));
-    }
-
-
-    /**
-     * Get the value of the catalina.base environment variable.
-     */
-    private static String getCatalinaBase() {
-        return System.getProperty("catalina.base", getCatalinaHome());
-    }
-
-
-    /**
-     * Log a debugging detail message.
-     *
-     * @param message The message to be logged
-     */
-    private static void log(String message) {
-
-        System.out.print("Bootstrap: ");
-        System.out.println(message);
-
-    }
-
-
-    /**
-     * Log a debugging detail message with an exception.
-     *
-     * @param message   The message to be logged
-     * @param exception The exception to be logged
-     */
-    private static void log(String message, Throwable exception) {
-
-        log(message);
-        exception.printStackTrace(System.out);
 
     }
 

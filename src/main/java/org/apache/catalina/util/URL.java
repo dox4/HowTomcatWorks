@@ -98,6 +98,47 @@ public final class URL implements Serializable {
 
 
     /**
+     * The authority part of the URL.
+     */
+    private String authority = null;
+    /**
+     * The filename part of the URL.
+     */
+    private String file = null;
+    /**
+     * The host name part of the URL.
+     */
+    private String host = null;
+    /**
+     * The path part of the URL.
+     */
+    private String path = null;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The port number part of the URL.
+     */
+    private int port = -1;
+    /**
+     * The protocol name part of the URL.
+     */
+    private String protocol = null;
+    /**
+     * The query part of the URL.
+     */
+    private String query = null;
+    /**
+     * The reference part of the URL.
+     */
+    private String ref = null;
+    /**
+     * The user info part of the URL.
+     */
+    private String userInfo = null;
+
+
+    /**
      * Create a URL object from the specified String representation.
      *
      * @param spec String representation of the URL
@@ -268,65 +309,7 @@ public final class URL implements Serializable {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The authority part of the URL.
-     */
-    private String authority = null;
-
-
-    /**
-     * The filename part of the URL.
-     */
-    private String file = null;
-
-
-    /**
-     * The host name part of the URL.
-     */
-    private String host = null;
-
-
-    /**
-     * The path part of the URL.
-     */
-    private String path = null;
-
-
-    /**
-     * The port number part of the URL.
-     */
-    private int port = -1;
-
-
-    /**
-     * The protocol name part of the URL.
-     */
-    private String protocol = null;
-
-
-    /**
-     * The query part of the URL.
-     */
-    private String query = null;
-
-
-    /**
-     * The reference part of the URL.
-     */
-    private String ref = null;
-
-
-    /**
-     * The user info part of the URL.
-     */
-    private String userInfo = null;
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Compare two URLs for equality.  The result is <code>true</code> if and

@@ -139,6 +139,32 @@ public class SSLServerSocketFactory
      * Certificate encoding algorithm to be used.
      */
     private String algorithm = "SunX509";
+    /**
+     * Should we require client authentication?
+     */
+    private boolean clientAuth = false;
+    /**
+     * The internal represenation of the key store file that contains
+     * our server certificate.
+     */
+    private KeyStore keyStore = null;
+    /**
+     * Pathname to the key store file to be used.
+     */
+    private String keystoreFile =
+            System.getProperty("user.home") + File.separator + ".keystore";
+    /**
+     * Password for accessing the key store file.
+     */
+    private String keystorePass = "changeit";
+    /**
+     * Storeage type of the key store file to be used.
+     */
+    private String keystoreType = "JKS";
+    /**
+     * SSL protocol variant to use.
+     */
+    private String protocol = "TLS";
 
     public String getAlgorithm() {
         return (this.algorithm);
@@ -148,12 +174,6 @@ public class SSLServerSocketFactory
         this.algorithm = algorithm;
     }
 
-
-    /**
-     * Should we require client authentication?
-     */
-    private boolean clientAuth = false;
-
     public boolean getClientAuth() {
         return (this.clientAuth);
     }
@@ -161,13 +181,6 @@ public class SSLServerSocketFactory
     public void setClientAuth(boolean clientAuth) {
         this.clientAuth = clientAuth;
     }
-
-
-    /**
-     * The internal represenation of the key store file that contains
-     * our server certificate.
-     */
-    private KeyStore keyStore = null;
 
     public KeyStore getKeyStore()
             throws IOException, KeyStoreException, NoSuchAlgorithmException,
@@ -177,13 +190,6 @@ public class SSLServerSocketFactory
             initialize();
         return (this.keyStore);
     }
-
-
-    /**
-     * Pathname to the key store file to be used.
-     */
-    private String keystoreFile =
-            System.getProperty("user.home") + File.separator + ".keystore";
 
     public String getKeystoreFile() {
         return (this.keystoreFile);
@@ -197,21 +203,9 @@ public class SSLServerSocketFactory
         this.keystoreFile = file.getAbsolutePath();
     }
 
-
-    /**
-     * Password for accessing the key store file.
-     */
-    private String keystorePass = "changeit";
-
     public void setKeystorePass(String keystorePass) {
         this.keystorePass = keystorePass;
     }
-
-
-    /**
-     * Storeage type of the key store file to be used.
-     */
-    private String keystoreType = "JKS";
 
     public String getKeystoreType() {
         return (this.keystoreType);
@@ -220,12 +214,6 @@ public class SSLServerSocketFactory
     public void setKeystoreType(String keystoreType) {
         this.keystoreType = keystoreType;
     }
-
-
-    /**
-     * SSL protocol variant to use.
-     */
-    private String protocol = "TLS";
 
     public String getProtocol() {
         return (this.protocol);

@@ -91,6 +91,24 @@ public class UserMBean extends BaseModelMBean {
 
 
     /**
+     * The configuration information registry for our managed beans.
+     */
+    protected Registry registry = MBeanUtils.createRegistry();
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The <code>MBeanServer</code> in which we are registered.
+     */
+    protected MBeanServer mserver = MBeanUtils.createServer();
+    /**
+     * The <code>ManagedBean</code> information describing this MBean.
+     */
+    protected ManagedBean managed =
+            registry.findManagedBean("User");
+
+
+    /**
      * Construct a <code>ModelMBean</code> with default
      * <code>ModelMBeanInfo</code> information.
      *
@@ -107,30 +125,7 @@ public class UserMBean extends BaseModelMBean {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The configuration information registry for our managed beans.
-     */
-    protected Registry registry = MBeanUtils.createRegistry();
-
-
-    /**
-     * The <code>MBeanServer</code> in which we are registered.
-     */
-    protected MBeanServer mserver = MBeanUtils.createServer();
-
-
-    /**
-     * The <code>ManagedBean</code> information describing this MBean.
-     */
-    protected ManagedBean managed =
-            registry.findManagedBean("User");
-
-
     // ------------------------------------------------------------- Attributes
-
 
     /**
      * Return the MBean Names of all groups this user is a member of.

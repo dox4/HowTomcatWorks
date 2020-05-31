@@ -107,37 +107,6 @@ class ApplicationHttpRequest extends HttpServletRequestWrapper {
 
 
     // ----------------------------------------------------------- Constructors
-
-
-    /**
-     * Construct a new wrapped request around the specified servlet request.
-     *
-     * @param request The servlet request being wrapped
-     */
-    public ApplicationHttpRequest(HttpServletRequest request) {
-
-        super(request);
-        setRequest(request);
-
-    }
-
-
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The request attributes for this request.  This is initialized from the
-     * wrapped request, but updates are allowed.
-     */
-    protected HashMap attributes = new HashMap();
-
-
-    /**
-     * The context path for this request.
-     */
-    protected String contextPath = null;
-
-
     /**
      * Descriptive information about this implementation.
      */
@@ -145,6 +114,21 @@ class ApplicationHttpRequest extends HttpServletRequestWrapper {
             "org.apache.catalina.core.ApplicationHttpRequest/1.0";
 
 
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The string manager for this package.
+     */
+    protected static StringManager sm =
+            StringManager.getManager(Constants.Package);
+    /**
+     * The request attributes for this request.  This is initialized from the
+     * wrapped request, but updates are allowed.
+     */
+    protected HashMap attributes = new HashMap();
+    /**
+     * The context path for this request.
+     */
+    protected String contextPath = null;
     /**
      * The request parameters for this request.  This is initialized from the
      * wrapped request, but updates are allowed.
@@ -177,14 +161,19 @@ class ApplicationHttpRequest extends HttpServletRequestWrapper {
 
 
     /**
-     * The string manager for this package.
+     * Construct a new wrapped request around the specified servlet request.
+     *
+     * @param request The servlet request being wrapped
      */
-    protected static StringManager sm =
-            StringManager.getManager(Constants.Package);
+    public ApplicationHttpRequest(HttpServletRequest request) {
+
+        super(request);
+        setRequest(request);
+
+    }
 
 
     // ------------------------------------------------- ServletRequest Methods
-
 
     /**
      * Override the <code>getAttribute()</code> method of the wrapped request.
@@ -261,6 +250,16 @@ class ApplicationHttpRequest extends HttpServletRequestWrapper {
 
     }
 
+    /**
+     * Set the context path for this request.
+     *
+     * @param contextPath The new context path
+     */
+    void setContextPath(String contextPath) {
+
+        this.contextPath = contextPath;
+
+    }
 
     /**
      * Override the <code>getParameter()</code> method of the wrapped request.
@@ -283,7 +282,6 @@ class ApplicationHttpRequest extends HttpServletRequestWrapper {
 
     }
 
-
     /**
      * Override the <code>getParameterMap()</code> method of the
      * wrapped request.
@@ -293,7 +291,6 @@ class ApplicationHttpRequest extends HttpServletRequestWrapper {
         return (parameters);
 
     }
-
 
     /**
      * Override the <code>getParameterNames()</code> method of the
@@ -306,7 +303,6 @@ class ApplicationHttpRequest extends HttpServletRequestWrapper {
         }
 
     }
-
 
     /**
      * Override the <code>getParameterValues()</code> method of the
@@ -335,7 +331,6 @@ class ApplicationHttpRequest extends HttpServletRequestWrapper {
 
     }
 
-
     /**
      * Override the <code>getPathInfo()</code> method of the wrapped request.
      */
@@ -345,6 +340,16 @@ class ApplicationHttpRequest extends HttpServletRequestWrapper {
 
     }
 
+    /**
+     * Set the path information for this request.
+     *
+     * @param pathInfo The new path info
+     */
+    void setPathInfo(String pathInfo) {
+
+        this.pathInfo = pathInfo;
+
+    }
 
     /**
      * Override the <code>getQueryString()</code> method of the wrapped
@@ -357,6 +362,19 @@ class ApplicationHttpRequest extends HttpServletRequestWrapper {
     }
 
 
+    // -------------------------------------------------------- Package Methods
+
+    /**
+     * Set the query string for this request.
+     *
+     * @param queryString The new query string
+     */
+    void setQueryString(String queryString) {
+
+        this.queryString = queryString;
+
+    }
+
     /**
      * Override the <code>getRequestURI()</code> method of the wrapped
      * request.
@@ -367,6 +385,16 @@ class ApplicationHttpRequest extends HttpServletRequestWrapper {
 
     }
 
+    /**
+     * Set the request URI for this request.
+     *
+     * @param requestURI The new request URI
+     */
+    void setRequestURI(String requestURI) {
+
+        this.requestURI = requestURI;
+
+    }
 
     /**
      * Override the <code>getServletPath()</code> method of the wrapped
@@ -378,9 +406,16 @@ class ApplicationHttpRequest extends HttpServletRequestWrapper {
 
     }
 
+    /**
+     * Set the servlet path for this request.
+     *
+     * @param servletPath The new servlet path
+     */
+    void setServletPath(String servletPath) {
 
-    // -------------------------------------------------------- Package Methods
+        this.servletPath = servletPath;
 
+    }
 
     /**
      * Return descriptive information about this implementation.
@@ -390,7 +425,6 @@ class ApplicationHttpRequest extends HttpServletRequestWrapper {
         return (info);
 
     }
-
 
     /**
      * Perform a shallow copy of the specified Map, and return the result.
@@ -412,7 +446,6 @@ class ApplicationHttpRequest extends HttpServletRequestWrapper {
         return (dest);
 
     }
-
 
     /**
      * Merge the parameters from the specified query string (if any), and
@@ -453,43 +486,6 @@ class ApplicationHttpRequest extends HttpServletRequestWrapper {
 
     }
 
-
-    /**
-     * Set the context path for this request.
-     *
-     * @param contextPath The new context path
-     */
-    void setContextPath(String contextPath) {
-
-        this.contextPath = contextPath;
-
-    }
-
-
-    /**
-     * Set the path information for this request.
-     *
-     * @param pathInfo The new path info
-     */
-    void setPathInfo(String pathInfo) {
-
-        this.pathInfo = pathInfo;
-
-    }
-
-
-    /**
-     * Set the query string for this request.
-     *
-     * @param queryString The new query string
-     */
-    void setQueryString(String queryString) {
-
-        this.queryString = queryString;
-
-    }
-
-
     /**
      * Set the request that we are wrapping.
      *
@@ -528,32 +524,7 @@ class ApplicationHttpRequest extends HttpServletRequestWrapper {
     }
 
 
-    /**
-     * Set the request URI for this request.
-     *
-     * @param requestURI The new request URI
-     */
-    void setRequestURI(String requestURI) {
-
-        this.requestURI = requestURI;
-
-    }
-
-
-    /**
-     * Set the servlet path for this request.
-     *
-     * @param servletPath The new servlet path
-     */
-    void setServletPath(String servletPath) {
-
-        this.servletPath = servletPath;
-
-    }
-
-
     // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Is this attribute name one of the special ones that is added only for

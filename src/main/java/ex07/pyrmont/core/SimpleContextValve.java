@@ -1,19 +1,11 @@
 package ex07.pyrmont.core;
 
-import java.io.IOException;
+import org.apache.catalina.*;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.catalina.Context;
-import org.apache.catalina.Contained;
-import org.apache.catalina.Container;
-import org.apache.catalina.HttpRequest;
-import org.apache.catalina.Request;
-import org.apache.catalina.Response;
-import org.apache.catalina.Valve;
-import org.apache.catalina.ValveContext;
-import org.apache.catalina.Wrapper;
+import java.io.IOException;
 
 
 public class SimpleContextValve implements Valve, Contained {

@@ -83,29 +83,26 @@ public class RecyclableNamingEnumeration
     // ----------------------------------------------------------- Constructors
 
 
-    public RecyclableNamingEnumeration(Vector entries) {
-        this.entries = entries;
-        recycle();
-    }
-
-
-    // -------------------------------------------------------------- Variables
-
-
     /**
      * Entries.
      */
     protected Vector entries;
 
 
+    // -------------------------------------------------------------- Variables
     /**
      * Underlying enumeration.
      */
     protected Enumeration enums;
 
 
-    // --------------------------------------------------------- Public Methods
+    public RecyclableNamingEnumeration(Vector entries) {
+        this.entries = entries;
+        recycle();
+    }
 
+
+    // --------------------------------------------------------- Public Methods
 
     /**
      * Retrieves the next element in the enumeration.

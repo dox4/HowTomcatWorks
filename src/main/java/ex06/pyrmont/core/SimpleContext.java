@@ -1,61 +1,34 @@
 package ex06.pyrmont.core;
 
 
+import org.apache.catalina.*;
+import org.apache.catalina.deploy.*;
+import org.apache.catalina.util.CharsetMapper;
+import org.apache.catalina.util.LifecycleSupport;
+
+import javax.naming.directory.DirContext;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import javax.naming.directory.DirContext;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-
-import org.apache.catalina.Cluster;
-import org.apache.catalina.Container;
-import org.apache.catalina.ContainerListener;
-import org.apache.catalina.Context;
-import org.apache.catalina.Lifecycle;
-import org.apache.catalina.LifecycleException;
-import org.apache.catalina.LifecycleListener;
-import org.apache.catalina.Loader;
-import org.apache.catalina.Logger;
-import org.apache.catalina.Manager;
-import org.apache.catalina.Mapper;
-import org.apache.catalina.Pipeline;
-import org.apache.catalina.Realm;
-import org.apache.catalina.Request;
-import org.apache.catalina.Response;
-import org.apache.catalina.Valve;
-import org.apache.catalina.Wrapper;
-import org.apache.catalina.deploy.ApplicationParameter;
-import org.apache.catalina.deploy.ContextEjb;
-import org.apache.catalina.deploy.ContextEnvironment;
-import org.apache.catalina.deploy.ContextLocalEjb;
-import org.apache.catalina.deploy.ContextResource;
-import org.apache.catalina.deploy.ContextResourceLink;
-import org.apache.catalina.deploy.ErrorPage;
-import org.apache.catalina.deploy.FilterDef;
-import org.apache.catalina.deploy.FilterMap;
-import org.apache.catalina.deploy.LoginConfig;
-import org.apache.catalina.deploy.NamingResources;
-import org.apache.catalina.deploy.SecurityConstraint;
-import org.apache.catalina.util.CharsetMapper;
-import org.apache.catalina.util.LifecycleSupport;
 
 public class SimpleContext implements Context, Pipeline, Lifecycle {
+
+    protected final Map<String, Mapper> mappers = new HashMap<>();
+    private final SimplePipeline pipeline = new SimplePipeline(this);
+    private final Map<String, String> servletMappings = new HashMap<>();
+    private final Container parent = null;
+    protected Map<String, Container> children = new HashMap<>();
+    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
+    protected Mapper mapper = null;
+    protected boolean started = false;
+    private Loader loader = null;
 
     public SimpleContext() {
         pipeline.setBasic(new SimpleContextValve());
     }
-
-    protected Map<String, Container> children = new HashMap<>();
-    private Loader loader = null;
-    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
-    private final SimplePipeline pipeline = new SimplePipeline(this);
-    private final Map<String, String> servletMappings = new HashMap<>();
-    protected Mapper mapper = null;
-    protected final Map<String, Mapper> mappers = new HashMap<>();
-    private Container parent = null;
-    protected boolean started = false;
 
     @Override
     public Object[] getApplicationListeners() {
@@ -468,7 +441,7 @@ public class SimpleContext implements Context, Pipeline, Lifecycle {
     @Override
     public String findServletMapping(String pattern) {
         synchronized (servletMappings) {
-            return ((String) servletMappings.get(pattern));
+            return servletMappings.get(pattern);
         }
     }
 

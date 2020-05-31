@@ -89,22 +89,18 @@ public abstract class StoreBase
      * The descriptive information about this implementation.
      */
     protected static String info = "StoreBase/1.0";
-
-    /**
-     * The interval (in seconds) between checks for expired sessions.
-     */
-    protected int checkInterval = 60;
-
-    /**
-     * Name to register for the background thread.
-     */
-    protected String threadName = "StoreBase";
-
     /**
      * Name to register for this Store, used for logging.
      */
     protected static String storeName = "StoreBase";
-
+    /**
+     * The interval (in seconds) between checks for expired sessions.
+     */
+    protected int checkInterval = 60;
+    /**
+     * Name to register for the background thread.
+     */
+    protected String threadName = "StoreBase";
     /**
      * The background thread.
      */
@@ -169,6 +165,13 @@ public abstract class StoreBase
     }
 
     /**
+     * Return the debugging detail level for this Store.
+     */
+    public int getDebug() {
+        return (this.debug);
+    }
+
+    /**
      * Set the debugging detail level for this Store.
      *
      * @param debug The new debugging detail level
@@ -178,12 +181,11 @@ public abstract class StoreBase
     }
 
     /**
-     * Return the debugging detail level for this Store.
+     * Return the check interval (in seconds) for this Store.
      */
-    public int getDebug() {
-        return (this.debug);
+    public int getCheckInterval() {
+        return (this.checkInterval);
     }
-
 
     /**
      * Set the check interval (in seconds) for this Store.
@@ -199,10 +201,10 @@ public abstract class StoreBase
     }
 
     /**
-     * Return the check interval (in seconds) for this Store.
+     * Return the Manager with which the Store is associated.
      */
-    public int getCheckInterval() {
-        return (this.checkInterval);
+    public Manager getManager() {
+        return (this.manager);
     }
 
     /**
@@ -214,13 +216,6 @@ public abstract class StoreBase
         Manager oldManager = this.manager;
         this.manager = manager;
         support.firePropertyChange("manager", oldManager, this.manager);
-    }
-
-    /**
-     * Return the Manager with which the Store is associated.
-     */
-    public Manager getManager() {
-        return (this.manager);
     }
 
     // --------------------------------------------------------- Public Methods

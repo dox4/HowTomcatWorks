@@ -85,26 +85,21 @@ public final class EngineConfig
 
 
     /**
+     * The string resources for this package.
+     */
+    private static final StringManager sm =
+            StringManager.getManager(Constants.Package);
+    /**
      * The debugging detail level for this component.
      */
     private int debug = 0;
-
-
     /**
      * The Engine we are associated with.
      */
     private Engine engine = null;
 
 
-    /**
-     * The string resources for this package.
-     */
-    private static final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the debugging detail level for this component.

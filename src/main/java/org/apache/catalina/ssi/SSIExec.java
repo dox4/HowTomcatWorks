@@ -80,8 +80,8 @@ import java.io.PrintWriter;
  * @version $Revision: 1.1 $, $Date: 2002/05/24 04:38:58 $
  */
 public class SSIExec implements SSICommand {
-    protected SSIInclude ssiInclude = new SSIInclude();
     protected final static int BUFFER_SIZE = 1024;
+    protected SSIInclude ssiInclude = new SSIInclude();
 
     /**
      * @see SSICommand

@@ -96,44 +96,32 @@ public class FileLogger
 
 
     /**
-     * The as-of date for the currently open log file, or a zero-length
-     * string if there is no open log file.
-     */
-    private String date = "";
-
-
-    /**
-     * The directory in which log files are created.
-     */
-    private String directory = "logs";
-
-
-    /**
      * The descriptive information about this implementation.
      */
     protected static final String info =
             "org.apache.catalina.logger.FileLogger/1.0";
-
-
-    /**
-     * The lifecycle event support for this component.
-     */
-    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
-
-
-    /**
-     * The prefix that is added to log file filenames.
-     */
-    private String prefix = "catalina.";
-
-
     /**
      * The string manager for this package.
      */
     private final StringManager sm =
             StringManager.getManager(Constants.Package);
-
-
+    /**
+     * The lifecycle event support for this component.
+     */
+    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
+    /**
+     * The as-of date for the currently open log file, or a zero-length
+     * string if there is no open log file.
+     */
+    private String date = "";
+    /**
+     * The directory in which log files are created.
+     */
+    private String directory = "logs";
+    /**
+     * The prefix that is added to log file filenames.
+     */
+    private String prefix = "catalina.";
     /**
      * Has this component been started?
      */

@@ -95,6 +95,15 @@ public abstract class ResponseWrapper implements Response {
 
 
     /**
+     * The wrapped response.
+     */
+    protected Response response = null;
+
+
+    // ----------------------------------------------------- Instance Variables
+
+
+    /**
      * Construct a wrapper for the specified response.
      *
      * @param response The response to be wrapped
@@ -105,16 +114,6 @@ public abstract class ResponseWrapper implements Response {
         this.response = response;
 
     }
-
-
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The wrapped response.
-     */
-    protected Response response = null;
-
 
     /**
      * Return the wrapped response.

@@ -129,6 +129,33 @@ public class DigestAuthenticator
 
 
     // ----------------------------------------------------------- Constructors
+    /**
+     * MD5 message digest provider.
+     */
+    protected static MessageDigest md5Helper;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * No once hashtable.
+     */
+    protected Hashtable nOnceTokens = new Hashtable();
+    /**
+     * No once expiration (in millisecond). A shorter amount would mean a
+     * better security level (since the token is generated more often), but at
+     * the expense of a bigger server overhead.
+     */
+    protected long nOnceTimeout = TIMEOUT_INFINITE;
+    /**
+     * No once expiration after a specified number of uses. A lower number
+     * would produce more overhead, since a token would have to be generated
+     * more often, but would be more secure.
+     */
+    protected int nOnceUses = USE_ONCE;
+    /**
+     * Private key.
+     */
+    protected String key = "Catalina";
 
 
     public DigestAuthenticator() {
@@ -143,115 +170,7 @@ public class DigestAuthenticator
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * MD5 message digest provider.
-     */
-    protected static MessageDigest md5Helper;
-
-
-    /**
-     * No once hashtable.
-     */
-    protected Hashtable nOnceTokens = new Hashtable();
-
-
-    /**
-     * No once expiration (in millisecond). A shorter amount would mean a
-     * better security level (since the token is generated more often), but at
-     * the expense of a bigger server overhead.
-     */
-    protected long nOnceTimeout = TIMEOUT_INFINITE;
-
-
-    /**
-     * No once expiration after a specified number of uses. A lower number
-     * would produce more overhead, since a token would have to be generated
-     * more often, but would be more secure.
-     */
-    protected int nOnceUses = USE_ONCE;
-
-
-    /**
-     * Private key.
-     */
-    protected String key = "Catalina";
-
-
     // ------------------------------------------------------------- Properties
-
-
-    /**
-     * Return descriptive information about this Valve implementation.
-     */
-    public String getInfo() {
-
-        return (info);
-
-    }
-
-
-    // --------------------------------------------------------- Public Methods
-
-
-    /**
-     * Authenticate the user making this request, based on the specified
-     * login configuration.  Return <code>true</code> if any specified
-     * constraint has been satisfied, or <code>false</code> if we have
-     * created a response challenge already.
-     *
-     * @param request  Request we are processing
-     * @param response Response we are creating
-     * @param login    Login configuration describing how authentication
-     *                 should be performed
-     * @throws IOException if an input/output error occurs
-     */
-    public boolean authenticate(HttpRequest request,
-                                HttpResponse response,
-                                LoginConfig config)
-            throws IOException {
-
-        // Have we already authenticated someone?
-        Principal principal =
-                ((HttpServletRequest) request.getRequest()).getUserPrincipal();
-        if (principal != null)
-            return (true);
-
-        // Validate any credentials already included with this request
-        HttpServletRequest hreq =
-                (HttpServletRequest) request.getRequest();
-        HttpServletResponse hres =
-                (HttpServletResponse) response.getResponse();
-        String authorization = request.getAuthorization();
-        if (authorization != null) {
-            principal = findPrincipal(hreq, authorization, context.getRealm());
-            if (principal != null) {
-                String username = parseUsername(authorization);
-                register(request, response, principal,
-                        Constants.DIGEST_METHOD,
-                        username, null);
-                return (true);
-            }
-        }
-
-        // Send an "unauthorized" response and an appropriate challenge
-
-        // Next, generate a nOnce token (that is a token which is supposed
-        // to be unique).
-        String nOnce = generateNOnce(hreq);
-
-        setAuthenticateHeader(hreq, hres, config, nOnce);
-        hres.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        //      hres.flushBuffer();
-        return (false);
-
-    }
-
-
-    // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Parse the specified authorization credentials, and return the
@@ -261,8 +180,6 @@ public class DigestAuthenticator
      *
      * @param request       HTTP servlet request
      * @param authorization Authorization credentials from this request
-     * @param login         Login configuration describing how authentication
-     *                      should be performed
      * @param realm         Realm used to authenticate Principals
      */
     protected static Principal findPrincipal(HttpServletRequest request,
@@ -336,6 +253,82 @@ public class DigestAuthenticator
     }
 
 
+    // --------------------------------------------------------- Public Methods
+
+    /**
+     * Removes the quotes on a string.
+     */
+    protected static String removeQuotes(String quotedString) {
+        if (quotedString.length() > 2) {
+            return quotedString.substring(1, quotedString.length() - 1);
+        } else {
+            return "";
+        }
+    }
+
+
+    // ------------------------------------------------------ Protected Methods
+
+    /**
+     * Return descriptive information about this Valve implementation.
+     */
+    public String getInfo() {
+
+        return (info);
+
+    }
+
+    /**
+     * Authenticate the user making this request, based on the specified
+     * login configuration.  Return <code>true</code> if any specified
+     * constraint has been satisfied, or <code>false</code> if we have
+     * created a response challenge already.
+     *
+     * @param request  Request we are processing
+     * @param response Response we are creating
+     * @throws IOException if an input/output error occurs
+     */
+    public boolean authenticate(HttpRequest request,
+                                HttpResponse response,
+                                LoginConfig config)
+            throws IOException {
+
+        // Have we already authenticated someone?
+        Principal principal =
+                ((HttpServletRequest) request.getRequest()).getUserPrincipal();
+        if (principal != null)
+            return (true);
+
+        // Validate any credentials already included with this request
+        HttpServletRequest hreq =
+                (HttpServletRequest) request.getRequest();
+        HttpServletResponse hres =
+                (HttpServletResponse) response.getResponse();
+        String authorization = request.getAuthorization();
+        if (authorization != null) {
+            principal = findPrincipal(hreq, authorization, context.getRealm());
+            if (principal != null) {
+                String username = parseUsername(authorization);
+                register(request, response, principal,
+                        Constants.DIGEST_METHOD,
+                        username, null);
+                return (true);
+            }
+        }
+
+        // Send an "unauthorized" response and an appropriate challenge
+
+        // Next, generate a nOnce token (that is a token which is supposed
+        // to be unique).
+        String nOnce = generateNOnce(hreq);
+
+        setAuthenticateHeader(hreq, hres, config, nOnce);
+        hres.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        //      hres.flushBuffer();
+        return (false);
+
+    }
+
     /**
      * Parse the username from the specified authorization string.  If none
      * can be identified, return <code>null</code>
@@ -371,19 +364,6 @@ public class DigestAuthenticator
         return (null);
 
     }
-
-
-    /**
-     * Removes the quotes on a string.
-     */
-    protected static String removeQuotes(String quotedString) {
-        if (quotedString.length() > 2) {
-            return quotedString.substring(1, quotedString.length() - 1);
-        } else {
-            return "";
-        }
-    }
-
 
     /**
      * Generate a unique token. The token is generated according to the
@@ -430,11 +410,11 @@ public class DigestAuthenticator
      *      algorithm           = "algorithm" "=" ( "MD5" | token )
      * </pre>
      *
-     * @param request HTTP Servlet request
-     * @param resonse HTTP Servlet response
-     * @param login   Login configuration describing how authentication
-     *                should be performed
-     * @param nOnce   nonce token
+     * @param request  HTTP Servlet request
+     * @param response HTTP Servlet response
+     * @param config   Login configuration describing how authentication
+     *                 should be performed
+     * @param nOnce    nonce token
      */
     protected void setAuthenticateHeader(HttpServletRequest request,
                                          HttpServletResponse response,

@@ -40,45 +40,30 @@ public class HttpResponseBase
         implements HttpResponse, HttpServletResponse {
 
 
-    protected class PrivilegedFlushBuffer
-            implements PrivilegedExceptionAction {
-
-        PrivilegedFlushBuffer() {
-        }
-
-        public Object run() throws Exception {
-            doFlushBuffer();
-            return null;
-        }
-    }
+    /**
+     * Descriptive information about this HttpResponse implementation.
+     */
+    protected static final String info =
+            "org.apache.catalina.connector.HttpResponseBase/1.0";
 
 
     // ----------------------------------------------------------- Constructors
-
-
-    public HttpResponseBase() {
-
-        format.setTimeZone(TimeZone.getTimeZone("GMT"));
-
-    }
+    /**
+     * The time zone with which to construct date headers.
+     */
+    protected static final TimeZone zone = TimeZone.getTimeZone("GMT");
 
 
     // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The set of Cookies associated with this Response.
-     */
-    protected ArrayList cookies = new ArrayList();
-
-
     /**
      * The date format we will use for creating date headers.
      */
     protected final SimpleDateFormat format =
             new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
-
-
+    /**
+     * The set of Cookies associated with this Response.
+     */
+    protected ArrayList cookies = new ArrayList();
     /**
      * The facade associated with this response.
      */
@@ -92,35 +77,21 @@ public class HttpResponseBase
      * ArrayLists containing the associated values that have been set.
      */
     protected HashMap headers = new HashMap();
-
-
-    /**
-     * Descriptive information about this HttpResponse implementation.
-     */
-    protected static final String info =
-            "org.apache.catalina.connector.HttpResponseBase/1.0";
-
-
     /**
      * The error message set by <code>sendError()</code>.
      */
     protected String message = getStatusMessage(HttpServletResponse.SC_OK);
-
-
     /**
      * The HTTP status code associated with this Response.
      */
     protected int status = HttpServletResponse.SC_OK;
 
 
-    /**
-     * The time zone with which to construct date headers.
-     */
-    protected static final TimeZone zone = TimeZone.getTimeZone("GMT");
+    public HttpResponseBase() {
 
+        format.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-    // ------------------------------------------------------------- Properties
-
+    }
 
     /**
      * Return the <code>ServletResponse</code> for which this object
@@ -133,8 +104,7 @@ public class HttpResponseBase
     }
 
 
-    // --------------------------------------------------------- Public Methods
-
+    // ------------------------------------------------------------- Properties
 
     /**
      * Perform whatever actions are required to flush and close the output
@@ -182,6 +152,8 @@ public class HttpResponseBase
     }
 
 
+    // --------------------------------------------------------- Public Methods
+
     /**
      * Return an array of all cookies set for this response, or
      * a zero-length array if no cookies have been set.
@@ -193,7 +165,6 @@ public class HttpResponseBase
         }
 
     }
-
 
     /**
      * Return the value for the specified header, or <code>null</code> if this
@@ -221,7 +192,6 @@ public class HttpResponseBase
         return null;
     }
 
-
     /**
      * Return an array of all the header names set for this response, or
      * a zero-length array if no headers have been set.
@@ -235,7 +205,6 @@ public class HttpResponseBase
         }
 
     }
-
 
     /**
      * Return an array of all the header values associated with the
@@ -257,7 +226,6 @@ public class HttpResponseBase
 
     }
 
-
     /**
      * Return the error message that was set with <code>sendError()</code>
      * for this Response.
@@ -268,7 +236,6 @@ public class HttpResponseBase
 
     }
 
-
     /**
      * Return the HTTP status code associated with this Response.
      */
@@ -278,6 +245,16 @@ public class HttpResponseBase
 
     }
 
+    /**
+     * Set the HTTP status to be returned with this response.
+     *
+     * @param status The new HTTP status
+     */
+    public void setStatus(int status) {
+
+        setStatus(status, getStatusMessage(status));
+
+    }
 
     /**
      * Release all object references, and initialize instance variables, in
@@ -1159,19 +1136,6 @@ public class HttpResponseBase
 
     }
 
-
-    /**
-     * Set the HTTP status to be returned with this response.
-     *
-     * @param status The new HTTP status
-     */
-    public void setStatus(int status) {
-
-        setStatus(status, getStatusMessage(status));
-
-    }
-
-
     /**
      * Set the HTTP status and message to be returned with this response.
      *
@@ -1189,6 +1153,18 @@ public class HttpResponseBase
         this.status = status;
         this.message = message;
 
+    }
+
+    protected class PrivilegedFlushBuffer
+            implements PrivilegedExceptionAction {
+
+        PrivilegedFlushBuffer() {
+        }
+
+        public Object run() throws Exception {
+            doFlushBuffer();
+            return null;
+        }
     }
 
 

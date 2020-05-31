@@ -96,40 +96,31 @@ public final class FileStore
 
 
     // ----------------------------------------------------- Instance Variables
-
-
+    /**
+     * The descriptive information about this implementation.
+     */
+    private static final String info = "FileStore/1.0";
+    /**
+     * Name to register for this Store, used for logging.
+     */
+    private static final String storeName = "fileStore";
+    /**
+     * Name to register for the background thread.
+     */
+    private static final String threadName = "FileStore";
     /**
      * The pathname of the directory in which Sessions are stored.
      * This may be an absolute pathname, or a relative path that is
      * resolved against the temporary work directory for this application.
      */
     private String directory = ".";
-
-
     /**
      * A File representing the directory in which Sessions are stored.
      */
     private File directoryFile = null;
 
 
-    /**
-     * The descriptive information about this implementation.
-     */
-    private static final String info = "FileStore/1.0";
-
-    /**
-     * Name to register for this Store, used for logging.
-     */
-    private static final String storeName = "fileStore";
-
-    /**
-     * Name to register for the background thread.
-     */
-    private static final String threadName = "FileStore";
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the directory path for this Store.

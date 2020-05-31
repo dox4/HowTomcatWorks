@@ -91,60 +91,42 @@ public class StandardHost
 
 
     /**
-     * Create a new StandardHost component with the default basic Valve.
+     * The descriptive information string for this implementation.
      */
-    public StandardHost() {
-
-        super();
-        pipeline.setBasic(new StandardHostValve());
-
-    }
+    private static final String info =
+            "org.apache.catalina.core.StandardHost/1.0";
 
 
     // ----------------------------------------------------- Instance Variables
-
-
+    /**
+     * The <code>Deployer</code> to whom we delegate application
+     * deployment requests.
+     */
+    private final Deployer deployer = new StandardHostDeployer(this);
     /**
      * The set of aliases for this Host.
      */
     private String[] aliases = new String[0];
-
-
     /**
      * The application root for this Host.
      */
     private String appBase = ".";
-
-
     /**
      * The auto deploy flag for this Host.
      */
     private boolean autoDeploy = true;
-
-
     /**
      * The Java class name of the default context configuration class
      * for deployed web applications.
      */
     private String configClass =
             "org.apache.catalina.startup.ContextConfig";
-
-
     /**
      * The Java class name of the default Context implementation class for
      * deployed web applications.
      */
     private String contextClass =
             "org.apache.catalina.core.StandardContext";
-
-
-    /**
-     * The <code>Deployer</code> to whom we delegate application
-     * deployment requests.
-     */
-    private final Deployer deployer = new StandardHostDeployer(this);
-
-
     /**
      * deploy Context XML config files property.
      */
@@ -157,48 +139,41 @@ public class StandardHost
      */
     private String errorReportValveClass =
             "org.apache.catalina.valves.ErrorReportValve";
-
-
-    /**
-     * The descriptive information string for this implementation.
-     */
-    private static final String info =
-            "org.apache.catalina.core.StandardHost/1.0";
-
-
     /**
      * The live deploy flag for this Host.
      */
     private boolean liveDeploy = true;
-
-
     /**
      * The Java class name of the default Mapper class for this Container.
      */
     private String mapperClass =
             "org.apache.catalina.core.StandardHostMapper";
-
-
     /**
      * Unpack WARs property.
      */
     private boolean unpackWARs = true;
-
-
     /**
      * Work Directory base for applications.
      */
     private String workDir = null;
-
-
     /**
      * DefaultContext config
      */
     private DefaultContext defaultContext;
 
 
-    // ------------------------------------------------------------- Properties
+    /**
+     * Create a new StandardHost component with the default basic Valve.
+     */
+    public StandardHost() {
 
+        super();
+        pipeline.setBasic(new StandardHostValve());
+
+    }
+
+
+    // ------------------------------------------------------------- Properties
 
     /**
      * Return the application root for this Host.  This can be an absolute

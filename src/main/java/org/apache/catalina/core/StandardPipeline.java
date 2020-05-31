@@ -94,6 +94,45 @@ public class StandardPipeline
 
 
     /**
+     * The string manager for this package.
+     */
+    protected static StringManager sm =
+            StringManager.getManager(Constants.Package);
+    /**
+     * The basic Valve (if any) associated with this Pipeline.
+     */
+    protected Valve basic = null;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The Container with which this Pipeline is associated.
+     */
+    protected Container container = null;
+    /**
+     * The debugging detail level for this component.
+     */
+    protected int debug = 0;
+    /**
+     * Descriptive information about this implementation.
+     */
+    protected String info = "org.apache.catalina.core.StandardPipeline/1.0";
+    /**
+     * The lifecycle event support for this component.
+     */
+    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
+    /**
+     * Has this component been started yet?
+     */
+    protected boolean started = false;
+    /**
+     * The set of Valves (not including the Basic one, if any) associated with
+     * this Pipeline.
+     */
+    protected Valve[] valves = new Valve[0];
+
+
+    /**
      * Construct a new StandardPipeline instance with no associated Container.
      */
     public StandardPipeline() {
@@ -117,61 +156,7 @@ public class StandardPipeline
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The basic Valve (if any) associated with this Pipeline.
-     */
-    protected Valve basic = null;
-
-
-    /**
-     * The Container with which this Pipeline is associated.
-     */
-    protected Container container = null;
-
-
-    /**
-     * The debugging detail level for this component.
-     */
-    protected int debug = 0;
-
-
-    /**
-     * Descriptive information about this implementation.
-     */
-    protected String info = "org.apache.catalina.core.StandardPipeline/1.0";
-
-
-    /**
-     * The lifecycle event support for this component.
-     */
-    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
-
-
-    /**
-     * The string manager for this package.
-     */
-    protected static StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
-    /**
-     * Has this component been started yet?
-     */
-    protected boolean started = false;
-
-
-    /**
-     * The set of Valves (not including the Basic one, if any) associated with
-     * this Pipeline.
-     */
-    protected Valve[] valves = new Valve[0];
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Return descriptive information about this implementation class.

@@ -25,8 +25,17 @@ public class ResponseFacade implements HttpServletResponse {
         return response.getBufferSize();
     }
 
+    public void setBufferSize(int size) {
+        response.setBufferSize(size);
+    }
+
     public String getCharacterEncoding() {
         return response.getCharacterEncoding();
+    }
+
+    @Override
+    public void setCharacterEncoding(String s) {
+
     }
 
     @Override
@@ -34,8 +43,16 @@ public class ResponseFacade implements HttpServletResponse {
         return null;
     }
 
+    public void setContentType(String type) {
+        response.setContentType(type);
+    }
+
     public Locale getLocale() {
         return response.getLocale();
+    }
+
+    public void setLocale(Locale locale) {
+        response.setLocale(locale);
     }
 
     public ServletOutputStream getOutputStream() throws IOException {
@@ -44,11 +61,6 @@ public class ResponseFacade implements HttpServletResponse {
 
     public PrintWriter getWriter() throws IOException {
         return response.getWriter();
-    }
-
-    @Override
-    public void setCharacterEncoding(String s) {
-
     }
 
     public boolean isCommitted() {
@@ -63,10 +75,6 @@ public class ResponseFacade implements HttpServletResponse {
         response.resetBuffer();
     }
 
-    public void setBufferSize(int size) {
-        response.setBufferSize(size);
-    }
-
     public void setContentLength(int length) {
         response.setContentLength(length);
     }
@@ -74,14 +82,6 @@ public class ResponseFacade implements HttpServletResponse {
     @Override
     public void setContentLengthLong(long len) {
 
-    }
-
-    public void setContentType(String type) {
-        response.setContentType(type);
-    }
-
-    public void setLocale(Locale locale) {
-        response.setLocale(locale);
     }
 
     @Override
@@ -160,11 +160,6 @@ public class ResponseFacade implements HttpServletResponse {
     }
 
     @Override
-    public void setStatus(int i) {
-
-    }
-
-    @Override
     public void setStatus(int i, String s) {
 
     }
@@ -172,6 +167,11 @@ public class ResponseFacade implements HttpServletResponse {
     @Override
     public int getStatus() {
         return 0;
+    }
+
+    @Override
+    public void setStatus(int i) {
+
     }
 
     @Override

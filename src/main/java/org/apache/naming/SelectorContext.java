@@ -65,6 +65,7 @@
 package org.apache.naming;
 
 import javax.naming.*;
+import javax.naming.directory.InvalidAttributesException;
 import java.util.Hashtable;
 
 /**
@@ -99,6 +100,21 @@ public class SelectorContext implements Context {
 
 
     // ----------------------------------------------------------- Constructors
+    /**
+     * Environment.
+     */
+    protected Hashtable env;
+    /**
+     * The string manager for this package.
+     */
+    protected StringManager sm = StringManager.getManager(Constants.Package);
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * Request for an initial context.
+     */
+    protected boolean initialContext = false;
 
 
     /**
@@ -118,32 +134,10 @@ public class SelectorContext implements Context {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Environment.
-     */
-    protected Hashtable env;
-
-
-    /**
-     * The string manager for this package.
-     */
-    protected StringManager sm = StringManager.getManager(Constants.Package);
-
-
-    /**
-     * Request for an initial context.
-     */
-    protected boolean initialContext = false;
-
-
     // --------------------------------------------------------- Public Methods
 
 
     // -------------------------------------------------------- Context Methods
-
 
     /**
      * Retrieves the named object. If name is empty, returns a new instance

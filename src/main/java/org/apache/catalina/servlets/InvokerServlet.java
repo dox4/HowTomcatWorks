@@ -97,24 +97,18 @@ public final class InvokerServlet
 
 
     /**
-     * The Context container associated with our web application.
-     */
-    private Context context = null;
-
-
-    /**
-     * The debugging detail level for this servlet.
-     */
-    private int debug = 0;
-
-
-    /**
      * The string manager for this package.
      */
     private static final StringManager sm =
             StringManager.getManager(Constants.Package);
-
-
+    /**
+     * The Context container associated with our web application.
+     */
+    private Context context = null;
+    /**
+     * The debugging detail level for this servlet.
+     */
+    private int debug = 0;
     /**
      * The Wrapper container associated with this servlet.
      */

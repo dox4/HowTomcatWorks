@@ -41,6 +41,130 @@ final class HttpProcessor
 
 
     // ----------------------------------------------------------- Constructors
+    /**
+     * The match string for identifying a session ID parameter.
+     */
+    private static final String match =
+            ";" + Globals.SESSION_PARAMETER_NAME + "=";
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The match string for identifying a session ID parameter.
+     */
+    private static final char[] SESSION_ID = match.toCharArray();
+    /**
+     * Ack string when pipelining HTTP requests.
+     */
+    private static final byte[] ack =
+            ("HTTP/1.1 100 Continue\r\n\r\n").getBytes();
+    /**
+     * CRLF.
+     */
+    private static final byte[] CRLF = ("\r\n").getBytes();
+    /**
+     * The HttpConnector with which this processor is associated.
+     */
+    private final HttpConnector connector;
+    /**
+     * The debugging detail level for this component.
+     */
+    private final int debug;
+    /**
+     * The lifecycle event support for this component.
+     */
+    private final LifecycleSupport lifecycle = new LifecycleSupport(this);
+    /**
+     * The string parser we will use for parsing request lines.
+     */
+    private final StringParser parser = new StringParser();
+    /**
+     * The proxy server name for our Connector.
+     */
+    private final String proxyName;
+    /**
+     * The proxy server port for our Connector.
+     */
+    private final int proxyPort;
+    /**
+     * The HTTP request object we will pass to our associated container.
+     */
+    private final HttpRequestImpl request;
+    /**
+     * The HTTP response object we will pass to our associated container.
+     */
+    private final HttpResponseImpl response;
+    /**
+     * The actual server port for our Connector.
+     */
+    private final int serverPort;
+    /**
+     * The name to register for the background thread.
+     */
+    private final String threadName;
+    /**
+     * The thread synchronization object.
+     */
+    private final Object threadSync = new Object();
+    /**
+     * Request line buffer.
+     */
+    private final HttpRequestLine requestLine = new HttpRequestLine();
+    /**
+     * The string manager for this package.
+     */
+    protected StringManager sm =
+            StringManager.getManager(Constants.Package);
+    /**
+     * Is there a new socket available?
+     */
+    private boolean available = false;
+    /**
+     * The identifier of this processor, unique per connector.
+     */
+    private int id = 0;
+    /**
+     * The socket we are currently processing a request for.  This object
+     * is used for inter-thread communication only.
+     */
+    private Socket socket = null;
+    /**
+     * Has this component been started yet?
+     */
+    private boolean started = false;
+    /**
+     * The shutdown signal to our background thread
+     */
+    private boolean stopped = false;
+    /**
+     * The background thread.
+     */
+    private Thread thread = null;
+    /**
+     * Keep alive indicator.
+     */
+    private boolean keepAlive = false;
+    /**
+     * HTTP/1.1 client.
+     */
+    private boolean http11 = true;
+    /**
+     * True if the client has asked to recieve a request acknoledgement. If so
+     * the server will send a preliminary 100 Continue response just after it
+     * has successfully parsed the request headers, and before starting
+     * reading the request entity body.
+     */
+    private boolean sendAck = false;
+
+
+    /**
+     * Line buffer.
+     */
+    //private char[] lineBuffer = new char[4096];
+    /**
+     * Processor state
+     */
+    private int status = Constants.PROCESSOR_IDLE;
 
 
     /**
@@ -66,186 +190,7 @@ final class HttpProcessor
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Is there a new socket available?
-     */
-    private boolean available = false;
-
-
-    /**
-     * The HttpConnector with which this processor is associated.
-     */
-    private final HttpConnector connector;
-
-
-    /**
-     * The debugging detail level for this component.
-     */
-    private final int debug;
-
-
-    /**
-     * The identifier of this processor, unique per connector.
-     */
-    private int id = 0;
-
-
-    /**
-     * The lifecycle event support for this component.
-     */
-    private final LifecycleSupport lifecycle = new LifecycleSupport(this);
-
-
-    /**
-     * The match string for identifying a session ID parameter.
-     */
-    private static final String match =
-            ";" + Globals.SESSION_PARAMETER_NAME + "=";
-
-
-    /**
-     * The match string for identifying a session ID parameter.
-     */
-    private static final char[] SESSION_ID = match.toCharArray();
-
-
-    /**
-     * The string parser we will use for parsing request lines.
-     */
-    private final StringParser parser = new StringParser();
-
-
-    /**
-     * The proxy server name for our Connector.
-     */
-    private final String proxyName;
-
-
-    /**
-     * The proxy server port for our Connector.
-     */
-    private final int proxyPort;
-
-
-    /**
-     * The HTTP request object we will pass to our associated container.
-     */
-    private final HttpRequestImpl request;
-
-
-    /**
-     * The HTTP response object we will pass to our associated container.
-     */
-    private final HttpResponseImpl response;
-
-
-    /**
-     * The actual server port for our Connector.
-     */
-    private final int serverPort;
-
-
-    /**
-     * The string manager for this package.
-     */
-    protected StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
-    /**
-     * The socket we are currently processing a request for.  This object
-     * is used for inter-thread communication only.
-     */
-    private Socket socket = null;
-
-
-    /**
-     * Has this component been started yet?
-     */
-    private boolean started = false;
-
-
-    /**
-     * The shutdown signal to our background thread
-     */
-    private boolean stopped = false;
-
-
-    /**
-     * The background thread.
-     */
-    private Thread thread = null;
-
-
-    /**
-     * The name to register for the background thread.
-     */
-    private final String threadName;
-
-
-    /**
-     * The thread synchronization object.
-     */
-    private final Object threadSync = new Object();
-
-
-    /**
-     * Keep alive indicator.
-     */
-    private boolean keepAlive = false;
-
-
-    /**
-     * HTTP/1.1 client.
-     */
-    private boolean http11 = true;
-
-
-    /**
-     * True if the client has asked to recieve a request acknoledgement. If so
-     * the server will send a preliminary 100 Continue response just after it
-     * has successfully parsed the request headers, and before starting
-     * reading the request entity body.
-     */
-    private boolean sendAck = false;
-
-
-    /**
-     * Ack string when pipelining HTTP requests.
-     */
-    private static final byte[] ack =
-            ("HTTP/1.1 100 Continue\r\n\r\n").getBytes();
-
-
-    /**
-     * CRLF.
-     */
-    private static final byte[] CRLF = ("\r\n").getBytes();
-
-
-    /**
-     * Line buffer.
-     */
-    //private char[] lineBuffer = new char[4096];
-
-
-    /**
-     * Request line buffer.
-     */
-    private final HttpRequestLine requestLine = new HttpRequestLine();
-
-
-    /**
-     * Processor state
-     */
-    private int status = Constants.PROCESSOR_IDLE;
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Return a String value representing this object.

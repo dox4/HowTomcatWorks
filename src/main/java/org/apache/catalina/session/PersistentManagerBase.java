@@ -94,53 +94,37 @@ public abstract class PersistentManagerBase
 
 
     /**
-     * The interval (in seconds) between checks for expired sessions.
-     */
-    private int checkInterval = 60;
-
-
-    /**
      * The descriptive information about this implementation.
      */
     private static final String info = "PersistentManagerBase/1.0";
-
-
-    /**
-     * The lifecycle event support for this component.
-     */
-    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
-
-
-    /**
-     * The maximum number of active Sessions allowed, or -1 for no limit.
-     */
-    private int maxActiveSessions = -1;
-
-
     /**
      * The descriptive name of this Manager implementation (for logging).
      */
     protected static String name = "PersistentManagerBase";
-
-
     /**
-     * Has this component been started yet?
+     * The lifecycle event support for this component.
      */
-    private boolean started = false;
-
-
-    /**
-     * The background thread.
-     */
-    private Thread thread = null;
-
-
+    protected LifecycleSupport lifecycle = new LifecycleSupport(this);
     /**
      * The background thread completion semaphore.
      */
     protected boolean threadDone = false;
-
-
+    /**
+     * The interval (in seconds) between checks for expired sessions.
+     */
+    private int checkInterval = 60;
+    /**
+     * The maximum number of active Sessions allowed, or -1 for no limit.
+     */
+    private int maxActiveSessions = -1;
+    /**
+     * Has this component been started yet?
+     */
+    private boolean started = false;
+    /**
+     * The background thread.
+     */
+    private Thread thread = null;
     /**
      * Name to register for the background thread.
      */
@@ -409,6 +393,15 @@ public abstract class PersistentManagerBase
 
     }
 
+    /**
+     * Return the Store object which manages persistent Session
+     * storage for this Manager.
+     */
+    public Store getStore() {
+
+        return (this.store);
+
+    }
 
     /**
      * Set the Store object which will manage persistent Session
@@ -422,18 +415,6 @@ public abstract class PersistentManagerBase
         store.setManager(this);
 
     }
-
-
-    /**
-     * Return the Store object which manages persistent Session
-     * storage for this Manager.
-     */
-    public Store getStore() {
-
-        return (this.store);
-
-    }
-
 
     /**
      * Indicates whether sessions are saved when the Manager is shut down
@@ -452,8 +433,8 @@ public abstract class PersistentManagerBase
      * false, any sessions found in the Store may still be picked up when
      * the Manager is started again.
      *
-     * @param save true if sessions should be saved on restart, false if
-     *             they should be ignored.
+     * @param saveOnRestart true if sessions should be saved on restart, false if
+     *                      they should be ignored.
      */
     public void setSaveOnRestart(boolean saveOnRestart) {
 

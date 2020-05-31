@@ -100,12 +100,12 @@ public interface Cluster {
     String getClusterName();
 
     /**
-     * Set the time in seconds that the Cluster waits before
-     * checking for changes and replicated data.
+     * Set the name of the cluster to join, if no cluster with
+     * this name is present create one.
      *
-     * @param checkInterval The time in seconds to sleep
+     * @param clusterName The clustername to join
      */
-    void setCheckInterval(int checkInterval);
+    void setClusterName(String clusterName);
 
     /**
      * Get the time in seconds that this Cluster sleeps.
@@ -115,19 +115,12 @@ public interface Cluster {
     int getCheckInterval();
 
     /**
-     * Set the name of the cluster to join, if no cluster with
-     * this name is present create one.
+     * Set the time in seconds that the Cluster waits before
+     * checking for changes and replicated data.
      *
-     * @param clusterName The clustername to join
+     * @param checkInterval The time in seconds to sleep
      */
-    void setClusterName(String clusterName);
-
-    /**
-     * Set the Container associated with our Cluster
-     *
-     * @param container The Container to use
-     */
-    void setContainer(Container container);
+    void setCheckInterval(int checkInterval);
 
     /**
      * Get the Container associated with our Cluster
@@ -137,11 +130,11 @@ public interface Cluster {
     Container getContainer();
 
     /**
-     * The debug detail level for this Cluster
+     * Set the Container associated with our Cluster
      *
-     * @param debug The debug level
+     * @param container The Container to use
      */
-    void setDebug(int debug);
+    void setContainer(Container container);
 
     /**
      * Returns the debug level for this Cluster
@@ -149,6 +142,13 @@ public interface Cluster {
      * @return The debug level
      */
     int getDebug();
+
+    /**
+     * The debug detail level for this Cluster
+     *
+     * @param debug The debug level
+     */
+    void setDebug(int debug);
 
     // --------------------------------------------------------- Public Methods
 

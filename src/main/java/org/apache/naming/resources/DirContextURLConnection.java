@@ -99,6 +99,39 @@ public class DirContextURLConnection
     // ----------------------------------------------------------- Constructors
 
 
+    /**
+     * Directory context.
+     */
+    protected DirContext context;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * Associated resource.
+     */
+    protected Resource resource;
+    /**
+     * Associated DirContext.
+     */
+    protected DirContext collection;
+    /**
+     * Other unknown object.
+     */
+    protected Object object;
+    /**
+     * Attributes.
+     */
+    protected Attributes attributes;
+    /**
+     * Date.
+     */
+    protected long date;
+    /**
+     * Permission
+     */
+    protected Permission permission;
+
+
     public DirContextURLConnection(DirContext context, URL url) {
         super(url);
         if (context == null)
@@ -111,53 +144,7 @@ public class DirContextURLConnection
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Directory context.
-     */
-    protected DirContext context;
-
-
-    /**
-     * Associated resource.
-     */
-    protected Resource resource;
-
-
-    /**
-     * Associated DirContext.
-     */
-    protected DirContext collection;
-
-
-    /**
-     * Other unknown object.
-     */
-    protected Object object;
-
-
-    /**
-     * Attributes.
-     */
-    protected Attributes attributes;
-
-
-    /**
-     * Date.
-     */
-    protected long date;
-
-
-    /**
-     * Permission
-     */
-    protected Permission permission;
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Connect to the DirContext, and retrive the bound object, as well as

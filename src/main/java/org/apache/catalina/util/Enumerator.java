@@ -85,6 +85,13 @@ public final class Enumerator implements Enumeration {
 
 
     /**
+     * The <code>Iterator</code> over which the <code>Enumeration</code>
+     * represented by this class actually operates.
+     */
+    private Iterator iterator = null;
+
+
+    /**
      * Return an Enumeration over the values of the specified Collection.
      *
      * @param collection Collection whose values should be enumerated
@@ -110,6 +117,9 @@ public final class Enumerator implements Enumeration {
     }
 
 
+    // ----------------------------------------------------- Instance Variables
+
+
     /**
      * Return an Enumeration over the values of the specified Map.
      *
@@ -122,18 +132,7 @@ public final class Enumerator implements Enumeration {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The <code>Iterator</code> over which the <code>Enumeration</code>
-     * represented by this class actually operates.
-     */
-    private Iterator iterator = null;
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Tests if this enumeration contains more elements.

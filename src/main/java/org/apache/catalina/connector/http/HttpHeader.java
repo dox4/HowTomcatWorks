@@ -22,14 +22,20 @@ final class HttpHeader {
 
 
     // ----------------------------------------------------------- Constructors
+    public char[] name;
+    public int nameEnd;
+    public char[] value;
 
+
+    // ----------------------------------------------------- Instance Variables
+    public int valueEnd;
+    protected int hashCode = 0;
 
     public HttpHeader() {
 
         this(new char[INITIAL_NAME_SIZE], 0, new char[INITIAL_VALUE_SIZE], 0);
 
     }
-
 
     public HttpHeader(char[] name, int nameEnd, char[] value, int valueEnd) {
 
@@ -39,7 +45,6 @@ final class HttpHeader {
         this.valueEnd = valueEnd;
 
     }
-
 
     public HttpHeader(String name, String value) {
 
@@ -51,21 +56,10 @@ final class HttpHeader {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    public char[] name;
-    public int nameEnd;
-    public char[] value;
-    public int valueEnd;
-    protected int hashCode = 0;
-
-
     // ------------------------------------------------------------- Properties
 
 
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Release all object references, and initialize instance variables, in

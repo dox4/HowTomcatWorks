@@ -90,6 +90,19 @@ public class MemoryGroup extends AbstractGroup {
 
 
     /**
+     * The {@link MemoryUserDatabase} that owns this group.
+     */
+    protected MemoryUserDatabase database = null;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The set of {@link Role}s associated with this group.
+     */
+    protected ArrayList roles = new ArrayList();
+
+
+    /**
      * Package-private constructor used by the factory method in
      * {@link MemoryUserDatabase}.
      *
@@ -108,26 +121,11 @@ public class MemoryGroup extends AbstractGroup {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The {@link MemoryUserDatabase} that owns this group.
-     */
-    protected MemoryUserDatabase database = null;
-
-
-    /**
-     * The set of {@link Role}s associated with this group.
-     */
-    protected ArrayList roles = new ArrayList();
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the set of {@link Role}s assigned specifically to this group.
+     *
      * @return
      */
     @Override

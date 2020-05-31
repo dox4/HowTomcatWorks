@@ -29,24 +29,13 @@ public class RequestStream
 
 
     /**
-     * Construct a servlet input stream associated with the specified Request.
-     *
-     * @param request The associated request
+     * The localized strings for this package.
      */
-    public RequestStream(HttpRequest request) {
-
-        super();
-        closed = false;
-        count = 0;
-        length = request.getContentLength();
-        stream = request.getStream();
-
-    }
+    protected static StringManager sm =
+            StringManager.getManager(Constants.Package);
 
 
     // ----------------------------------------------------- Instance Variables
-
-
     /**
      * Has this stream been closed?
      */
@@ -64,23 +53,29 @@ public class RequestStream
      * no defined content length.
      */
     protected int length = -1;
-
-
-    /**
-     * The localized strings for this package.
-     */
-    protected static StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
     /**
      * The underlying input stream from which we should read data.
      */
     protected InputStream stream = null;
 
 
-    // --------------------------------------------------------- Public Methods
+    /**
+     * Construct a servlet input stream associated with the specified Request.
+     *
+     * @param request The associated request
+     */
+    public RequestStream(HttpRequest request) {
 
+        super();
+        closed = false;
+        count = 0;
+        length = request.getContentLength();
+        stream = request.getStream();
+
+    }
+
+
+    // --------------------------------------------------------- Public Methods
 
     /**
      * Close this input stream.  No physical level I-O is performed, but

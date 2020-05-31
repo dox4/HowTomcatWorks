@@ -84,9 +84,35 @@ public final class FilterDef {
 
 
     /**
+     * The set of initialization parameters for this filter, keyed by
+     * parameter name.
+     */
+    private final Map parameters = new HashMap();
+    /**
      * The description of this filter.
      */
     private String description = null;
+    /**
+     * The display name of this filter.
+     */
+    private String displayName = null;
+    /**
+     * The fully qualified name of the Java class that implements this filter.
+     */
+    private String filterClass = null;
+    /**
+     * The name of this filter, which must be unique among the filters
+     * defined for a particular web application.
+     */
+    private String filterName = null;
+    /**
+     * The large icon associated with this filter.
+     */
+    private String largeIcon = null;
+    /**
+     * The small icon associated with this filter.
+     */
+    private String smallIcon = null;
 
     public String getDescription() {
         return (this.description);
@@ -96,12 +122,6 @@ public final class FilterDef {
         this.description = description;
     }
 
-
-    /**
-     * The display name of this filter.
-     */
-    private String displayName = null;
-
     public String getDisplayName() {
         return (this.displayName);
     }
@@ -109,12 +129,6 @@ public final class FilterDef {
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
-
-
-    /**
-     * The fully qualified name of the Java class that implements this filter.
-     */
-    private String filterClass = null;
 
     public String getFilterClass() {
         return (this.filterClass);
@@ -124,13 +138,6 @@ public final class FilterDef {
         this.filterClass = filterClass;
     }
 
-
-    /**
-     * The name of this filter, which must be unique among the filters
-     * defined for a particular web application.
-     */
-    private String filterName = null;
-
     public String getFilterName() {
         return (this.filterName);
     }
@@ -138,12 +145,6 @@ public final class FilterDef {
     public void setFilterName(String filterName) {
         this.filterName = filterName;
     }
-
-
-    /**
-     * The large icon associated with this filter.
-     */
-    private String largeIcon = null;
 
     public String getLargeIcon() {
         return (this.largeIcon);
@@ -153,24 +154,11 @@ public final class FilterDef {
         this.largeIcon = largeIcon;
     }
 
-
-    /**
-     * The set of initialization parameters for this filter, keyed by
-     * parameter name.
-     */
-    private final Map parameters = new HashMap();
-
     public Map getParameterMap() {
 
         return (this.parameters);
 
     }
-
-
-    /**
-     * The small icon associated with this filter.
-     */
-    private String smallIcon = null;
 
     public String getSmallIcon() {
         return (this.smallIcon);

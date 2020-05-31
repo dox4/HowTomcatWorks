@@ -40,21 +40,15 @@ final class HttpRequestImpl
 
 
     // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The InetAddress of the remote client of ths request.
-     */
-    protected InetAddress inet = null;
-
-
     /**
      * Descriptive information about this Request implementation.
      */
     protected static final String info =
             "org.apache.catalina.connector.http.HttpRequestImpl/1.0";
-
-
+    /**
+     * The InetAddress of the remote client of ths request.
+     */
+    protected InetAddress inet = null;
     /**
      * Headers pool.
      */

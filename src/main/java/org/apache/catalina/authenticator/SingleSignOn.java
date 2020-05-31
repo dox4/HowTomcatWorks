@@ -109,45 +109,33 @@ public class SingleSignOn
 
 
     /**
-     * The cache of SingleSignOnEntry instances for authenticated Principals,
-     * keyed by the cookie value that is used to select them.
+     * The string manager for this package.
      */
-    protected HashMap cache = new HashMap();
-
-
-    /**
-     * The debugging detail level for this component.
-     */
-    protected int debug = 0;
-
-
+    protected final static StringManager sm =
+            StringManager.getManager(Constants.Package);
     /**
      * Descriptive information about this Valve implementation.
      */
     protected static String info =
             "org.apache.catalina.authenticator.SingleSignOn";
-
-
+    /**
+     * The cache of SingleSignOnEntry instances for authenticated Principals,
+     * keyed by the cookie value that is used to select them.
+     */
+    protected HashMap cache = new HashMap();
+    /**
+     * The debugging detail level for this component.
+     */
+    protected int debug = 0;
     /**
      * The lifecycle event support for this component.
      */
     protected LifecycleSupport lifecycle = new LifecycleSupport(this);
-
-
     /**
      * The cache of single sign on identifiers, keyed by the Session that is
      * associated with them.
      */
     protected HashMap reverse = new HashMap();
-
-
-    /**
-     * The string manager for this package.
-     */
-    protected final static StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
     /**
      * Component started flag.
      */

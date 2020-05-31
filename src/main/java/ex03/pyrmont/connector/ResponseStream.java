@@ -25,6 +25,36 @@ public class ResponseStream extends ServletOutputStream {
 
 
     /**
+     * Has this stream been closed?
+     */
+    protected boolean closed = false;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * Should we commit the response when we are flushed?
+     */
+    protected boolean commit = false;
+    /**
+     * The number of bytes which have already been written to this stream.
+     */
+    protected int count = 0;
+    /**
+     * The content length past which we will not write, or -1 if there is
+     * no defined content length.
+     */
+    protected int length = -1;
+    /**
+     * The Response with which this input stream is associated.
+     */
+    protected HttpResponse response = null;
+    /**
+     * The underlying output stream to which we should write data.
+     */
+    protected OutputStream stream = null;
+
+
+    /**
      * Construct a servlet output stream associated with the specified Request.
      *
      * @param response The associated response
@@ -41,48 +71,7 @@ public class ResponseStream extends ServletOutputStream {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * Has this stream been closed?
-     */
-    protected boolean closed = false;
-
-
-    /**
-     * Should we commit the response when we are flushed?
-     */
-    protected boolean commit = false;
-
-
-    /**
-     * The number of bytes which have already been written to this stream.
-     */
-    protected int count = 0;
-
-
-    /**
-     * The content length past which we will not write, or -1 if there is
-     * no defined content length.
-     */
-    protected int length = -1;
-
-
-    /**
-     * The Response with which this input stream is associated.
-     */
-    protected HttpResponse response = null;
-
-
-    /**
-     * The underlying output stream to which we should write data.
-     */
-    protected OutputStream stream = null;
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * [Package Private] Return the "commit response on flush" flag.

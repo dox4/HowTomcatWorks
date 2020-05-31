@@ -641,6 +641,8 @@ public class Catalina {
 
 final class SetParentClassLoaderRule extends Rule {
 
+    ClassLoader parentClassLoader = null;
+
     public SetParentClassLoaderRule(Digester digester,
                                     ClassLoader parentClassLoader) {
 
@@ -648,8 +650,6 @@ final class SetParentClassLoaderRule extends Rule {
         this.parentClassLoader = parentClassLoader;
 
     }
-
-    ClassLoader parentClassLoader = null;
 
     public void begin(Attributes attributes) throws Exception {
 

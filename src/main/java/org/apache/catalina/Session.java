@@ -229,6 +229,10 @@ public interface Session {
      */
     HttpSession getSession();
 
+    /**
+     * Return the <code>isValid</code> flag for this session.
+     */
+    boolean isValid();
 
     /**
      * Set the <code>isValid</code> flag for this session.
@@ -238,14 +242,7 @@ public interface Session {
     void setValid(boolean isValid);
 
 
-    /**
-     * Return the <code>isValid</code> flag for this session.
-     */
-    boolean isValid();
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Update the accessed time information for this session.  This method

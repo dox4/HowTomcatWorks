@@ -64,8 +64,16 @@ public class Response implements ServletResponse {
         return 0;
     }
 
+    public void setBufferSize(int size) {
+    }
+
     public String getCharacterEncoding() {
         return null;
+    }
+
+    @Override
+    public void setCharacterEncoding(String s) {
+
     }
 
     @Override
@@ -73,8 +81,14 @@ public class Response implements ServletResponse {
         return null;
     }
 
+    public void setContentType(String type) {
+    }
+
     public Locale getLocale() {
         return null;
+    }
+
+    public void setLocale(Locale locale) {
     }
 
     public ServletOutputStream getOutputStream() throws IOException {
@@ -88,11 +102,6 @@ public class Response implements ServletResponse {
         return writer;
     }
 
-    @Override
-    public void setCharacterEncoding(String s) {
-
-    }
-
     public boolean isCommitted() {
         return false;
     }
@@ -103,20 +112,11 @@ public class Response implements ServletResponse {
     public void resetBuffer() {
     }
 
-    public void setBufferSize(int size) {
-    }
-
     public void setContentLength(int length) {
     }
 
     @Override
     public void setContentLengthLong(long len) {
 
-    }
-
-    public void setContentType(String type) {
-    }
-
-    public void setLocale(Locale locale) {
     }
 }

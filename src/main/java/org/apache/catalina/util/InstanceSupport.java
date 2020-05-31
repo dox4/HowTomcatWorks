@@ -90,11 +90,24 @@ public final class InstanceSupport {
 
 
     /**
+     * The set of registered InstanceListeners for event notifications.
+     */
+    private InstanceListener[] listeners = new InstanceListener[0];
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The source component for instance events that we will fire.
+     */
+    private Wrapper wrapper = null;
+
+
+    /**
      * Construct a new InstanceSupport object associated with the specified
      * Instance component.
      *
-     * @param lifecycle The Instance component that will be the source
-     *                  of events that we fire
+     * @param wrapper lifecycle The Instance component that will be the source
+     *                of events that we fire
      */
     public InstanceSupport(Wrapper wrapper) {
 
@@ -104,23 +117,7 @@ public final class InstanceSupport {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The set of registered InstanceListeners for event notifications.
-     */
-    private InstanceListener[] listeners = new InstanceListener[0];
-
-
-    /**
-     * The source component for instance events that we will fire.
-     */
-    private Wrapper wrapper = null;
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the Wrapper with which we are associated.

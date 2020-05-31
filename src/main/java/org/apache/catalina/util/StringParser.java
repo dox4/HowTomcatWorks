@@ -84,6 +84,35 @@ public final class StringParser {
 
 
     /**
+     * The characters of the current string, as a character array.  Stored
+     * when the string is first specified to speed up access to characters
+     * being compared during parsing.
+     */
+    private char[] chars = null;
+    /**
+     * The zero-relative index of the current point at which we are
+     * positioned within the string being parsed.  <strong>NOTE</strong>:
+     * the value of this index can be one larger than the index of the last
+     * character of the string (i.e. equal to the string length) if you
+     * parse off the end of the string.  This value is useful for extracting
+     * substrings that include the end of the string.
+     */
+    private int index = 0;
+
+
+    // ----------------------------------------------------- Instance Variables
+    /**
+     * The length of the String we are currently parsing.  Stored when the
+     * string is first specified to avoid repeated recalculations.
+     */
+    private int length = 0;
+    /**
+     * The String we are currently parsing.
+     */
+    private String string = null;
+
+
+    /**
      * Construct a string parser with no preset string to be parsed.
      */
     public StringParser() {
@@ -107,43 +136,7 @@ public final class StringParser {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The characters of the current string, as a character array.  Stored
-     * when the string is first specified to speed up access to characters
-     * being compared during parsing.
-     */
-    private char[] chars = null;
-
-
-    /**
-     * The zero-relative index of the current point at which we are
-     * positioned within the string being parsed.  <strong>NOTE</strong>:
-     * the value of this index can be one larger than the index of the last
-     * character of the string (i.e. equal to the string length) if you
-     * parse off the end of the string.  This value is useful for extracting
-     * substrings that include the end of the string.
-     */
-    private int index = 0;
-
-
-    /**
-     * The length of the String we are currently parsing.  Stored when the
-     * string is first specified to avoid repeated recalculations.
-     */
-    private int length = 0;
-
-
-    /**
-     * The String we are currently parsing.
-     */
-    private String string = null;
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the zero-relative index of our current parsing position

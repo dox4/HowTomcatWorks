@@ -91,92 +91,74 @@ public final class StandardCluster
      * Descriptive information about this component implementation.
      */
     private static final String info = "StandardCluster/1.0";
-
-    /**
-     * Name to register for the background thread.
-     */
-    private String threadName = "StandardCluster";
-
     /**
      * Name for logging purpose
      */
     private final String clusterImpName = "StandardCluster";
-
     /**
      * The string manager for this package.
      */
     private final StringManager sm = StringManager.getManager(Constants.Package);
-
-    /**
-     * Our Cluster info for this JVM
-     */
-    private ClusterMemberInfo localClusterMember = null;
-
     /**
      * The stack that keeps incoming cluster members
      */
     private final Vector clusterMembers = new Vector();
-
-    /**
-     * The background thread.
-     */
-    private Thread thread = null;
-
-    /**
-     * The background thread completion semaphore.
-     */
-    private boolean threadDone = false;
-
-    /**
-     * The cluster name to join
-     */
-    private String clusterName = null;
-
-    /**
-     * The Container associated with this Cluster.
-     */
-    private Container container = null;
-
-    /**
-     * Our ClusterSender, used when replicating
-     */
-    private ClusterSender clusterSender = null;
-
-    /**
-     * Our ClusterReceiver
-     */
-    private ClusterReceiver clusterReceiver = null;
-
-    /**
-     * The MulticastPort to use with this cluster
-     */
-    private int multicastPort;
-
-    /**
-     * The MulticastAdress to use with this cluster
-     */
-    private InetAddress multicastAddress = null;
-
-    /**
-     * Our MulticastSocket
-     */
-    private MulticastSocket multicastSocket = null;
-
     /**
      * The lifecycle event support for this component.
      */
     private final LifecycleSupport lifecycle = new LifecycleSupport(this);
-
-    /**
-     * Has this component been started?
-     */
-    private boolean started = false;
-
     /**
      * The property change support for this component.
      */
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-
+    /**
+     * Name to register for the background thread.
+     */
+    private String threadName = "StandardCluster";
+    /**
+     * Our Cluster info for this JVM
+     */
+    private ClusterMemberInfo localClusterMember = null;
+    /**
+     * The background thread.
+     */
+    private Thread thread = null;
+    /**
+     * The background thread completion semaphore.
+     */
+    private boolean threadDone = false;
+    /**
+     * The cluster name to join
+     */
+    private String clusterName = null;
+    /**
+     * The Container associated with this Cluster.
+     */
+    private Container container = null;
+    /**
+     * Our ClusterSender, used when replicating
+     */
+    private ClusterSender clusterSender = null;
+    /**
+     * Our ClusterReceiver
+     */
+    private ClusterReceiver clusterReceiver = null;
+    /**
+     * The MulticastPort to use with this cluster
+     */
+    private int multicastPort;
+    /**
+     * The MulticastAdress to use with this cluster
+     */
+    private InetAddress multicastAddress = null;
+    /**
+     * Our MulticastSocket
+     */
+    private MulticastSocket multicastSocket = null;
+    /**
+     * Has this component been started?
+     */
+    private boolean started = false;
     /**
      * The debug level for this Container
      */
@@ -209,6 +191,15 @@ public final class StandardCluster
     }
 
     /**
+     * Get the debug level for this component
+     *
+     * @return The debug level
+     */
+    public int getDebug() {
+        return (this.debug);
+    }
+
+    /**
      * Set the debug level for this component
      *
      * @param debug The debug level
@@ -218,12 +209,13 @@ public final class StandardCluster
     }
 
     /**
-     * Get the debug level for this component
+     * Return the name of the cluster that this Server is currently
+     * configured to operate within.
      *
-     * @return The debug level
+     * @return The name of the cluster associated with this server
      */
-    public int getDebug() {
-        return (this.debug);
+    public String getClusterName() {
+        return (this.clusterName);
     }
 
     /**
@@ -241,13 +233,12 @@ public final class StandardCluster
     }
 
     /**
-     * Return the name of the cluster that this Server is currently
-     * configured to operate within.
+     * Get the Container associated with our Cluster
      *
-     * @return The name of the cluster associated with this server
+     * @return The Container associated with our Cluster
      */
-    public String getClusterName() {
-        return (this.clusterName);
+    public Container getContainer() {
+        return (this.container);
     }
 
     /**
@@ -264,18 +255,18 @@ public final class StandardCluster
     }
 
     /**
-     * Get the Container associated with our Cluster
+     * Get the Port associated with our Cluster
      *
-     * @return The Container associated with our Cluster
+     * @return The Port associated with our Cluster
      */
-    public Container getContainer() {
-        return (this.container);
+    public int getMulticastPort() {
+        return (this.multicastPort);
     }
 
     /**
      * Set the Port associated with our Cluster
      *
-     * @param port The Port to use
+     * @param multicastPort The Port to use
      */
     public void setMulticastPort(int multicastPort) {
         int oldMulticastPort = this.multicastPort;
@@ -286,18 +277,18 @@ public final class StandardCluster
     }
 
     /**
-     * Get the Port associated with our Cluster
+     * Get the Groupaddress associated with our Cluster
      *
-     * @return The Port associated with our Cluster
+     * @return The Groupaddress associated with our Cluster
      */
-    public int getMulticastPort() {
-        return (this.multicastPort);
+    public InetAddress getMulticastAddress() {
+        return (this.multicastAddress);
     }
 
     /**
      * Set the Groupaddress associated with our Cluster
      *
-     * @param port The Groupaddress to use
+     * @param multicastAddress The Groupaddress to use
      */
     public void setMulticastAddress(String multicastAddress) {
         try {
@@ -313,12 +304,12 @@ public final class StandardCluster
     }
 
     /**
-     * Get the Groupaddress associated with our Cluster
+     * Get the time in seconds this Cluster sleeps
      *
-     * @return The Groupaddress associated with our Cluster
+     * @return The time in seconds this Cluster sleeps
      */
-    public InetAddress getMulticastAddress() {
-        return (this.multicastAddress);
+    public int getCheckInterval() {
+        return (this.checkInterval);
     }
 
     /**
@@ -333,15 +324,6 @@ public final class StandardCluster
         support.firePropertyChange("checkInterval",
                 oldCheckInterval,
                 this.checkInterval);
-    }
-
-    /**
-     * Get the time in seconds this Cluster sleeps
-     *
-     * @return The time in seconds this Cluster sleeps
-     */
-    public int getCheckInterval() {
-        return (this.checkInterval);
     }
 
     // --------------------------------------------------------- Public Methods

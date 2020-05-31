@@ -89,6 +89,14 @@ public final class FilterMap {
      * a particular request.
      */
     private String filterName = null;
+    /**
+     * The servlet name this mapping matches.
+     */
+    private String servletName = null;
+    /**
+     * The URL pattern this mapping matches.
+     */
+    private String urlPattern = null;
 
     public String getFilterName() {
         return (this.filterName);
@@ -98,12 +106,6 @@ public final class FilterMap {
         this.filterName = filterName;
     }
 
-
-    /**
-     * The servlet name this mapping matches.
-     */
-    private String servletName = null;
-
     public String getServletName() {
         return (this.servletName);
     }
@@ -111,12 +113,6 @@ public final class FilterMap {
     public void setServletName(String servletName) {
         this.servletName = servletName;
     }
-
-
-    /**
-     * The URL pattern this mapping matches.
-     */
-    private String urlPattern = null;
 
     public String getURLPattern() {
         return (this.urlPattern);

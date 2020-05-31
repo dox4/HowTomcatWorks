@@ -95,48 +95,34 @@ public final class FastEngineMapper
 
 
     /**
-     * Cache of hostname -> Host mappings.  FIXME - use FastHashMap.
-     */
-    private final java.util.HashMap cache = new java.util.HashMap();
-
-
-    /**
-     * The default host used for unknown host names.
-     */
-    private Host defaultHost = null;
-
-
-    /**
-     * The debugging detail level for this component.
-     */
-    private int debug = 0;
-
-
-    /**
-     * The Container with which this Mapper is associated.
-     */
-    private StandardEngine engine = null;
-
-
-    /**
-     * The lifecycle event support for this component.
-     */
-    private final LifecycleSupport lifecycle = new LifecycleSupport(this);
-
-
-    /**
-     * The protocol with which this Mapper is associated.
-     */
-    private String protocol = null;
-
-
-    /**
      * The string manager for this package.
      */
     private static final StringManager sm =
             StringManager.getManager(Constants.Package);
-
-
+    /**
+     * Cache of hostname -> Host mappings.  FIXME - use FastHashMap.
+     */
+    private final java.util.HashMap cache = new java.util.HashMap();
+    /**
+     * The lifecycle event support for this component.
+     */
+    private final LifecycleSupport lifecycle = new LifecycleSupport(this);
+    /**
+     * The default host used for unknown host names.
+     */
+    private Host defaultHost = null;
+    /**
+     * The debugging detail level for this component.
+     */
+    private int debug = 0;
+    /**
+     * The Container with which this Mapper is associated.
+     */
+    private StandardEngine engine = null;
+    /**
+     * The protocol with which this Mapper is associated.
+     */
+    private String protocol = null;
     /**
      * Has this component been started yet?
      */

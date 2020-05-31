@@ -53,33 +53,33 @@ public class SocketInputStream extends InputStream {
      * Lower case offset.
      */
     private static final int LC_OFFSET = 'A' - 'a';
-
-
+    /**
+     * The string manager for this package.
+     */
+    protected static StringManager sm =
+            StringManager.getManager(Constants.Package);
     /**
      * Internal buffer.
      */
     protected byte[] buf;
-
-
     /**
      * Last valid byte.
      */
     protected int count;
-
-
     /**
      * Position in the buffer.
      */
     protected int pos;
 
 
+    // ----------------------------------------------------------- Constructors
     /**
      * Underlying input stream.
      */
     protected InputStream is;
 
 
-    // ----------------------------------------------------------- Constructors
+    // -------------------------------------------------------------- Variables
 
 
     /**
@@ -97,21 +97,10 @@ public class SocketInputStream extends InputStream {
     }
 
 
-    // -------------------------------------------------------------- Variables
-
-
-    /**
-     * The string manager for this package.
-     */
-    protected static StringManager sm =
-            StringManager.getManager(Constants.Package);
-
-
     // ----------------------------------------------------- Instance Variables
 
 
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Read the request line, and copies it to the given buffer. This
@@ -285,7 +274,6 @@ public class SocketInputStream extends InputStream {
      * function is meant to be used during the HTTP request header parsing.
      * Do NOT attempt to read the request body using it.
      *
-     * @param requestLine Request line object
      * @throws IOException If an exception occurs during the underlying socket
      *                     read operations, or if the given buffer is not big enough to accomodate
      *                     the whole line.

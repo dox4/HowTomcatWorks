@@ -180,6 +180,40 @@ public final class InstanceEvent
 
 
     // ----------------------------------------------------------- Constructors
+    /**
+     * The exception that was thrown during the processing being reported
+     * by this event (AFTER_INIT_EVENT, AFTER_SERVICE_EVENT,
+     * AFTER_DESTROY_EVENT, AFTER_DISPATCH_EVENT, and AFTER_FILTER_EVENT only).
+     */
+    private Throwable exception = null;
+    /**
+     * The Filter instance for which this event occurred (BEFORE_FILTER_EVENT
+     * and AFTER_FILTER_EVENT only).
+     */
+    private Filter filter = null;
+    /**
+     * The servlet request being processed (BEFORE_FILTER_EVENT,
+     * AFTER_FILTER_EVENT, BEFORE_SERVICE_EVENT, and AFTER_SERVICE_EVENT).
+     */
+    private ServletRequest request = null;
+    /**
+     * The servlet response being processed (BEFORE_FILTER_EVENT,
+     * AFTER_FILTER_EVENT, BEFORE_SERVICE_EVENT, and AFTER_SERVICE_EVENT).
+     */
+    private ServletResponse response = null;
+    /**
+     * The Servlet instance for which this event occurred (not present on
+     * BEFORE_FILTER_EVENT or AFTER_FILTER_EVENT events).
+     */
+    private Servlet servlet = null;
+    /**
+     * The event type this instance represents.
+     */
+    private String type = null;
+    /**
+     * The Wrapper managing the servlet instance for which this event occurred.
+     */
+    private Wrapper wrapper = null;
 
 
     /**
@@ -199,6 +233,9 @@ public final class InstanceEvent
         this.type = type;
 
     }
+
+
+    // ----------------------------------------------------- Instance Variables
 
 
     /**
@@ -366,59 +403,7 @@ public final class InstanceEvent
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * The exception that was thrown during the processing being reported
-     * by this event (AFTER_INIT_EVENT, AFTER_SERVICE_EVENT,
-     * AFTER_DESTROY_EVENT, AFTER_DISPATCH_EVENT, and AFTER_FILTER_EVENT only).
-     */
-    private Throwable exception = null;
-
-
-    /**
-     * The Filter instance for which this event occurred (BEFORE_FILTER_EVENT
-     * and AFTER_FILTER_EVENT only).
-     */
-    private Filter filter = null;
-
-
-    /**
-     * The servlet request being processed (BEFORE_FILTER_EVENT,
-     * AFTER_FILTER_EVENT, BEFORE_SERVICE_EVENT, and AFTER_SERVICE_EVENT).
-     */
-    private ServletRequest request = null;
-
-
-    /**
-     * The servlet response being processed (BEFORE_FILTER_EVENT,
-     * AFTER_FILTER_EVENT, BEFORE_SERVICE_EVENT, and AFTER_SERVICE_EVENT).
-     */
-    private ServletResponse response = null;
-
-
-    /**
-     * The Servlet instance for which this event occurred (not present on
-     * BEFORE_FILTER_EVENT or AFTER_FILTER_EVENT events).
-     */
-    private Servlet servlet = null;
-
-
-    /**
-     * The event type this instance represents.
-     */
-    private String type = null;
-
-
-    /**
-     * The Wrapper managing the servlet instance for which this event occurred.
-     */
-    private Wrapper wrapper = null;
-
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the exception that occurred during the processing

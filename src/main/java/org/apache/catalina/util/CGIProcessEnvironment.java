@@ -179,7 +179,7 @@ public class CGIProcessEnvironment extends ProcessEnvironment {
      * Constructs the CGI environment to be supplied to the invoked CGI
      * script; relies heavliy on Servlet API methods and findCGI
      *
-     * @param HttpServletRequest request associated with the CGI invokation
+     * @param req HttpServletRequest request associated with the CGI invokation
      * @return true if environment was set OK, false if there was a problem
      * and no environment was set
      */
@@ -190,7 +190,7 @@ public class CGIProcessEnvironment extends ProcessEnvironment {
          * (apologies to Marv Albert regarding MJ)
          */
 
-        Hashtable envp;
+        Hashtable<String, String> envp;
         super.deriveProcessEnvironment(req);
         envp = getEnvironment();
 
@@ -356,16 +356,16 @@ public class CGIProcessEnvironment extends ProcessEnvironment {
      * @param cgiPathPrefix subdirectory of webAppRootDir below which the
      *                      web app's CGIs may be stored; can be null.
      * @return <ul> <li> <code>path</code>  -    full file-system path to valid cgi
-     *                                   script, or null if no cgi was found
+     * script, or null if no cgi was found
      * <li> <code>scriptName</code> -    CGI variable SCRIPT_NAME; the full
-     *                                   URL path to valid cgi script or
-     *                                   null if no cgi was found
+     * URL path to valid cgi script or
+     * null if no cgi was found
      * <li> <code>cgiName</code>    -    servlet pathInfo fragment
-     *                                   corresponding to the cgi script
-     *                                   itself, or null if not found
+     * corresponding to the cgi script
+     * itself, or null if not found
      * <li> <code>name</code>       -    simple name (no directories) of
-     *                                   the cgi script, or null if no cgi
-     *                                   was found
+     * the cgi script, or null if no cgi
+     * was found
      * </ul>
      * @author Martin Dengler [root@martindengler.com]
      * @since Tomcat 4.0
@@ -450,7 +450,7 @@ public class CGIProcessEnvironment extends ProcessEnvironment {
                 sb.append("<tr><td>");
                 sb.append(s);
                 sb.append("</td><td>");
-                sb.append(blanksToString((String) env.get(s),
+                sb.append(blanksToString(env.get(s),
                         "[will be set to blank]"));
                 sb.append("</td></tr>");
             }
