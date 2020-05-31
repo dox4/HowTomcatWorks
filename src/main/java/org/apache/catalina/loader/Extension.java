@@ -139,12 +139,12 @@ public final class Extension {
      *
      * @param manifest Manifest to be parsed
      */
-    public static List getAvailable(Manifest manifest) {
+    public static List<Extension> getAvailable(Manifest manifest) {
 
-        ArrayList results = new ArrayList();
+        List<Extension> results = new ArrayList<>();
         if (manifest == null)
             return (results);
-        Extension extension = null;
+        Extension extension;
 
         Attributes attributes = manifest.getMainAttributes();
         if (attributes != null) {
@@ -153,11 +153,9 @@ public final class Extension {
                 results.add(extension);
         }
 
-        Map entries = manifest.getEntries();
-        Iterator keys = entries.keySet().iterator();
-        while (keys.hasNext()) {
-            String key = (String) keys.next();
-            attributes = (Attributes) entries.get(key);
+        Map<String, Attributes> entries = manifest.getEntries();
+        for (String key : entries.keySet()) {
+            attributes = entries.get(key);
             extension = getAvailable(attributes);
             if (extension != null)
                 results.add(extension);
@@ -175,25 +173,19 @@ public final class Extension {
      *
      * @param manifest Manifest to be parsed
      */
-    public static List getRequired(Manifest manifest) {
+    public static List<Extension> getRequired(Manifest manifest) {
 
-        ArrayList results = new ArrayList();
+        List<Extension> results = new ArrayList<>();
 
         Attributes attributes = manifest.getMainAttributes();
         if (attributes != null) {
-            Iterator required = getRequired(attributes).iterator();
-            while (required.hasNext())
-                results.add(required.next());
+            results.addAll(getRequired(attributes));
         }
 
-        Map entries = manifest.getEntries();
-        Iterator keys = entries.keySet().iterator();
-        while (keys.hasNext()) {
-            String key = (String) keys.next();
-            attributes = (Attributes) entries.get(key);
-            Iterator required = getRequired(attributes).iterator();
-            while (required.hasNext())
-                results.add(required.next());
+        Map<String, Attributes> entries = manifest.getEntries();
+        for (String key : entries.keySet()) {
+            attributes = entries.get(key);
+            results.addAll(getRequired(attributes));
         }
 
         return (results);
@@ -237,9 +229,9 @@ public final class Extension {
      *
      * @param attributes Attributes to be parsed
      */
-    private static List getRequired(Attributes attributes) {
+    private static List<Extension> getRequired(Attributes attributes) {
 
-        ArrayList results = new ArrayList();
+        List<Extension> results = new ArrayList<>();
         String names = attributes.getValue("Extension-List");
         if (names == null)
             return (results);
@@ -381,7 +373,7 @@ public final class Extension {
      */
     public String toString() {
 
-        StringBuffer sb = new StringBuffer("Extension[");
+        StringBuilder sb = new StringBuilder("Extension[");
         sb.append(extensionName);
         if (implementationURL != null) {
             sb.append(", implementationURL=");
@@ -430,8 +422,8 @@ public final class Extension {
 
         StringTokenizer fTok = new StringTokenizer(first, ".", true);
         StringTokenizer sTok = new StringTokenizer(second, ".", true);
-        int fVersion = 0;
-        int sVersion = 0;
+        int fVersion;
+        int sVersion;
         while (fTok.hasMoreTokens() || sTok.hasMoreTokens()) {
             if (fTok.hasMoreTokens())
                 fVersion = Integer.parseInt(fTok.nextToken());
